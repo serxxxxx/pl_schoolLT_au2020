@@ -1,0 +1,58 @@
+Virtual User Script started at: 23.08.2020 20:24:14
+Starting action vuser_init.
+Web Turbo Replay of LoadRunner 12.55.0 for Windows 8.1; build 911 (èþë 24 2017 19:46:00)  	[MsgId: MMSG-26983]
+Run mode: HTML  	[MsgId: MMSG-26993]
+Replay user agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36  	[MsgId: MMSG-26988]
+Run-Time Settings file: "D:\soft\VuGen\Scripts\UXCrowd_UC02_create_test\\default.cfg"  	[MsgId: MMSG-27141]
+Warning -27070: Replay statistic collection is not supported by the WinInet Replay and is ignored  	[MsgId: MWAR-27070]
+Ending action vuser_init.
+Running Vuser...
+Starting iteration 1.
+Maximum number of concurrent connections per server: 6  	[MsgId: MMSG-26989]
+Starting action UC02_create_test.
+UC02_create_test.c(4): web_set_sockets_option started  	[MsgId: MMSG-26355]
+UC02_create_test.c(4): Warning -27488: "web_set_sockets_option" has no effect on WinInet replay  	[MsgId: MWAR-27488]
+UC02_create_test.c(4): web_set_sockets_option highest severity level was "warning"  	[MsgId: MMSG-26391]
+UC02_create_test.c(7): web_reg_save_param_ex started  	[MsgId: MMSG-26355]
+UC02_create_test.c(7): Registering web_reg_save_param_ex was successful  	[MsgId: MMSG-26390]
+UC02_create_test.c(14): web_url("loadtest.uxcrowd.ru") started  	[MsgId: MMSG-26355]
+UC02_create_test.c(14): Found resource "https://fonts.googleapis.com/css?family=Roboto&display=swap" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/sup_css.css" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/css/landing/webflow.css" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/css/landing/uxcrowd.webflow.css" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/css/landing/YouTube.HD.Thumbnail.css" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/env.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://use.typekit.net/hym5rnq.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://www.googletagmanager.com/gtag/js?id=UA-76628941-1" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://ulogin.ru/js/ulogin.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/library/jquery.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/library/jquery.form.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/library/moment.min.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/library/jquery.uploadfile.min.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/validation.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/library/FileSaver.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/sup_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/init.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/validation.rule.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/js/app_js/auth.interceptor.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/mediaelement-and-player.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/app_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/admin_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/customer_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/blog_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/home_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/moderator_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/new_tester_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/tester_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/library/require.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/path_controller.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/js/landing/jQuery.YouTube.HD.Thumbnail.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/main_route.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+UC02_create_test.c(14): Error -26377: No match found for the requested parameter "token". Either the specified boundaries were not found in the response or the matched text is longer than current max html parameter size of 256 bytes. The total length of the response is 1112598 bytes. You can use "web_set_max_html_param_len" to increase the max parameter size.  	[MsgId: MERR-26377]
+UC02_create_test.c(14): web_url("loadtest.uxcrowd.ru") highest severity level was "ERROR", 1112598 body bytes, 18509 header bytes  	[MsgId: MMSG-26388]
+Ending action UC02_create_test.
+Ending iteration 1.
+Ending Vuser...
+Starting action vuser_end.
+Ending action vuser_end.
+Vuser Terminated.

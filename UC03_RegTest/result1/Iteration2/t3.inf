@@ -1,0 +1,11 @@
+[t3]
+SnapshotXmlFile=snapshot_2.xml
+ContentType=text/html
+StepName=Custom Request: register
+Total=0
+RequestHeaderFile=t3_RequestHeader.txt
+ResponseHeaderFile=t3_ResponseHeader.txt
+RawStepEndTime=1598276402376
+RawStepName=register
+RequestBodyFile=t3_RequestBody.txt
+RawStepStartTime=1598276401767

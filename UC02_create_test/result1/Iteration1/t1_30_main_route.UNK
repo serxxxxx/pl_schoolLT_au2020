@@ -1,0 +1,3958 @@
+var app_cached_providers = {};
+app.config([
+  "$controllerProvider",
+  function (controllerProvider) {
+    app_cached_providers.$controllerProvider = controllerProvider;
+  },
+]);
+app.run([
+  "$rootScope",
+  "$state",
+  "$stateParams",
+  function ($rootScope, $state, $stateParams) {
+    $rootScope.$state = $state;
+    $rootScope.$stateParams = $stateParams;
+  },
+]);
+app.run(function (
+  $rootScope,
+  $location,
+  $window,
+  $http,
+  $state,
+  $stateParams,
+  $anchorScroll,
+  Principal,
+  Auth,
+  Profiles,
+  $config,
+  NgTableParams,
+  Translation,
+  $location,
+  $animate,
+  $uibModal,
+  $sce
+) {
+  //profiling
+  var updateTitle = function (title) {
+    $window.document.title = title;
+  };
+
+  $animate.enabled(true);
+
+  window.Intercom("boot", {
+    app_id: window.$config.intercomId,
+  });
+
+  $rootScope.config = $config;
+
+  $rootScope.openLoginModal = function (
+    definedCurrentSlide,
+    successCallback,
+    plan
+  ) {
+    $uibModal.open({
+      animation: true,
+      size: "sm",
+      openedClass: "enter-popup-modal",
+      templateUrl: "../../tmpl/tmpl_home/modal-login.html",
+      controller: function ($scope, $uibModalInstance, $injector) {
+        var $validationProvider = $injector.get("$validation");
+        $uibModalInstance.rendered.then(function (element) {
+          if (definedCurrentSlide) {
+            $scope.currentSlide = definedCurrentSlide;
+          } else {
+            $scope.currentSlide = "modal-lk-enterlk";
+          }
+
+          $scope.openSlide = function (slideName) {
+            $scope.currentSlide = slideName;
+          };
+        });
+
+        $scope.loginError = false;
+        if ($rootScope.$state.current.name === "become-a-tester") {
+          $scope.userRole = "TESTER";
+        } else {
+          $scope.userRole = "";
+        }
+
+        $scope.tariffType = plan ? plan : "PROJECT";
+
+        $scope.cancel = function () {
+          $scope.userRole = "";
+          $uibModalInstance.dismiss("cancel");
+        };
+
+        $scope.login = function (event) {
+          $scope.loginError = false;
+
+          $validationProvider
+            .validate($scope.loginForm)
+            .success(function () {
+              Auth.login({
+                username: $scope.username,
+                password: $scope.password,
+                rememberMe: $scope.rememberMe,
+              })
+                .then(function (data) {
+                  pushToDataLayer({
+                    event: "login_success",
+                  });
+
+                  $scope.authenticationError = false;
+
+                  Principal.identity().then(function (account) {
+                    function setCookie(name, value, days) {
+                      var expires = "";
+                      if (days) {
+                        var date = new Date();
+                        date.setTime(
+                          date.getTime() + days * 24 * 60 * 60 * 1000
+                        );
+                        expires = "; expires=" + date.toUTCString();
+                      }
+                      document.cookie =
+                        name + "=" + (value || "") + expires + "; path=/";
+                    }
+
+                    setCookie("userId", String(account.id), 30);
+
+                    if (window.ga) {
+                      ga("create", "UA-76628941-1", "auto", {
+                        userId: String(account.id),
+                      });
+                    }
+
+                    if (successCallback) {
+                      successCallback(account);
+                    }
+
+                    if ($state.current.parent === "app-side-tester-home") {
+                    } else {
+                      if (account.role === "ROLE_CUSTOMER") {
+                        // var listOrdersUrl = window.$config.environment === 'LOCAL' ? $config.fullUrl+'/#/app-customer-home/list-orders'  : $config.fullUrl+'/app-customer-home/list-orders';
+                        window.location.href =
+                          $config.fullUrl + "/app-customer-home/list-orders";
+                        // $state.go("list-orders");
+                      } else if (account.role === "ROLE_TESTER") {
+                        Profiles.getProfile().then(function (data) {
+                          $scope.profile = data;
+                          if (
+                            $scope.profile.fio == null ||
+                            $scope.profile.birthday == null ||
+                            $scope.profile.gender == null ||
+                            $scope.profile.education == null ||
+                            $scope.profile.income == null ||
+                            $scope.profile.socialStatus == null ||
+                            $scope.profile.familyStatus == null ||
+                            $scope.profile.kids == null
+                          ) {
+                            $scope.testerProfile = false;
+                          } else {
+                            $scope.testerProfile = true;
+                          }
+                          if ($scope.testerProfile) {
+                            $state.go("new-tasks");
+                          } else {
+                            $state.go("tester-profile");
+                          }
+                        });
+                      } else if (account.role === "ROLE_NEW_TESTER") {
+                        $state.go("welcome");
+                      } else {
+                        $state.go("home");
+                      }
+                    }
+
+                    $uibModalInstance.dismiss("cancel");
+                  });
+                })
+                .catch(function () {
+                  $scope.authenticationError = true;
+                });
+            })
+            .error(function (error) {
+              console.log(error);
+            });
+        };
+
+        $scope.switchUserRole = function (role) {
+          $scope.userRole = role;
+          $scope.registerAccount = {};
+
+          if (role === "CUSTOMER") {
+            setTimeout(() => {
+              const input = document.querySelector(".modal-lk-phone-input");
+              window.intlTelInput(input, {
+                preferredCountries: ["ru"],
+                nationalMode: false,
+              });
+            }, 100);
+          }
+        };
+
+        $scope.phoneNumberMask = function (event) {
+          const el = event.target;
+          const messageEl = document.querySelector(".phone-input-validate");
+          var matrix = el.placeholder.replace(/\d/g, "_"),
+            i = 0,
+            def = matrix.replace(/\D/g, ""),
+            val = el.value.replace(/\D/g, "");
+
+          def.length >= val.length && (val = def);
+
+          if (el.value.length === matrix.length) {
+            messageEl.classList.remove("phone-input-validate-show");
+            el.classList.remove("validation-has-error");
+          }
+
+          if (matrix) {
+            el.value = matrix.replace(/./g, function (a) {
+              return /[_\d]/.test(a) && i < val.length
+                ? val.charAt(i++)
+                : i >= val.length
+                ? ""
+                : a;
+            });
+          } else {
+            el.value = el.value.length < 22 ? el.value : el.value.slice(0, -1);
+          }
+
+          if (event.type === "blur" && el.value.length < matrix.length) {
+            messageEl.classList.add("phone-input-validate-show");
+            el.classList.add("validation-has-error");
+          }
+        };
+
+        $scope.registerAccount = {};
+
+        $scope.register = function () {
+          $validationProvider
+            .validate($scope.registerForm)
+            .success(function () {
+              $scope.doNotMatch = null;
+              $scope.error = null;
+
+              $scope.registrationEmailExists = false;
+
+              $scope.registerAccount.role =
+                $scope.userRole === "CUSTOMER"
+                  ? "ROLE_CUSTOMER"
+                  : $scope.userRole === "TESTER"
+                  ? "ROLE_NEW_TESTER"
+                  : null;
+              $scope.registerAccount.tariffType =
+                $scope.userRole === "CUSTOMER" && $scope.tariffType;
+              if ($scope.userRole === "TESTER") {
+                $scope.registerAccount.tariffType = null;
+              }
+
+              Auth.createAccount($scope.registerAccount)
+                .then(function (response) {
+                  pushToDataLayer({
+                    event: "registration_form",
+                  });
+
+                  $uibModalInstance.dismiss("cancel");
+
+                  $scope.success = "OK";
+                  $scope.error = null;
+                  $scope.message = "OK";
+                  $rootScope.successMessage = {
+                    header: Translation.translate("LCT.LCT2"),
+                    description:
+                      Translation.translate("LCT.LCT3") +
+                      '<strong style="font: 700 16px/18px futura-pt, sans-serif !important;">' +
+                      $scope.registerAccount.email +
+                      "</strong>. " +
+                      '</div></div><div class="col-xs-12"><div class="row"><div class="sub_header_modal_window text-center" ng-bind-html="successMessage.description">' +
+                      Translation.translate("LCT.LCT4") +
+                      ' <strong style="font: 700 16px/18px futura-pt, sans-serif !important;">' +
+                      Translation.translate("LCT.LCT5") +
+                      "</strong>.</div>",
+                  };
+                  $state.go(
+                    $scope.userRole === "CUSTOMER"
+                      ? "success_client"
+                      : $scope.userRole === "TESTER"
+                      ? "success_tester"
+                      : "success",
+                    {
+                      notify: false,
+                    },
+                    {
+                      reload: true,
+                    }
+                  );
+                })
+                .catch(function (response) {
+                  if (
+                    response.data == "E_MAIL_ADDRESS_ALREADY_IN_USE" ||
+                    response.data == "TESTER_USER_ALREADY_EXISTS"
+                  ) {
+                    $scope.email_not_valid = $scope.registerAccount.email;
+
+                    $scope.registrationEmailExists = true;
+
+                    $(".errors_block").html(
+                      '<p class="email valid_element">' +
+                        Translation.translate("LCT.LCT6") +
+                        $scope.email_not_valid +
+                        Translation.translate("LCT.LCT7") +
+                        "</p>"
+                    );
+                  }
+
+                  $scope.success = null;
+                  $scope.error = "ERROR";
+                  $scope.message = response.data;
+                });
+            })
+            .error(function () {});
+        };
+
+        $scope.passwordReset = function (event) {
+          $validationProvider
+            .validate($scope.resetPasswordForm)
+            .success(function () {
+              $scope.resetPasswordEmailNotFound = false;
+              $scope.resetPasswordUserNotActivated = false;
+
+              Auth.resetPasswordInit({
+                email: $scope.resetEmail,
+              })
+                .then(function () {
+                  $scope.successSend = true;
+
+                  $rootScope.successMessage = {
+                    header: Translation.translate("LCT.LCT8"),
+                    description:
+                      "<div>" +
+                      Translation.translate("LCT.LCT9") +
+                      '<span class="red-underline">' +
+                      $scope.resetEmail +
+                      "</span>" +
+                      Translation.translate("LCT.LCT10") +
+                      "</div><div>" +
+                      Translation.translate("LCT.LCT11") +
+                      "</div>",
+                    btn:
+                      '<a class="uxc_btn_green btn btn-primary col-xs-12" href="/">' +
+                      Translation.translate("LCT.LCT12") +
+                      "</a>",
+                  };
+
+                  $uibModalInstance.dismiss("cancel");
+
+                  $state.go("success", { notify: true }, { reload: true });
+                })
+                .catch(function (response) {
+                  if (response.data.message === "E_MAIL_NOT_FOUND") {
+                    $scope.email_not_valid = $scope.resetEmail;
+
+                    $scope.resetPasswordEmailNotFound = true;
+                  }
+
+                  if (response.data.message === "USER_IS_NOT_ACTIVATED") {
+                    $scope.resetPasswordUserNotActivated = true;
+                  }
+
+                  $scope.errorSend = true;
+                });
+            })
+            .error(function () {});
+        };
+
+        $scope.cleanBlockError = function () {
+          $(".errors_block").html("");
+        };
+      },
+    });
+  };
+  $rootScope.youtubeIntroAsEmbed = function () {
+    var videoId = $config.introVideoId;
+    var params =
+      "?rel=0&amp;autoplay=0&amp;autohide=1&amp;border=0&amp;wmode=opaque&amp;enablejsapi=1";
+    var youtubeURL = "https://www.youtube.com";
+    var isEmbed = "/embed/";
+    return $sce.trustAsResourceUrl(youtubeURL + isEmbed + videoId + params);
+  };
+
+  $config.fullUrl =
+    $config.profileId == "dev"
+      ? $location.protocol() + "://" + $location.host() + ":" + $location.$$port
+      : $location.protocol() + "://" + $location.host();
+
+  $config.locale = "ru";
+
+  if ($config.locale != null) {
+    lang = $config.locale;
+  } else {
+    lang = "ru";
+  }
+
+  $rootScope.selectedLanguage = lang;
+  $config.lang = lang;
+
+  // Translation.getTranslation($config.lang)
+  //     .success(function (data) {
+  //         $config.translation = data;
+  //     })
+  //     .error(function () {
+  //         console.error(`Cannot load translation from "${ $config.lang }.json" file :(`)
+  //     });
+
+  $.ajax({
+    url: "assets/lang/" + $config.lang + ".json",
+    async: false,
+    dataType: "json",
+    success: function (response) {
+      $config.translation = response;
+    },
+    error: function () {
+      console.error(
+        'Cannot load translation from "' + $config.lang + '.json" file :('
+      );
+    },
+  });
+
+  NgTableParams.prototype.url = function (asString) {
+    asString = asString || false;
+    var pairs = asString ? [] : {};
+    for (var key in this._params) {
+      if (this._params.hasOwnProperty(key)) {
+        var item = this._params[key],
+          name = extractName(key);
+        if (typeof item === "object") {
+          for (var subkey in item) {
+            if (isSignificantValue(item[subkey], key)) {
+              var pname = subkey;
+              collectValue(item[subkey], pname, key);
+            }
+          }
+        } else if (isSignificantValue(item, key)) {
+          collectValue(item, name);
+        }
+      }
+    }
+    return pairs;
+
+    function extractName(key) {
+      var name = "";
+      if (key == "count") {
+        name = "size";
+      } else {
+        name = key;
+      }
+
+      return name;
+    }
+
+    function collectValue(value, key, globalKey) {
+      if (isArray(pairs)) {
+        pairs.push(key + "=" + value);
+      } else {
+        if (key == "count") {
+          key = "size";
+          value = value - 1;
+        }
+        if (key == "page") {
+          value = value - 1;
+        }
+        if (globalKey == "sorting") {
+          value = key + "," + value;
+          pairs["sort"] = value;
+          return;
+        }
+        pairs[key] = value;
+      }
+    }
+
+    function isArray(pairs) {
+      return asString;
+    }
+
+    function isSignificantValue(value, key) {
+      return key === "group"
+        ? true
+        : typeof value !== undefined && value !== "";
+    }
+  };
+
+  var skipSomeAsync = false;
+  $rootScope.$on("$stateChangeStart", function (event, toState, toStateParams) {
+    $rootScope.toState = toState;
+    $rootScope.toStateParams = toStateParams;
+    if (Principal.isIdentityResolved()) {
+      Auth.authorize();
+    }
+  });
+  $rootScope.$on("$stateChangeSuccess", function (
+    event,
+    toState,
+    toParams,
+    fromState,
+    fromParams
+  ) {
+    if ($rootScope.testId) {
+      var inrerval = setInterval(function () {
+        if ($rootScope.testIdLoaded) {
+          $rootScope.testId = null;
+          $rootScope.testIdLoaded = false;
+          clearInterval(inrerval);
+        }
+      }, 200);
+    }
+
+    var titleKey = "global.title";
+    if ($stateParams.scrollTo) {
+      $location.hash($stateParams.scrollTo);
+    }
+    $anchorScroll();
+    if (toState.name != "login" && $rootScope.previousStateName) {
+      $rootScope.previousStateName = fromState.name;
+      $rootScope.previousStateParams = fromParams;
+    }
+    if (toState.data.pageTitle) {
+      titleKey =
+        Translation.translate(toState.data.pageTitle) || toState.data.pageTitle;
+    }
+    if (toState.data.mobileVersion) {
+      $("meta[name=viewport]").attr(
+        "content",
+        "width = device-width, initial-scale = 1, user-scalable = no"
+      );
+      $("body")
+        .css({
+          "min-width": "100%",
+        })
+        .addClass("mobile");
+      $("body")
+        .css({
+          "min-width": "100%",
+        })
+        .removeClass("pc");
+    } else {
+      $("meta[name=viewport]").attr(
+        "content",
+        "width = device-width, initial-scale = 1, user-scalable = no"
+      );
+      $("body")
+        .css({
+          "min-width": "100%",
+        })
+        .addClass("pc");
+      $("body")
+        .css({
+          "min-width": "100%",
+        })
+        .removeClass("mobile");
+    }
+    if (toState.data.blog) {
+      $("body").addClass("blog");
+    } else {
+      $("body").removeClass("blog");
+    }
+    if (toState.data.embed) {
+      $('[name="viewport"]').attr({
+        content:
+          "width=1300, initial-scale=1, maximum-scale=1, minimum-scale=0, user-scalable=yes",
+      });
+      $("body").addClass("video-embed");
+    } else {
+      window.Intercom("update");
+      // (function(t,a,l,k,u,s,e){if(!t[u]){t[u]=function(){(t[u].q=t[u].q||[]).push(arguments)},t[u].l=1*new Date();s=a.createElement(l),e=a.getElementsByTagName(l)[0];s.async=1;s.src=k;e.parentNode.insertBefore(s,e)}})(window,document,'script','//talkus.io/plugin.beta.js','talkus');
+      // if ($config.locale == 'ru') {
+      // talkus('init', 'aqwqvokwvtWQMAFkc');
+      // }
+    }
+    if (toState.data.page_title) {
+      $rootScope.page_title =
+        Translation.translate(toState.data.page_title) ||
+        toState.data.page_title;
+    } else {
+      $rootScope.page_title = "";
+    }
+
+    if (toState.data.og_description) {
+      $rootScope.og_description = Translation.translate(
+        toState.data.og_description
+      );
+      $('meta[property="og:description"]').attr({
+        content: Translation.translate(toState.data.og_description),
+      });
+    }
+    if (toState.data.description) {
+      $('meta[name="description"]').attr({
+        content: Translation.translate(toState.data.description),
+      });
+    }
+
+    if (toState.data.og_title) {
+      $rootScope.og_title = Translation.translate(toState.data.og_title);
+      $('[property="og:title"]').attr({
+        content: Translation.translate(toState.data.og_title),
+      });
+    }
+    $('[property="og:url"]').attr({
+      content: window.$config.fullUrl,
+    });
+    $('[property="og:image"]').attr({
+      content: window.$config.fullUrl + "/images/link_pic.png",
+    });
+    $('[rel="image_src"]').attr({
+      href: window.$config.fullUrl + "/images/link_pic.png",
+    });
+    updateTitle(titleKey);
+  });
+  $rootScope.back = function () {
+    if (
+      $rootScope.previousStateName === "activate" ||
+      $state.get($rootScope.previousStateName) === null
+    ) {
+      $state.go("/");
+    } else {
+      $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
+    }
+  };
+});
+app.config([
+  "cfpLoadingBarProvider",
+  function (cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+  },
+]);
+app.config(function (
+  $httpProvider,
+  $stateProvider,
+  $urlRouterProvider,
+  TranslationProvider
+) {
+  $httpProvider.defaults.xsrfCookieName = "XSRF-TOKEN";
+  $httpProvider.defaults.xsrfHeaderName = "X-XSRF-TOKEN";
+
+  $httpProvider.interceptors.push("errorHandlerInterceptor");
+  $httpProvider.interceptors.push("authExpiredInterceptor");
+  $urlRouterProvider.otherwise("/");
+  $stateProvider
+
+    /* ------------------------------------------------------------------------------------------------- */
+    /* ---------------------------------------- Общие URL ------------------------------------------- */
+    /* ------------------------------------------------------------------------------------------------- */
+
+    .state("site", {
+      abstract: true,
+      views: {
+        body: {
+          template:
+            '<div ui-view="header" class="main_header"></div><div ui-view="main_block" class="main_block footer_top_block"></div><div ui-view="footer" class="main_footer"></div><div ui-view="footer_blog" class="footer_blog"></div>',
+          controller: "",
+        },
+      },
+      resolve: {
+        authorize: [
+          "Auth",
+          function (Auth) {
+            return Auth.authorize();
+          },
+        ],
+      },
+    })
+    .state("site-embed", {
+      abstract: true,
+      views: {
+        body: {
+          template:
+            '<div ui-view="header" class="main_header"></div><div ui-view="main_block" class="main_block footer_top_block"></div><div ui-view="footer" class="main_footer"></div><div ui-view="footer_blog" class="footer_blog"></div>',
+          controller: "",
+        },
+      },
+    })
+    .state("newsite", {
+      abstract: true,
+      views: {
+        body: {
+          template:
+            '<div ui-view="header" class="main_header"></div><div ui-view="main_block" class="new_main_block"></div><div ui-view="footer" class="main_footer"></div>',
+          controller: "",
+        },
+      },
+      resolve: {
+        authorize: [
+          "Auth",
+          function (Auth) {
+            return Auth.authorize();
+          },
+        ],
+      },
+    })
+    .state("account", {
+      abstract: true,
+      parent: "site",
+      views: {
+        main_block: {
+          template:
+            '<div ui-view="header" class="main_header"></div><div ui-view="main_block" class="main_block footer_top_block"></div><div ui-view="footer" class="main_footer"></div><div ui-view="footer_blog" class="footer_blog"></div>',
+          controller: "",
+        },
+      },
+    })
+    .state("new_main_index", {
+      parent: "newsite",
+      url: "/",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR",
+        mobileVersion: true,
+        description: "MNR.MNR1",
+        og_description: "MNR.MNR2",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/headerGreenWhite.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing_new/home.html",
+          controller: "homeNewMainController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footer.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeNewMainController: loadController("homeNewMainController"),
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+    })
+    .state("metrics", {
+      parent: "newsite",
+      url: "/metrics",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR",
+        mobileVersion: true,
+        description: "MNR.MNR1",
+        og_description: "MNR.MNR2",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing_new/metrics.html",
+          controller: "homeNewMainController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footer.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeNewMainController: loadController("homeNewMainController"),
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+    })
+    .state("manual", {
+      // new_landing
+      parent: "newsite",
+      url: "/usability-testing-guide",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR3",
+        mobileVersion: true,
+        og_description: "MNR.MNR4",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/headerWhite.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing_new/usability-testing-guide.html",
+          controller: "homeBookingController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footerWhite.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+        loadHomeBookingController: loadController("homeBookingController"),
+      },
+    })
+    .state("about-us", {
+      // new_landing
+      parent: "newsite",
+      url: "/about",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR5",
+        mobileVersion: true,
+        og_description: "MNR.MNR6",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing_new/about.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footerWhite.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+    })
+    .state("contacts", {
+      parent: "newsite",
+      url: "/contacts",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR7",
+        mobileVersion: true,
+        og_description: "MNR.MNR8",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing_new/contacts.html",
+          controller: "homeContactsController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footerWhite.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+        loadHomeContactsController: loadController("homeContactsController"),
+      },
+    })
+    .state("form-login-view", {
+      parent: "newsite",
+      url: "/form-login-view",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR7",
+        mobileVersion: true,
+        og_description: "MNR.MNR8",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_home/form-login-view.html",
+          controller: "homeFormLoginViewController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+        loadFormLoginViewController: loadController(
+          "homeFormLoginViewController"
+        ),
+      },
+    })
+    .state("form-register-view", {
+      parent: "newsite",
+      url: "/form-register-view",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR7",
+        mobileVersion: true,
+        og_description: "MNR.MNR8",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_home/form-register-view.html",
+          controller: "homeFormRegisterViewController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+        loadFormRegisterViewController: loadController(
+          "homeFormRegisterViewController"
+        ),
+      },
+    })
+    .state("form-restore-view", {
+      parent: "newsite",
+      url: "/form-restore-view",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR7",
+        mobileVersion: true,
+        og_description: "MNR.MNR8",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_home/form-restore-view.html",
+          controller: "homeFormRestoreViewController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+        loadFormRestoreViewController: loadController(
+          "homeFormRestoreViewController"
+        ),
+      },
+    })
+    .state("become-a-tester", {
+      parent: "newsite",
+      url: "/tester-register",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR9",
+        mobileVersion: true,
+        og_description: "MNR.MNR10",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+        loadHomeTesterRegisterController: loadController(
+          "homeTesterRegisterController"
+        ),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/headerWhite.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing_new/tester.html",
+          controller: "homeTesterRegisterController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("diy", {
+      parent: "newsite",
+      url: "/product/diy",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR11",
+        mobileVersion: true,
+        og_description: "MNR.MNR12",
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/whiteHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing/diy.html",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+    })
+    /*.state('service', {
+            parent: 'newsite',
+            url: '/product/services',
+            data:{
+                authorities: [],
+                pageTitle: 'MNR.MNR13',
+                mobileVersion: true,
+                og_description: 'MNR.MNR14'
+            },
+            views: {
+                'header': {
+                    templateUrl: '/tmpl/tmpl_home/greenHeader.html',
+                    controller: 'homeLoginController'
+                },
+                'main_block': {
+                    templateUrl: '/tmpl/tmpl_home/service.html',
+                    controller: ''
+                },
+                'footer': {
+                    templateUrl: '/tmpl/tmpl_home/new-footer.html',
+                    controller: ''
+                }
+            },
+            resolve: {
+                loadHomeLoginController: loadController("homeLoginController")
+            }
+        })*/
+    .state("app-new-tester", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: ["ROLE_NEW_TESTER"],
+      },
+      views: {
+        main_block: {
+          template:
+            '<div ui-view="header"></div><div ui-view="main_content_new_tester" class="main_content_new_tester"></div></div>',
+        },
+      },
+    })
+    .state("app-side-tester", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: [],
+      },
+      views: {
+        main_block: {
+          template:
+            '<div ui-view="header"></div><div ui-view="main_content_side_tester" class="main_content_new_tester"></div><div ui-view="footer" class="main_footer dynamic_page"></div>',
+        },
+      },
+    })
+    .state("app-mobile-side-tester", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: [],
+      },
+      views: {
+        main_block: {
+          template:
+            '<div ui-view="header"></div><div ui-view="main_content_side_tester" class="main_content_new_tester"></div><div ui-view="footer" class="main_footer dynamic_page"></div>',
+        },
+      },
+    })
+    .state("app-mobile-tester", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: ["ROLE_TESTER"],
+      },
+      views: {
+        main_block: {
+          template:
+            '<div ui-view="header"></div><div ui-view="main_content_mobile_tester" class="main_content_new_tester"></div>',
+        },
+      },
+    })
+    .state("app-tester", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: ["ROLE_TESTER"],
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_tester/main_template.html",
+          controller: "homeMainBrowser",
+        },
+      },
+      resolve: {
+        loadHomeMainController: loadController("homeMainBrowser"),
+      },
+    })
+    .state("app-locked-tester", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: ["ROLE_LOCKED_TESTER"],
+      },
+      views: {
+        main_block: {
+          template:
+            '<div ui-view="content_locked_tester" class="content_locked_tester"></div><div ui-view="footer" class="main_footer dynamic_page"></div>',
+        },
+      },
+    })
+    .state("app-admin", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: ["ROLE_ADMIN"],
+      },
+      views: {
+        main_block: {
+          template:
+            '<div ui-view="header"></div><div ui-view="main_content_admin" class="main_content_admin"></div>',
+        },
+      },
+    })
+    .state("app-customer", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+      },
+      resolve: {
+        loadCustomerHomeController: loadController("customerHomeController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_customer/main_template.html",
+          controller: "customerHomeController",
+        },
+      },
+    })
+    .state("app-moderator", {
+      abstract: true,
+      parent: "site",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+      },
+      views: {
+        main_block: {
+          template:
+            '<div ui-view="header"></div><div ui-view="main_content_moderator" class="main_content_moderator"></div><div ui-view="footer" class="main_footer dynamic_page"></div>',
+        },
+      },
+    })
+    .state("slider", {
+      parent: "site",
+      url: "/slider?:count&ca",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR15",
+        mobileVersion: true,
+      },
+      resolve: {
+        loadHomeSliderController: loadController("homeSliderController"),
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "/tmpl/tmpl_home/slider.html",
+          controller: "homeSliderController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+        },
+      },
+    })
+    .state("webflow", {
+      parent: "site",
+      url: "/product/website-testing",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR16",
+        mobileVersion: true,
+        description: "MNR.MNR17",
+        og_description: "MNR.MNR18",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/whiteHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing/website-testing.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("home", {
+      parent: "site",
+      url: "/home",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR19",
+        mobileVersion: true,
+      },
+      resolve: {
+        loadHomeMainController: loadController("homeMainController"),
+      },
+      views: {
+        header: {
+          templateUrl: "tmpl/tmpl_home/empty.html",
+          controller: "homeMainController",
+        },
+      },
+    })
+    .state("confirm", {
+      parent: "site",
+      url: "/roger?bookingId",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR20",
+      },
+      controller: "homeLoginController",
+      resolve: {
+        loadLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        /*'topMenu': {
+                 templateUrl: 'scripts/app-home/booking/confirm/confirm.html',
+                 controller: 'BookingConfirmController'
+                 },*/
+        header: {
+          templateUrl: "tmpl/tmpl_home/header.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/confirm.html",
+          controller: "homeConfirmController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+        },
+      },
+    })
+    .state("blog", {
+      parent: "site",
+      url: "/blog",
+      data: {
+        pageTitle: "MNR.MNR21",
+        mobileVersion: true,
+        blog: true,
+        og_description: "MNR.MNR22",
+      },
+      controller: "homeBlogController",
+      resolve: {
+        loadHomeBlogController: loadController("homeBlogController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/blog.html",
+          controller: "homeBlogController",
+        },
+        footer_blog: {
+          templateUrl: "/tmpl/tmpl_home/footerBlog.html",
+        },
+      },
+    })
+    .state("blog-entry-new", {
+      parent: "site",
+      url: "/blog/blog-entry-new",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        blog: true,
+        pageTitle: "MNR.MNR23",
+      },
+      controller: "homeBlogEntryNewController",
+      resolve: {
+        loadHomeBlogEntryNewController: loadController(
+          "homeBlogEntryNewController"
+        ),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/blog-entry-new.html",
+          controller: "homeBlogEntryNewController",
+        },
+      },
+    })
+    .state("blog-entry", {
+      parent: "site",
+      url: "/blog/read/:name",
+      data: {
+        pageTitle: "MNR.MNR24",
+        blog: true,
+        mobileVersion: true,
+      },
+      controller: "homeBlogPostController",
+      resolve: {
+        loadHomeBlogPostController: loadController("homeBlogPostController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/blog-entry.html",
+          controller: "homeBlogPostController",
+        },
+        footer_blog: {
+          templateUrl: "/tmpl/tmpl_home/footerBlog.html",
+        },
+      },
+    })
+    .state("blog-entry-edit", {
+      parent: "site",
+      url: "/blog/edit/:name",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        blog: true,
+        pageTitle: "MNR.MNR25",
+      },
+      controller: "homeBlogEntryNewController",
+      resolve: {
+        loadHomeBlogEntryNewController: loadController(
+          "homeBlogEntryNewController"
+        ),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/blog-entry-new.html",
+          controller: "homeBlogEntryNewController",
+        },
+      },
+    })
+
+    .state("video", {
+      parent: "site",
+      url: "/video?:videoId&t",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR26",
+        mobileVersion: true,
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadHomeLoginController: loadController("homeLoginController"),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account != null) {
+                switch (account.role) {
+                  case "ROLE_CUSTOMER":
+                    $state.go(
+                      "app-customer-video",
+                      {
+                        videoId: videoId,
+                        t: t,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                  case "ROLE_TESTER":
+                    $state.go(
+                      "app-tester-video",
+                      {
+                        videoId: videoId,
+                        t: t,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                  case "ROLE_MODERATOR":
+                    $state.go(
+                      "app-moderator-video",
+                      {
+                        videoId: videoId,
+                        t: t,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                }
+              } else {
+                $state.go(
+                  "video-new",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+        },
+      },
+    })
+    .state("video-new", {
+      parent: "site",
+      url: "/video/:videoId?:t",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR27",
+        mobileVersion: true,
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadHomeLoginController: loadController("homeLoginController"),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account != null) {
+                switch (account.role) {
+                  case "ROLE_CUSTOMER":
+                    $state.go(
+                      "app-customer-video-new",
+                      {
+                        videoId: videoId,
+                        t: t,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                  case "ROLE_TESTER":
+                    $state.go(
+                      "app-tester-video-new",
+                      {
+                        videoId: videoId,
+                        t: t,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                  case "ROLE_MODERATOR":
+                    $state.go(
+                      "app-moderator-video-new",
+                      {
+                        videoId: videoId,
+                        t: t,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                }
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+        },
+      },
+    })
+    .state("design", {
+      parent: "site",
+      url: "/designers",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR28",
+        mobileVersion: true,
+        og_description: "MNR.MNR29",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/whiteHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing/design.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("marketers", {
+      parent: "site",
+      url: "/marketers",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR30",
+        mobileVersion: true,
+        og_description: "MNR.MNR31",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/whiteHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing/marketers.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("price", {
+      parent: "site",
+      url: "/price",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR32",
+        mobileVersion: true,
+        og_description: "MNR.MNR33",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing_new/price.html",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("product", {
+      parent: "site",
+      url: "/product-manager",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR34",
+        mobileVersion: true,
+        og_description: "MNR.MNR35",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/whiteHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing/product.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("developers", {
+      parent: "site",
+      url: "/developers",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR36",
+        mobileVersion: true,
+        og_description: "MNR.MNR37",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/whiteHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing/developers.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("mobile-testing", {
+      parent: "site",
+      url: "/product/mobile-testing",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR38",
+        mobileVersion: true,
+        og_description: "MNR.MNR39",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_home/whiteHeader.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing/mobile-testing.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("insight-page", {
+      parent: "site",
+      url: "/insight-page?:insightId",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR40",
+        page_title: "MNR.MNR41",
+        mobileVersion: true,
+      },
+      controller: "customerInsightController",
+      resolve: {
+        loadCustomerInsightController: loadController(
+          "customerInsightController"
+        ),
+        loadHomeLoginController: loadController("homeLoginController"),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          "$location",
+          function ($state, $stateParams, Principal, $location) {
+            var insightId = $stateParams.insightId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account != null) {
+                switch (account.role) {
+                  case "ROLE_CUSTOMER":
+                    $state.go(
+                      "app-customer-insight",
+                      {
+                        insightId: insightId,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                  case "ROLE_MODERATOR":
+                    $state.go(
+                      "app-moderator-insight",
+                      {
+                        insightId: insightId,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                  case "ROLE_TESTER":
+                    $state.go(
+                      "app-tester-insight",
+                      {
+                        insightId: insightId,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                }
+              } else {
+                $state.go(
+                  "insight-page-new",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_customer/insight.html",
+          controller: "customerInsightController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("insight-page-new", {
+      parent: "site",
+      url: "/insight/:insightId",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR42",
+        page_title: "MNR.MNR43",
+        mobileVersion: true,
+      },
+      controller: "customerInsightController",
+      resolve: {
+        loadCustomerInsightController: loadController(
+          "customerInsightController"
+        ),
+        loadHomeLoginController: loadController("homeLoginController"),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          "$location",
+          function ($state, $stateParams, Principal, $location) {
+            var insightId = $stateParams.insightId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account != null) {
+                switch (account.role) {
+                  case "ROLE_CUSTOMER":
+                    $state.go(
+                      "app-customer-insight-new",
+                      {
+                        insightId: insightId,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                  case "ROLE_MODERATOR":
+                    $state.go(
+                      "app-moderator-insight-new",
+                      {
+                        insightId: insightId,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                  case "ROLE_TESTER":
+                    $state.go(
+                      "app-tester-insight-new",
+                      {
+                        insightId: insightId,
+                      },
+                      {
+                        reload: false,
+                      }
+                    );
+                    break;
+                }
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_customer/insight.html",
+          controller: "customerInsightController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("app-customer-insight", {
+      parent: "app-customer-home",
+      url: "^/insight-page?:insightId",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR44",
+        page_title: "MNR.MNR45",
+      },
+      controller: "customerInsightController",
+      resolve: {
+        loadCustomerInsightController: loadController(
+          "customerInsightController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var insightId = $stateParams.insightId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "insight-page",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              } else {
+                $state.go(
+                  "app-customer-insight-new",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/insight.html",
+          controller: "customerInsightController",
+        },
+      },
+    })
+    .state("app-customer-insight-new", {
+      parent: "app-customer-home",
+      url: "^/insight/:insightId",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR46",
+        page_title: "MNR.MNR47",
+      },
+      controller: "customerInsightController",
+      resolve: {
+        loadCustomerInsightController: loadController(
+          "customerInsightController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var insightId = $stateParams.insightId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "insight-page",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/insight.html",
+          controller: "customerInsightController",
+        },
+      },
+    })
+    .state("app-moderator-insight", {
+      parent: "app-moderator-home",
+      url: "^/insight-page?:insightId",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR48",
+        page_title: "MNR.MNR49",
+      },
+      controller: "customerInsightController",
+      resolve: {
+        loadCustomerInsightController: loadController(
+          "customerInsightController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var insightId = $stateParams.insightId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "insight-page",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              } else {
+                $state.go(
+                  "app-moderator-insight-new",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_customer/insight.html",
+          controller: "customerInsightController",
+        },
+      },
+    })
+    .state("app-moderator-insight-new", {
+      parent: "app-moderator-home",
+      url: "^/insight/:insightId",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR50",
+        page_title: "MNR.MNR51",
+      },
+      controller: "customerInsightController",
+      resolve: {
+        loadCustomerInsightController: loadController(
+          "customerInsightController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var insightId = $stateParams.insightId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "insight-page",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_customer/insight.html",
+          controller: "customerInsightController",
+        },
+      },
+    })
+    .state("app-tester-insight", {
+      parent: "app-tester-home",
+      url: "^/insight-page?:insightId",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR52",
+        page_title: "MNR.MNR53",
+      },
+      controller: "customerInsightController",
+      resolve: {
+        loadCustomerInsightController: loadController(
+          "customerInsightController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var insightId = $stateParams.insightId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "insight-page",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              } else {
+                $state.go(
+                  "app-tester-insight-new",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_customer/insight.html",
+          controller: "customerInsightController",
+        },
+      },
+    })
+    .state("app-tester-insight-new", {
+      parent: "app-tester-home",
+      url: "^/insight/:insightId",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR54",
+        page_title: "MNR.MNR55",
+      },
+      controller: "customerInsightController",
+      resolve: {
+        loadCustomerInsightController: loadController(
+          "customerInsightController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var insightId = $stateParams.insightId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "insight-page",
+                  {
+                    insightId: insightId,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_customer/insight.html",
+          controller: "customerInsightController",
+        },
+      },
+    })
+    .state("insight-embed", {
+      parent: "site-embed",
+      url: "/insight-embed?:insightId",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR57",
+        mobileVersion: true,
+        embed: true,
+      },
+      controller: "homeInsightEmbedController",
+      resolve: {
+        loadHomeInsightController: loadController("homeInsightEmbedController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/insight-embed.html",
+          controller: "homeInsightEmbedController",
+        },
+      },
+    })
+    .state("app-customer-video-redirect", {
+      parent: "app-customer-home",
+      url: "/video?videoId&t",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR58",
+        page_title: "MNR.MNR59",
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadCustomerOrderListController: loadController(
+          "customerOrderListController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              $state.go(
+                "video",
+                {
+                  videoId: videoId,
+                  t: t,
+                },
+                {
+                  reload: false,
+                }
+              );
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+      },
+    })
+    .state("app-customer-video", {
+      parent: "app-customer-home",
+      url: "^/video?videoId&t",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR60",
+        page_title: "MNR.MNR61",
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadCustomerOrderListController: loadController(
+          "customerOrderListController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "video",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              } else {
+                $state.go(
+                  "app-customer-video-new",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+      },
+    })
+    .state("app-customer-video-new", {
+      parent: "app-customer-home",
+      url: "^/video/:videoId?:t",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR62",
+        page_title: "MNR.MNR63",
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadCustomerOrderListController: loadController(
+          "customerOrderListController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "video",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+      },
+    })
+
+    .state("app-tester-video", {
+      parent: "app-tester-home",
+      url: "^/video?videoId&t",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR65",
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadCustomerOrderListController: loadController(
+          "customerOrderListController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "video",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              } else {
+                $state.go(
+                  "app-tester-video-new",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+      },
+    })
+    .state("app-tester-video-new", {
+      parent: "app-tester-home",
+      url: "^/video/:videoId?:t",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR66",
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadCustomerOrderListController: loadController(
+          "customerOrderListController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "video",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+      },
+    })
+    .state("success", {
+      parent: "site",
+      url: "/success",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR68",
+      },
+      resolve: {
+        loadHomeMainController: loadController("homeMainController"),
+        loadHomeSuccessController: loadController("homeSuccessController"),
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/modal_window.html",
+          controller: "homeSuccessController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footerWhite.html",
+        },
+      },
+    })
+    .state("success_tester", {
+      parent: "site",
+      url: "/success_tester",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR68",
+      },
+      resolve: {
+        loadHomeMainController: loadController("homeMainController"),
+        loadHomeSuccessController: loadController("homeSuccessController"),
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/modal_window.html",
+          controller: "homeSuccessController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footerWhite.html",
+        },
+      },
+    })
+    .state("success_client", {
+      parent: "site",
+      url: "/success_client",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR68",
+      },
+      resolve: {
+        loadHomeMainController: loadController("homeMainController"),
+        loadHomeSuccessController: loadController("homeSuccessController"),
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/modal_window.html",
+          controller: "homeSuccessController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footerWhite.html",
+        },
+      },
+    })
+    .state("accessdenied", {
+      parent: "site",
+      url: "/accessdenied",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR69",
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/accessdenied.html",
+        },
+      },
+    })
+
+    .state("pay", {
+      parent: "site",
+      url: "/pay?id&promoCode",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR70",
+      },
+      resolve: {
+        loadHomePayController: loadController("homePayController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/pay.html",
+          controller: "homePayController",
+        },
+      },
+    })
+
+    /* ------------------------------------------------------------------------------------------------- */
+    /* ---------------------------------------- URL app-tester ----------------------------------------- */
+    /* ------------------------------------------------------------------------------------------------- */
+    .state("app-tester-home", {
+      parent: "app-tester",
+      url: "/app-tester-home",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR73",
+      },
+      controller: "testerHomeController",
+      resolve: {
+        loadTesterHomeController: loadController("testerHomeController"),
+        loadTesterHeaderController: loadController("testerHeaderController"),
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_tester/home.html",
+          controller: "testerHomeController",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_tester/header.html",
+          controller: "testerHeaderController",
+        },
+      },
+    })
+    .state("pay-info", {
+      parent: "app-tester-home",
+      url: "/pay-info",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR74",
+        page_title: "MNR.MNR75",
+      },
+      controller: "testerPayInfoController",
+      resolve: {
+        loadTesterPayInfoController: loadController("testerPayInfoController"),
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_tester/pay-info.html",
+          controller: "testerPayInfoController",
+        },
+      },
+    })
+    .state("tester-profile", {
+      parent: "app-tester-home",
+      url: "/tester-profile",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR76",
+        page_title: "MNR.MNR77",
+      },
+      controller: "testerProfileController",
+      resolve: {
+        loadTesterProfileController: loadController("testerProfileController"),
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_tester/profile.html",
+          controller: "testerProfileController",
+        },
+      },
+    })
+    .state("new-tasks", {
+      parent: "app-tester-home",
+      url: "/new-tasks",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR78",
+        page_title: "MNR.MNR79",
+      },
+      controller: "testerNewTaskController",
+      resolve: {
+        loadTesterNewTaskController: loadController("testerNewTaskController"),
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_tester/new-tasks.html",
+          controller: "testerNewTaskController",
+        },
+      },
+    })
+    .state("done-tasks", {
+      parent: "app-tester-home",
+      url: "/done-tasks",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR80",
+        page_title: "MNR.MNR81",
+      },
+      controller: "testerDoneTasksController",
+      resolve: {
+        loadTesterDoneTasksController: loadController(
+          "testerDoneTasksController"
+        ),
+      },
+      views: {
+        main_content_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_tester/done-tasks.html",
+          controller: "testerDoneTasksController",
+        },
+      },
+    })
+    .state("tester-integration", {
+      parent: "site",
+      url: "/ti?order",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR82",
+        mobileVersion: true,
+      },
+      resolve: {
+        loadTesterIntegrationController: loadController(
+          "testerIntegrationController"
+        ),
+      },
+      views: {
+        header: {
+          templateUrl: "tmpl/tmpl_home/empty.html",
+          controller: "testerIntegrationController",
+        },
+      },
+    })
+    .state("app-side-tester-home", {
+      parent: "app-side-tester",
+      url: "/side-tester-welcome",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR83",
+        mobileVersion: true,
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl: "tmpl/tmpl_testers/react/sideTesterWelcome/index1.html",
+        },
+      },
+    })
+    .state("st-welcome", {
+      parent: "app-side-tester-home",
+      url: "/welcome?gr&ac",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR84",
+      },
+      resolve: {
+        loadTesterSideTesterHomeController: loadController(
+          "testerSideTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_side_tester/welcome.html",
+          controller: "testerSideTesterHomeController",
+        },
+      },
+    })
+    .state("st-instruction1", {
+      parent: "app-side-tester-home",
+      url: "/instruction1?gr&ac",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR85",
+      },
+      resolve: {
+        loadTesterSideTesterHomeController: loadController(
+          "testerSideTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_side_tester/instruction_step_1.html",
+          controller: "testerSideTesterHomeController",
+        },
+      },
+    })
+    .state("st-instruction2", {
+      parent: "app-side-tester-home",
+      url: "/instruction2?gr&ac",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR86",
+      },
+      resolve: {
+        loadTesterSideTesterHomeController: loadController(
+          "testerSideTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_side_tester/instruction_step_2.html",
+          controller: "testerSideTesterHomeController",
+        },
+      },
+    })
+    .state("st-instruction3", {
+      parent: "app-side-tester-home",
+      url: "/instruction3?gr&ac",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR87",
+      },
+      resolve: {
+        loadTesterSideTesterHomeController: loadController(
+          "testerSideTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_side_tester/instruction_step_3.html",
+          controller: "testerSideTesterHomeController",
+        },
+      },
+    })
+    .state("app-mobile-side-tester-home", {
+      parent: "app-mobile-side-tester",
+      url: "/mobile-side-tester-welcome",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR83",
+        mobileVersion: true,
+      },
+      resolve: {
+        loadTesterMobileSideTesterHeaderController: loadController(
+          "testerMobileSideTesterHeaderController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_mobile_side_tester/home.html",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_mobile_side_tester/header.html",
+          controller: "testerMobileSideTesterHeaderController",
+        },
+      },
+    })
+    .state("mt-st-welcome", {
+      parent: "app-mobile-side-tester-home",
+      url: "/welcome?gr&ac",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR84",
+      },
+      resolve: {
+        loadTesterMobileSideTesterHomeController: loadController(
+          "testerMobileSideTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_mobile_side_tester/welcome.html",
+          controller: "testerMobileSideTesterHomeController",
+        },
+      },
+    })
+    .state("mt-st-instruction1", {
+      parent: "app-mobile-side-tester-home",
+      url: "/instruction1?gr&ac",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR85",
+      },
+      resolve: {
+        loadTesterMobileSideTesterHomeController: loadController(
+          "testerMobileSideTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_mobile_side_tester/instruction_step_1.html",
+          controller: "testerMobileSideTesterHomeController",
+        },
+      },
+    })
+    .state("mt-st-instruction2", {
+      parent: "app-mobile-side-tester-home",
+      url: "/instruction2?gr&ac",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR86",
+      },
+      resolve: {
+        loadTesterMobileSideTesterHomeController: loadController(
+          "testerMobileSideTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_mobile_side_tester/instruction_step_2.html",
+          controller: "testerMobileSideTesterHomeController",
+        },
+      },
+    })
+    .state("mt-st-instruction3", {
+      parent: "app-mobile-side-tester-home",
+      url: "/instruction3?gr&ac",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR87",
+      },
+      resolve: {
+        loadTesterMobileSideTesterHomeController: loadController(
+          "testerMobileSideTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_side_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_mobile_side_tester/instruction_step_3.html",
+          controller: "testerMobileSideTesterHomeController",
+        },
+      },
+    })
+    .state("app-mobile-tester-home", {
+      parent: "app-mobile-tester",
+      url: "/mobile-tester-welcome?url&orderId",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR88",
+        mobileVersion: true,
+      },
+      resolve: {
+        loadTesterMobileTesterHeaderController: loadController(
+          "testerMobileTesterHeaderController"
+        ),
+      },
+      views: {
+        main_content_mobile_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_mobile_tester/home.html",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_mobile_tester/header.html",
+          controller: "testerMobileTesterHeaderController",
+        },
+      },
+    })
+    .state("mt-welcome", {
+      parent: "app-mobile-tester-home",
+      url: "/welcome",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR89",
+      },
+      resolve: {
+        loadTesterMobileTesterHomeController: loadController(
+          "testerMobileTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_mobile_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_mobile_tester/welcome.html",
+          controller: "testerMobileTesterHomeController",
+        },
+      },
+    })
+    .state("mt-instruction1", {
+      parent: "app-mobile-tester-home",
+      url: "/instruction1",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR90",
+      },
+      resolve: {
+        loadTesterMobileTesterHomeController: loadController(
+          "testerMobileTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_mobile_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_mobile_tester/instruction_step_1.html",
+          controller: "testerMobileTesterHomeController",
+        },
+      },
+    })
+    .state("mt-instruction2", {
+      parent: "app-mobile-tester-home",
+      url: "/instruction2",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR91",
+      },
+      resolve: {
+        loadTesterMobileTesterHomeController: loadController(
+          "testerMobileTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_mobile_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_mobile_tester/instruction_step_2.html",
+          controller: "testerMobileTesterHomeController",
+        },
+      },
+    })
+    .state("mt-instruction3", {
+      parent: "app-mobile-tester-home",
+      url: "/instruction3",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR92",
+      },
+      resolve: {
+        loadTesterMobileTesterHomeController: loadController(
+          "testerMobileTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_mobile_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_mobile_tester/instruction_step_3.html",
+          controller: "testerMobileTesterHomeController",
+        },
+      },
+    })
+    .state("mt-instruction4", {
+      parent: "app-mobile-tester-home",
+      url: "/instruction4",
+      data: {
+        authorities: ["ROLE_TESTER"],
+        pageTitle: "MNR.MNR93",
+      },
+      resolve: {
+        loadTesterMobileTesterHomeController: loadController(
+          "testerMobileTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_mobile_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_mobile_tester/instruction_step_4.html",
+          controller: "testerMobileTesterHomeController",
+        },
+      },
+    })
+    /* ------------------------------------------------------------------------------------------------- */
+    /* ---------------------------------------- URL app-new-tester ------------------------------------- */
+    /* ------------------------------------------------------------------------------------------------- */
+    .state("app-new-tester-home", {
+      parent: "app-new-tester",
+      url: "/app-new-tester-home",
+      data: {
+        authorities: ["ROLE_NEW_TESTER"],
+        pageTitle: "MNR.MNR94",
+      },
+      resolve: {
+        loadTesterNewTesterHomeController: loadController(
+          "testerNewTesterHomeController"
+        ),
+        loadTesterNewTesterHeaderController: loadController(
+          "testerNewTesterHeaderController"
+        ),
+      },
+      views: {
+        main_content_new_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_new_tester/home.html",
+          controller: "testerNewTesterHomeController",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_new_tester/header.html",
+          controller: "testerNewTesterHeaderController",
+        },
+      },
+    })
+    .state("instruction1", {
+      parent: "app-new-tester-home",
+      url: "/instruction1",
+      data: {
+        authorities: ["ROLE_NEW_TESTER"],
+        pageTitle: "MNR.MNR95",
+      },
+      resolve: {
+        loadTesterNewTesterHomeController: loadController(
+          "testerNewTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_new_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_new_tester/instruction_step_1.html",
+          controller: "testerNewTesterHomeController",
+        },
+      },
+    })
+    .state("instruction2", {
+      parent: "app-new-tester-home",
+      url: "/instruction2",
+      data: {
+        authorities: ["ROLE_NEW_TESTER"],
+        pageTitle: "MNR.MNR96",
+      },
+      resolve: {
+        loadTesterNewTesterHomeController: loadController(
+          "testerNewTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_new_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_new_tester/instruction_step_2.html",
+          controller: "testerNewTesterHomeController",
+        },
+      },
+    })
+    .state("instruction3", {
+      parent: "app-new-tester-home",
+      url: "/instruction3",
+      data: {
+        authorities: ["ROLE_NEW_TESTER"],
+        pageTitle: "MNR.MNR97",
+      },
+      resolve: {
+        loadTesterNewTesterHomeController: loadController(
+          "testerNewTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_new_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_new_tester/instruction_step_3.html",
+          controller: "testerNewTesterHomeController",
+        },
+      },
+    })
+    .state("instruction4", {
+      parent: "app-new-tester-home",
+      url: "/instruction4",
+      data: {
+        authorities: ["ROLE_NEW_TESTER"],
+        pageTitle: "MNR.MNR98",
+      },
+      resolve: {
+        loadTesterNewTesterHomeController: loadController(
+          "testerNewTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_new_tester: {
+          templateUrl:
+            "tmpl/tmpl_testers/tmpl_new_tester/instruction_step_4.html",
+          controller: "testerNewTesterHomeController",
+        },
+      },
+    })
+    .state("welcome", {
+      parent: "app-new-tester-home",
+      url: "/welcome",
+      data: {
+        authorities: ["ROLE_NEW_TESTER"],
+        pageTitle: "MNR.MNR99",
+      },
+      resolve: {
+        loadTesterNewTesterHomeController: loadController(
+          "testerNewTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_new_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_new_tester/welcome.html",
+          controller: "testerNewTesterHomeController",
+        },
+      },
+    })
+    .state("congratulations", {
+      parent: "app-new-tester-home",
+      url: "/congratulations",
+      data: {
+        authorities: ["ROLE_NEW_TESTER"],
+        pageTitle: "MNR.MNR100",
+      },
+      resolve: {
+        loadTesterNewTesterHomeController: loadController(
+          "testerNewTesterHomeController"
+        ),
+      },
+      views: {
+        main_content_new_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_new_tester/congratulations.html",
+          controller: "testerNewTesterHomeController",
+        },
+      },
+    })
+    /* ------------------------------------------------------------------------------------------------- */
+    /* ---------------------------------------- URL app-locked-tester----------------------------------- */
+    /* ------------------------------------------------------------------------------------------------- */
+    .state("app-locked-tester-home", {
+      parent: "app-locked-tester",
+      url: "/app-locked-tester-home",
+      data: {
+        authorities: ["ROLE_LOCKED_TESTER"],
+        pageTitle: "MNR.MNR101",
+      },
+      resolve: {
+        loadTesterLockedHomeController: loadController(
+          "testerLockedHomeController"
+        ),
+      },
+      views: {
+        content_locked_tester: {
+          templateUrl: "tmpl/tmpl_testers/tmpl_locked_tester/home.html",
+          controller: "testerLockedHomeController",
+        },
+        "header@locked-tester": {
+          templateUrl: "tmpl/tmpl_testers/tmpl_locked_tester/header.html",
+          controller: "testerLockedHomeController",
+        },
+        footer: {
+          templateUrl: "tmpl/tmpl_home/new-footer.html",
+          controller: "testerLockedHomeController",
+        },
+      },
+    })
+    /* ------------------------------------------------------------------------------------------------- */
+    /* ------------------------------------------- URL app-admin --------------------------------------- */
+    /* ------------------------------------------------------------------------------------------------- */
+    .state("app-admin-home", {
+      parent: "app-admin",
+      url: "/app-admin-home",
+      data: {
+        authorities: ["ROLE_ADMIN"],
+        pageTitle: "MNR.MNR102",
+      },
+      resolve: {
+        loadAdminHomeController: loadController("adminHomeController"),
+      },
+      views: {
+        main_content_admin: {
+          templateUrl: "tmpl/tmpl_admin/home.html",
+          controller: "adminHomeController",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_admin/header.html",
+          controller: "adminHomeController",
+        },
+      },
+    })
+    .state("all-testers", {
+      parent: "app-admin-home",
+      url: "/all-testers",
+      data: {
+        authorities: ["ROLE_ADMIN"],
+        pageTitle: "MNR.MNR103",
+      },
+      resolve: {
+        loadAdminTesterController: loadController("adminTesterController"),
+      },
+      views: {
+        content_admin: {
+          templateUrl: "tmpl/tmpl_admin/all-testers.html",
+          controller: "adminTesterController",
+        },
+      },
+    })
+    .state("all-customers", {
+      parent: "app-admin-home",
+      url: "/all-customers",
+      data: {
+        authorities: ["ROLE_ADMIN"],
+        pageTitle: "MNR.MNR145",
+      },
+      resolve: {
+        loadAdminCustomerController: loadController("adminCustomerController"),
+      },
+      views: {
+        content_admin: {
+          templateUrl: "tmpl/tmpl_admin/all-customers.html",
+          controller: "adminCustomerController",
+        },
+      },
+    })
+    .state("admin-order-info", {
+      parent: "app-admin-home",
+      url: "/all-customers/:customerId/orders",
+      data: {
+        authorities: ["ROLE_ADMIN"],
+        pageTitle: "MNR.MNR145",
+      },
+      resolve: {
+        loadAdminOrdersController: loadController("adminOrdersController"),
+      },
+      views: {
+        content_admin: {
+          templateUrl: "tmpl/tmpl_admin/orders-info.html",
+          controller: "adminOrdersController",
+        },
+      },
+    })
+    .state("all-ofertas", {
+      parent: "app-admin-home",
+      url: "/all-ofertas",
+      data: {
+        authorities: ["ROLE_ADMIN"],
+        pageTitle: "MNR.MNR144",
+      },
+      resolve: {
+        loadAdminOfertasController: loadController("adminOfertasController"),
+      },
+      views: {
+        content_admin: {
+          templateUrl: "tmpl/tmpl_admin/all-ofertas.html",
+          controller: "adminOfertasController",
+        },
+      },
+    })
+      .state("payments", {
+        parent: "app-admin-home",
+        url: "/payments",
+        data: {
+          authorities: ["ROLE_ADMIN"],
+          pageTitle: "MNR.MNR149",
+        },
+        resolve: {
+          loadAdminPaymentsController: loadController("adminPaymentsController"),
+        },
+        views: {
+          content_admin: {
+            templateUrl: "tmpl/tmpl_admin/payments.html",
+            controller: "adminPaymentsController",
+          },
+        },
+      })
+    .state("technical_section", {
+      parent: "app-admin",
+      url: "/technical_section",
+      data: {
+        authorities: ["ROLE_ADMIN"],
+        pageTitle: "MNR.MNR144",
+      },
+      resolve: {
+        loadAdminTechnicalController: loadController(
+          "adminTechnicalController"
+        ),
+      },
+      views: {
+        main_content_admin: {
+          templateUrl: "tmpl/tmpl_admin/technical_section.html",
+          controller: "adminTechnicalController",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_admin/header.html",
+          controller: "adminHomeController",
+        },
+      },
+    })
+    /* ------------------------------------------------------------------------------------------------- */
+    /* ------------------------------------------- URL app-customer ------------------------------------ */
+    /* ------------------------------------------------------------------------------------------------- */
+    .state("app-customer-home", {
+      parent: "app-customer",
+      url: "/app-customer-home",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR104",
+      },
+      resolve: {
+        loadCustomerHomeController: loadController("customerHomeController"),
+        loadCustomerHeaderController: loadController(
+          "customerHeaderController"
+        ),
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/home.html",
+          controller: "customerHomeController",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_customer/header.html",
+          controller: "customerHeaderController",
+        },
+      },
+    })
+    .state("customer-profile", {
+      parent: "app-customer-home",
+      url: "/profile",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR105",
+        page_title: "MNR.MNR106",
+      },
+      resolve: {
+        loadCustomerProfileController: loadController(
+          "customerProfileController"
+        ),
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/profile.html",
+          controller: "customerProfileController",
+        },
+      },
+    })
+    .state("tariff", {
+      parent: "app-customer-home",
+      url: "/tariff",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR143",
+        page_title: "MNR.MNR143",
+      },
+      resolve: {
+        loadCustomerTariffController: loadController(
+          "customerTariffController"
+        ),
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/tariff.html",
+          controller: "customerTariffController",
+        },
+      },
+    })
+    .state("list-orders", {
+      parent: "app-customer-home",
+      url: "/list-orders",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR108",
+        page_title: "MNR.MNR109",
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/new.video.html",
+        },
+      },
+    })
+    .state("new-test-page", {
+      parent: "app-customer-home",
+      url: "/tests/:testId",
+      data: {
+        authorities: ["ROLE_CUSTOMER", "ROLE_SUPER_CUSTOMER", "ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR108",
+        page_title: "MNR.MNR109",
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/new.video.html",
+        },
+      },
+    })
+    .state("new-insights-page", {
+      parent: "app-customer-home",
+      url: "/tests/:testId/insights",
+      data: {
+        authorities: ["ROLE_CUSTOMER", "ROLE_SUPER_CUSTOMER", "ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR110",
+        page_title: "MNR.MNR111",
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/new.video.html",
+        },
+      },
+    })
+    .state("order", {
+      parent: "app-customer-home",
+      url: "/order",
+      data: {
+        authorities: ["ROLE_CUSTOMER"],
+        pageTitle: "MNR.MNR117",
+        page_title: "MNR.MNR118",
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/new.order.html",
+        },
+      },
+    })
+
+    .state("new-video-customer", {
+      parent: "app-customer-home",
+      url: "/new-video/:videoId",
+      data: {
+        authorities: ["ROLE_CUSTOMER", "ROLE_SUPER_CUSTOMER", "ROLE_MODERATOR"],
+        pageTitle: "Видео",
+        page_title: "Видео",
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/new.video.html",
+        },
+      },
+    })
+
+    .state("trial-video-results", {
+      parent: "app-moderator-home",
+      url: "/trial-video-results/:videoId",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "Результаты",
+      },
+      resolve: {
+        loadModeratorTrialVideoResultsController: loadController(
+          "moderatorTrialVideoResultsController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/results.html",
+          controller: "moderatorTrialVideoResultsController",
+        },
+      },
+    })
+
+    .state("new-video", {
+      parent: "site",
+      url: "/new-video/:videoId",
+      data: {
+        authorities: [],
+        pageTitle: "Видео",
+        mobileVersion: true,
+      },
+
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_customer/new.video.html",
+          controller: "",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+      },
+
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+    })
+
+    .state("insight", {
+      parent: "app-customer-home",
+      url: "/new-video/insight/:insightId",
+      data: {
+        authorities: ["ROLE_CUSTOMER", "ROLE_SUPER_CUSTOMER", "ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR43",
+        page_title: "MNR.MNR43",
+      },
+      views: {
+        main_content_customer: {
+          templateUrl: "tmpl/tmpl_customer/new.video.html",
+        },
+      },
+    })
+
+    .state("new-insight", {
+      parent: "site",
+      url: "/new-video/insight/:insightId",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR43",
+        mobileVersion: true,
+      },
+
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_customer/new.video.html",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+      },
+
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+    })
+
+    /* ------------------------------------------------------------------------------------------------- */
+    /* ------------------------------------------ URL app-moderator ------------------------------------ */
+    /* ------------------------------------------------------------------------------------------------- */
+    .state("app-moderator-home", {
+      parent: "app-moderator",
+      url: "/app-moderator-home",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR120",
+      },
+      resolve: {
+        loadModeratorHeaderController: loadController(
+          "moderatorHeaderController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/home.html",
+          controller: "moderatorHeaderController",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_moderator/header.html",
+          controller: "moderatorHeaderController",
+        },
+      },
+    })
+    .state("trial-video", {
+      parent: "app-moderator-home",
+      url: "/trial-video",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR121",
+      },
+      resolve: {
+        loadModeratorTrialVideoController: loadController(
+          "moderatorTrialVideoController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/trial-video.html",
+          controller: "moderatorTrialVideoController",
+        },
+      },
+    })
+    .state("active-orders-moderator", {
+      parent: "app-moderator-home",
+      url: "/active-orders",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR122",
+      },
+      resolve: {
+        loadModeratorActiveOrdersController: loadController(
+          "moderatorActiveOrdersController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/active-orders.html",
+          controller: "moderatorActiveOrdersController",
+        },
+      },
+    })
+    .state("claims-moderator", {
+      parent: "app-moderator-home",
+      url: "/claims",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR123",
+      },
+      resolve: {
+        loadModeratorClaimsController: loadController(
+          "moderatorClaimsController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/claims.html",
+          controller: "moderatorClaimsController",
+        },
+      },
+    })
+    .state("app-moderator-video", {
+      parent: "app-moderator-home",
+      url: "^/video?videoId&t",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR127",
+        page_title: "MNR.MNR128",
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadCustomerOrderListController: loadController(
+          "customerOrderListController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "video",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              } else {
+                $state.go(
+                  "app-moderator-video-new",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+      },
+    })
+
+    .state("app-moderator-video-new", {
+      parent: "app-moderator-home",
+      url: "^/video/:videoId?:t",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR129",                                                         
+        page_title: "MNR.MNR130",
+      },
+      controller: "homeVideoController",
+      resolve: {
+        loadHomeVideoController: loadController("homeVideoController"),
+        loadCustomerOrderListController: loadController(
+          "customerOrderListController"
+        ),
+        redirect: [
+          "$state",
+          "$stateParams",
+          "Principal",
+          function ($state, $stateParams, Principal) {
+            var videoId = $stateParams.videoId;
+            var t = $stateParams.t;
+            Principal.identity().then(function (account) {
+              if (account == null) {
+                $state.go(
+                  "video",
+                  {
+                    videoId: videoId,
+                    t: t,
+                  },
+                  {
+                    reload: false,
+                  }
+                );
+              }
+            });
+          },
+        ],
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_home/video.html",
+          controller: "homeVideoController",
+        },
+      },
+    })
+
+    .state("commercial-video", {
+      parent: "app-moderator-home",
+      url: "/commercial-video",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR131",
+      },
+      resolve: {
+        loadModeratorCommercialVideoController: loadController(
+          "moderatorCommercialVideoController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/commercial-video.html",
+          controller: "moderatorCommercialVideoController",
+        },
+      },
+    })
+    .state("promo-code", {
+      parent: "app-moderator-home",
+      url: "/promo-code",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR132",
+      },
+      resolve: {
+        loadModeratorPromoCodeController: loadController(
+          "moderatorPromoCodeController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/promoCodes.html",
+          controller: "moderatorPromoCodeController",
+        },
+      },
+    })
+    .state("archive-video", {
+      parent: "app-moderator-home",
+      url: "/archive-video",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR134",
+      },
+      resolve: {
+        loadModeratorArchiveVideoController: loadController(
+          "moderatorArchiveVideoController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/archive-video.html",
+          controller: "moderatorArchiveVideoController",
+        },
+      },
+    })
+    .state("email-notifications", {
+      parent: "app-moderator-home",
+      url: "/email-notifications",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR135",
+      },
+      resolve: {
+        loadModeratorEmailNotificationsController: loadController(
+          "moderatorEmailNotificationsController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/email-notifications.html",
+          controller: "moderatorEmailNotificationsController",
+        },
+      },
+    })
+    .state("create-magic-link", {
+      parent: "app-moderator-home",
+      url: "/create-magic-link",
+      data: {
+        authorities: ["ROLE_MODERATOR"],
+        pageTitle: "MNR.MNR136",
+      },
+      resolve: {
+        loadModeratorCreateMagicLinkController: loadController(
+          "moderatorCreateMagicLinkController"
+        ),
+      },
+      views: {
+        main_content_moderator: {
+          templateUrl: "tmpl/tmpl_moderator/createMagicLink.html",
+          controller: "moderatorCreateMagicLinkController",
+        },
+      },
+    })
+    .state("faq", {
+      parent: "site",
+      url: "/faq",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR145",
+        mobileVersion: true,
+        og_description: "MNR.MNR146",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl: "/tmpl/tmpl_landing_new/faq.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footer.html",
+          controller: "",
+        },
+      },
+    })
+    .state("usability-testing-scenarios", {
+      parent: "site",
+      url: "/usability-testing-scenarios",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR147",
+        mobileVersion: true,
+        og_description: "MNR.MNR148",
+      },
+      resolve: {
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/header.html",
+          controller: "homeLoginController",
+        },
+        main_block: {
+          templateUrl:
+            "/tmpl/tmpl_landing_new/usability-testing-scenarios.html",
+          controller: "",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_landing_new/footer.html",
+          controller: "",
+        },
+      },
+    })
+    /* ------------------------------------------------------------------------------------------------- */
+    /* ------------------------------------------- URL account ----------------------------------------- */
+    /* ------------------------------------------------------------------------------------------------- */
+
+    .state("tester", {
+      abstract: true,
+      parent: "account",
+      views: {
+        main_content_account: {
+          template: '<div ui-view="main_tester"></div>',
+        },
+      },
+    })
+    .state("customer", {
+      abstract: true,
+      parent: "account",
+      views: {
+        main_content_account: {
+          template: '<div ui-view="main_view"></div>',
+        },
+      },
+    })
+    .state("tester.register", {
+      parent: "site",
+      url: "/tester-register",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR137",
+        mobileVersion: true,
+      },
+      resolve: {
+        loadHomeTesterRegisterController: loadController(
+          "homeTesterRegisterController"
+        ),
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/tester_register.html",
+          controller: "homeTesterRegisterController",
+        },
+        header: {
+          templateUrl: "tmpl/tmpl_home/header.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+        },
+      },
+    })
+
+    .state("password-reset", {
+      parent: "site",
+      url: "/passwordReset",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR138",
+        mobileVersion: true,
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/password-reset.html",
+          controller: "homePasswordResetController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_home/greenHeader.html",
+          controller: "homeLoginController",
+        },
+        footer: {
+          templateUrl: "/tmpl/tmpl_home/new-footer.html",
+        },
+      },
+      resolve: {
+        loadHomePasswordResetController: loadController(
+          "homePasswordResetController"
+        ),
+        loadHomeLoginController: loadController("homeLoginController"),
+      },
+    })
+    .state("unsubscribe", {
+      parent: "site",
+      url: "/unsubscribe/:email/:signature",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR139",
+        mobileVersion: true,
+      },
+      views: {
+        main_block: {
+          templateUrl: "tmpl/tmpl_home/unsubscribe.html",
+          controller: "homeUnsubscribeController",
+        },
+        header: {
+          templateUrl: "/tmpl/tmpl_landing_new/headerOnlyLogo.html",
+        },
+      },
+      resolve: {
+        loadHomeUnsubscribeController: loadController(
+          "homeUnsubscribeController"
+        ),
+      },
+    })
+    .state("magic-link", {
+      parent: "",
+      url: "/magic-link?:token",
+      data: {
+        authorities: [],
+        pageTitle: "MNR.MNR56",
+        mobileVersion: true,
+        embed: true,
+      },
+      controller: "magicLinkController",
+    });
+});
+
+var loadController = function (controllerName) {
+  return [
+    "$q",
+    function ($q) {
+      var deferred = $q.defer();
+      require([controllerName], function () {
+        deferred.resolve();
+      });
+      return deferred.promise;
+    },
+  ];
+};
+
+app.config([
+  "$httpProvider",
+  "$stateProvider",
+  "$urlRouterProvider",
+  function ($httpProvider, $stateProvider, $urlRouterProvider) {
+    $httpProvider.defaults.xsrfCookieName = "XSRF-TOKEN";
+    $httpProvider.defaults.xsrfHeaderName = "X-XSRF-TOKEN";
+
+    $httpProvider.interceptors.push("errorHandlerInterceptor");
+    $httpProvider.interceptors.push("authExpiredInterceptor");
+
+    var index = {
+      url: "/",
+      data: {
+        authorities: [],
+        pageTitle: "Домашняя страница",
+      },
+      views: {
+        body: {
+          templateUrl: "tmpl/tmpl_static/index.html",
+          controller: "homeMainController",
+        },
+      },
+      resolve: {},
+    };
+    index.resolve.loadHomeMainController = loadController("homeMainController");
+    index.resolve.loadHomeBookingController = loadController(
+      "homeBookingController"
+    );
+
+    $stateProvider.state("index", index);
+  },
+]);

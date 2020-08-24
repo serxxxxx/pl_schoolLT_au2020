@@ -1,0 +1,128 @@
+[
+    {
+        "stepId": "STEP1",
+        "stepName": "Url: loadtest.uxcrowd.ru",
+        "infFile": "t1.inf",
+        "time": 1598199959833
+    },
+    {
+        "stepId": "STEP2",
+        "stepName": "Url: modal-login.html",
+        "infFile": "t2.inf",
+        "time": 1598199960217
+    },
+    {
+        "stepId": "STEP3",
+        "stepName": "Submit Data: authentication",
+        "infFile": "t3.inf",
+        "time": 1598199961063
+    },
+    {
+        "stepId": "STEP4",
+        "stepName": "Url: account",
+        "infFile": "t4.inf",
+        "time": 1598199961385
+    },
+    {
+        "stepId": "STEP5",
+        "stepName": "Url: list-orders",
+        "infFile": "t5.inf",
+        "time": 1598199961765
+    },
+    {
+        "stepId": "STEP6",
+        "stepName": "Url: new.video.html",
+        "infFile": "t6.inf",
+        "time": 1598199963112
+    },
+    {
+        "stepId": "STEP7",
+        "stepName": "Url: user",
+        "infFile": "t7.inf",
+        "time": 1598199963411
+    },
+    {
+        "stepId": "STEP8",
+        "stepName": "Custom Request: orders",
+        "infFile": "t8.inf",
+        "time": 1598199963808
+    },
+    {
+        "stepId": "STEP9",
+        "stepName": "Url: new.order.html",
+        "infFile": "t9.inf",
+        "time": 1598199964752
+    },
+    {
+        "stepId": "STEP10",
+        "stepName": "Url: user_2",
+        "infFile": "t10.inf",
+        "time": 1598199965340
+    },
+    {
+        "stepId": "STEP11",
+        "stepName": "Custom Request: draft",
+        "infFile": "t12.inf",
+        "time": 1598199965776
+    },
+    {
+        "stepId": "STEP12",
+        "stepName": "Custom Request: updateOrderAudience",
+        "infFile": "t13.inf",
+        "time": 1598199966236
+    },
+    {
+        "stepId": "STEP13",
+        "stepName": "Custom Request: updateOrderSteps",
+        "infFile": "t14.inf",
+        "time": 1598199966772
+    },
+    {
+        "stepId": "STEP14",
+        "stepName": "Url: calculatePrice",
+        "infFile": "t15.inf",
+        "time": 1598199967115
+    },
+    {
+        "stepId": "STEP15",
+        "stepName": "Custom Request: orderFreeInit",
+        "infFile": "t16.inf",
+        "time": 1598199967589
+    },
+    {
+        "stepId": "STEP16",
+        "stepName": "Url: list-orders_2",
+        "infFile": "t17.inf",
+        "time": 1598199967789
+    },
+    {
+        "stepId": "STEP17",
+        "stepName": "Url: account_3",
+        "infFile": "t18.inf",
+        "time": 1598199968084
+    },
+    {
+        "stepId": "STEP18",
+        "stepName": "Url: user_3",
+        "infFile": "t19.inf",
+        "time": 1598199968383
+    },
+    {
+        "stepId": "STEP19",
+        "stepName": "Custom Request: orders_2",
+        "infFile": "t20.inf",
+        "time": 1598199968717
+    },
+    {
+        "stepId": "STEP20",
+        "stepName": "Custom Request: logout",
+        "infFile": "t21.inf",
+        "time": 1598199969139
+    },
+    {
+        "stepId": "STEP21",
+        "stepName": "Url: loadtest.uxcrowd.ru_3",
+        "infFile": "t22.inf",
+        "time": 1598199969222
+    }
+]

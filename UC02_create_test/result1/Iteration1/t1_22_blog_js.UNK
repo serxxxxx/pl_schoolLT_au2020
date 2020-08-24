@@ -1,0 +1,61 @@
+app.factory('BlogEntry', function ($resource) {
+        return $resource('api/blog/blogEntry', {id: "@id"}, {});
+    });
+
+app.factory('AllBlogEntries', function ($resource) {
+    return {
+        query: function(page,size) { return  $resource('api/blog/blogEntries', {}, {
+                        query: { method: 'GET', params: {page:page,size:size}, isArray: false }
+                    }).query();
+          }
+        }
+    });
+
+app.factory('BlogEntries', function f($rootScope, BlogEntry, AllBlogEntries) {
+        return {
+            getAllBlogEntry:  function (page, size, callback) {
+                var cb = callback || angular.noop;
+
+                return AllBlogEntries.get(page,size,
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            getBlogEntry:  function (name, callback) {
+                var cb = callback || angular.noop;
+
+                return BlogEntry.get({name: name},
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            saveBlogEntry: function (blogEntry, callback) {
+                var cb = callback || angular.noop;
+
+                return BlogEntry.save(blogEntry,
+                    function () {
+                        return cb(blogEntry);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            deleteBlogEntry: function (name, callback) {
+                var cb = callback || angular.noop;
+
+                return BlogEntry.delete({name: name},
+                    function () {
+                        return cb(name);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });

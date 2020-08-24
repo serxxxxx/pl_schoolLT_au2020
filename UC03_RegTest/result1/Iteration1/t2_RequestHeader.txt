@@ -1,0 +1,9 @@
+GET /assets/lang/ru.json HTTP/1.1
+Referer: https://loadtest.uxcrowd.ru/
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Accept: */*
+Host: loadtest.uxcrowd.ru
+Connection: Keep-Alive
+Cache-Control: no-cache
+

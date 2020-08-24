@@ -1,0 +1,9 @@
+-+
+-DCCI
+-D_IDA_XL
+-DWINNT
+-ID:\soft\VuGen\Scripts\UXCrowd_UC02_create_test
+-ID:\soft\HPE\LoadRunner\include
+-ed:\soft\vugen\scripts\uxcrowd_uc02_create_test\\logfile.log
+d:\soft\vugen\scripts\uxcrowd_uc02_create_test\\combined_UXCrowd_UC02_create_test.c
+d:\soft\vugen\scripts\uxcrowd_uc02_create_test\\pre_cci.c

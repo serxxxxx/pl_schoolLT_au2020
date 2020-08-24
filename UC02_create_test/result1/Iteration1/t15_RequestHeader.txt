@@ -1,0 +1,12 @@
+GET /api/customer/calculatePrice?orderId=17007787 HTTP/1.1
+Cookie: CSRF-TOKEN=65c2adec-37d3-4c73-9db5-d742b7c98317; XSRF-TOKEN=65c2adec-37d3-4c73-9db5-d742b7c98317; remember-me=ekMlMkZDbVpXME45dGxhME9sMDJFZEF3JTNEJTNEOktZMjJPRmhCRm9Ba2N1T2VFaiUyQldtQSUzRCUzRA; userId=493309903; JSESSIONID=B8BD0BBB9FC319C5F27971658551A8C0
+Referer: https://loadtest.uxcrowd.ru/app-customer-home/order?id=17007787
+X-XSRF-TOKEN: 65c2adec-37d3-4c73-9db5-d742b7c98317
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+Accept-Encoding: gzip, deflate
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Accept: */*
+Host: loadtest.uxcrowd.ru
+Connection: Keep-Alive
+Cache-Control: no-cache
+

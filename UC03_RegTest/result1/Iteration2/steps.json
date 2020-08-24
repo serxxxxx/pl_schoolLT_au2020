@@ -1,0 +1,14 @@
+[
+    {
+        "stepId": "STEP3",
+        "stepName": "Url: ru.json",
+        "infFile": "t2.inf",
+        "time": 1598276401763
+    },
+    {
+        "stepId": "STEP4",
+        "stepName": "Custom Request: register",
+        "infFile": "t3.inf",
+        "time": 1598276402400
+    }
+]

@@ -1,0 +1,52 @@
+[
+    {
+        "transactionName": "UC02_TR01_loginpage_open",
+        "rawStartTime": 1598199959850,
+        "rawEndTime": 1598199960219
+    },
+    {
+        "transactionName": "UC02_TR02_user_login",
+        "rawStartTime": 1598199960289,
+        "rawEndTime": 1598199963810
+    },
+    {
+        "transactionName": "UC02_TR03_newtest_open",
+        "rawStartTime": 1598199963886,
+        "rawEndTime": 1598199965343
+    },
+    {
+        "transactionName": "UC02_TR04_audince_open",
+        "rawStartTime": 1598199965420,
+        "rawEndTime": 1598199965778
+    },
+    {
+        "transactionName": "UC02_TR05_tasks_open",
+        "rawStartTime": 1598199965843,
+        "rawEndTime": 1598199966240
+    },
+    {
+        "transactionName": "UC02_TR06_add_task",
+        "rawStartTime": 1598199966305,
+        "rawEndTime": 1598199966344
+    },
+    {
+        "transactionName": "UC02_TR07_test_start",
+        "rawStartTime": 1598199966408,
+        "rawEndTime": 1598199967117
+    },
+    {
+        "transactionName": "UC02_TR08_start_free_test",
+        "rawStartTime": 1598199967204,
+        "rawEndTime": 1598199967590
+    },
+    {
+        "transactionName": "UC02_TR09_back_to_test_list",
+        "rawStartTime": 1598199967663,
+        "rawEndTime": 1598199968721
+    },
+    {
+        "transactionName": "UC02_TR10_logout",
+        "rawStartTime": 1598199968794,
+        "rawEndTime": 1598199969223
+    }
+]

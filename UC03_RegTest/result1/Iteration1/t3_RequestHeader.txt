@@ -1,0 +1,13 @@
+POST /api/register HTTP/1.1
+Cookie: XSRF-TOKEN=fe11f6a7-d4ff-4258-9832-124dae2b65b1; CSRF-TOKEN=fe11f6a7-d4ff-4258-9832-124dae2b65b1
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-cache
+Referer: https://loadtest.uxcrowd.ru/
+X-XSRF-TOKEN: fe11f6a7-d4ff-4258-9832-124dae2b65b1
+User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)
+Accept-Encoding: gzip, deflate
+Accept: */*
+Host: loadtest.uxcrowd.ru
+Content-Length: 82
+Connection: Keep-Alive
+

@@ -1,0 +1,2 @@
+"{"direction":"DESC","filter":["ACTIVE","COMPLETED","DRAFT","WAIT_CONFIRMATION"],"page":0,"size"
+"":10,"sort":["startDate"]}"

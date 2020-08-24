@@ -1,0 +1,5 @@
+"{"orderId":17007787,"testerType":"OUR","participantGroupDTO":[{"ageRange":{"min":29,"max":58},"
+""children":"ANY","count":39,"educations":["COMMON","MIDDLE_FULL","MIDDLE_SPEC","HIGH_NOT_FULL""
+","HIGH"],"familyStatus":"ANY","gender":"ANY","groupName":"name of segment","incomeRange":{"min"
+"":0,"max":55000},"socialStatuses":["STUDENT","UNEMPLOYED","HOUSEWIFE","FREELANCER","WORKER","S"
+"PECIALIST","CHIEF_DEPT"],"ordinal":0}]}"

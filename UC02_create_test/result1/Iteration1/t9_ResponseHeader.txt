@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Server: nginx/1.14.2
+Date: Sun, 23 Aug 2020 16:26:17 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Last-Modified: Tue, 11 Aug 2020 16:09:01 GMT
+ETag: W/"5f32c29d-f1d"
+Cache-Control: must-revalidate
+Content-Security-Policy-Report-Only: default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline'; img-src https: data:; font-src https: data:; report-uri /csp-report
+Strict-Transport-Security: max-age=86400;
+Content-Encoding: gzip
+

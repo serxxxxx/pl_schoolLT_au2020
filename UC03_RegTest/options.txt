@@ -1,0 +1,9 @@
+-+
+-DCCI
+-D_IDA_XL
+-DWINNT
+-IC:\Users\A8-7050\Downloads\UC03_RegTest\UC03_RegTest
+-IC:\Program Files (x86)\HPE\LoadRunner\include
+-ec:\users\a8-7050\downloads\uc03_regtest\uc03_regtest\\logfile.log
+c:\users\a8-7050\downloads\uc03_regtest\uc03_regtest\\combined_UC03_RegTest.c
+c:\users\a8-7050\downloads\uc03_regtest\uc03_regtest\\pre_cci.c

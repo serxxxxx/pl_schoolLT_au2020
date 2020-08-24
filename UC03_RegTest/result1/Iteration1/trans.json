@@ -1,0 +1,12 @@
+[
+    {
+        "transactionName": "UC03_TR01_mainpage_open",
+        "rawStartTime": 1598276398630,
+        "rawEndTime": 1598276399664
+    },
+    {
+        "transactionName": "UC03_TR02_signupdata_post",
+        "rawStartTime": 1598276399665,
+        "rawEndTime": 1598276401077
+    }
+]

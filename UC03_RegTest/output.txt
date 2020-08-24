@@ -1,0 +1,118 @@
+Virtual User Script started at: 24.08.2020 16:39:58
+Starting action vuser_init.
+Web Turbo Replay of LoadRunner 12.55.0 for Windows 10; build 911 (èþë 24 2017 19:46:00)  	[MsgId: MMSG-26983]
+Run mode: HTML  	[MsgId: MMSG-26993]
+Replay user agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)  	[MsgId: MMSG-26988]
+Run-Time Settings file: "C:\Users\A8-7050\Downloads\UC03_RegTest\UC03_RegTest\\default.cfg"  	[MsgId: MMSG-27141]
+Ending action vuser_init.
+Running Vuser...
+Starting iteration 1.
+Maximum number of concurrent connections per server: 6  	[MsgId: MMSG-26989]
+Starting action Action.
+Action.c(11): Notify: Transaction "UC03_TR01_mainpage_open" started.
+Action.c(13): web_set_sockets_option started  	[MsgId: MMSG-26355]
+Action.c(13): Warning -27488: "web_set_sockets_option" has no effect on WinInet replay  	[MsgId: MWAR-27488]
+Action.c(13): web_set_sockets_option highest severity level was "warning"  	[MsgId: MMSG-26391]
+Retrieved value is: user_client_57@1secmail.com
+Action.c(19): web_reg_save_param_regexp started  	[MsgId: MMSG-26355]
+Action.c(19): Registering web_reg_save_param_regexp was successful  	[MsgId: MMSG-26390]
+Action.c(24): web_url("ru.json") started  	[MsgId: MMSG-26355]
+Action.c(24): Downloading resource "https://loadtest.uxcrowd.ru/api/account" (specified by argument number 10)  	[MsgId: MMSG-26577]
+Action.c(24): Warning -26547: Authentication required, please use "web_set_user", e.g. web_set_user("domain\\user", "password", "host:port");  	[MsgId: MWAR-26547]
+Action.c(24): Warning -26630: HTTP Status-Code=401 (Unauthorized) for "https://loadtest.uxcrowd.ru/api/account"  	[MsgId: MWAR-26630]
+Action.c(24): web_url("ru.json") highest severity level was "warning", 63860 body bytes, 958 header bytes  	[MsgId: MMSG-26388]
+Action.c(36): web_add_auto_header("X-XSRF-TOKEN") started  	[MsgId: MMSG-26355]
+Action.c(36): web_add_auto_header("X-XSRF-TOKEN") was successful  	[MsgId: MMSG-26392]
+Action.c(82): Notify: Transaction "UC03_TR01_mainpage_open" ended with a "Pass" status (Duration: 1,0343 Wasted Time: 0,3244).
+Action.c(84): Notify: Transaction "UC03_TR02_signupdata_post" started.
+Action.c(86): web_custom_request("register") started  	[MsgId: MMSG-26355]
+Action.c(86): web_custom_request("register") was successful, 0 body bytes, 578 header bytes  	[MsgId: MMSG-26386]
+Action.c(98): DB Connection "connectBD" started ... Wait ....
+Action.c(104): SQL Statement  execution "updatePassword" started
+Action.c(104): Warning :No dataset was created.
+Action.c(104): ================================================
+Action.c(110): SQL Statement  execution "updateRole" started
+Action.c(110): Warning :No dataset was created.
+Action.c(110): ================================================
+Action.c(116): SQL Statement  execution "updateTesterData" started
+Action.c(116): Warning :No dataset was created.
+Action.c(116): ================================================
+Action.c(122): DB disconnect "Disconnect" started
+Action.c(122): ================================================
+Action.c(125): Notify: Transaction "UC03_TR02_signupdata_post" ended with a "Pass" status (Duration: 1,4121 Wasted Time: 0,4228).
+Ending action Action.
+Ending iteration 1.
+Starting iteration 2.
+Starting action Action.
+Action.c(11): Notify: Transaction "UC03_TR01_mainpage_open" started.
+Action.c(13): web_set_sockets_option started  	[MsgId: MMSG-26355]
+Action.c(13): Warning -27488: "web_set_sockets_option" has no effect on WinInet replay  	[MsgId: MWAR-27488]
+Action.c(13): web_set_sockets_option highest severity level was "warning"  	[MsgId: MMSG-26391]
+Retrieved value is: user_client_58@1secmail.com
+Action.c(19): web_reg_save_param_regexp started  	[MsgId: MMSG-26355]
+Action.c(19): Registering web_reg_save_param_regexp was successful  	[MsgId: MMSG-26390]
+Action.c(24): web_url("ru.json") started  	[MsgId: MMSG-26355]
+Action.c(24): Downloading resource "https://loadtest.uxcrowd.ru/api/account" (specified by argument number 10)  	[MsgId: MMSG-26577]
+Action.c(24): Warning -26547: Authentication required, please use "web_set_user", e.g. web_set_user("domain\\user", "password", "host:port");  	[MsgId: MWAR-26547]
+Action.c(24): Warning -26630: HTTP Status-Code=401 (Unauthorized) for "https://loadtest.uxcrowd.ru/api/account"  	[MsgId: MWAR-26630]
+Action.c(24): web_url("ru.json") highest severity level was "warning", 63860 body bytes, 958 header bytes  	[MsgId: MMSG-26388]
+Action.c(36): web_add_auto_header("X-XSRF-TOKEN") started  	[MsgId: MMSG-26355]
+Action.c(36): web_add_auto_header("X-XSRF-TOKEN") was successful  	[MsgId: MMSG-26392]
+Action.c(82): Notify: Transaction "UC03_TR01_mainpage_open" ended with a "Pass" status (Duration: 0,6003 Wasted Time: 0,0811).
+Action.c(84): Notify: Transaction "UC03_TR02_signupdata_post" started.
+Action.c(86): web_custom_request("register") started  	[MsgId: MMSG-26355]
+Action.c(86): web_custom_request("register") was successful, 0 body bytes, 578 header bytes  	[MsgId: MMSG-26386]
+Action.c(98): DB Connection "connectBD" started ... Wait ....
+Action.c(104): SQL Statement  execution "updatePassword" started
+Action.c(104): Warning :No dataset was created.
+Action.c(104): ================================================
+Action.c(110): SQL Statement  execution "updateRole" started
+Action.c(110): Warning :No dataset was created.
+Action.c(110): ================================================
+Action.c(116): SQL Statement  execution "updateTesterData" started
+Action.c(116): Warning :No dataset was created.
+Action.c(116): ================================================
+Action.c(122): DB disconnect "Disconnect" started
+Action.c(122): ================================================
+Action.c(125): Notify: Transaction "UC03_TR02_signupdata_post" ended with a "Pass" status (Duration: 1,4193 Wasted Time: 0,6721).
+Ending action Action.
+Ending iteration 2.
+Starting iteration 3.
+Starting action Action.
+Action.c(11): Notify: Transaction "UC03_TR01_mainpage_open" started.
+Action.c(13): web_set_sockets_option started  	[MsgId: MMSG-26355]
+Action.c(13): Warning -27488: "web_set_sockets_option" has no effect on WinInet replay  	[MsgId: MWAR-27488]
+Action.c(13): web_set_sockets_option highest severity level was "warning"  	[MsgId: MMSG-26391]
+Retrieved value is: user_client_59@1secmail.com
+Action.c(19): web_reg_save_param_regexp started  	[MsgId: MMSG-26355]
+Action.c(19): Registering web_reg_save_param_regexp was successful  	[MsgId: MMSG-26390]
+Action.c(24): web_url("ru.json") started  	[MsgId: MMSG-26355]
+Action.c(24): Downloading resource "https://loadtest.uxcrowd.ru/api/account" (specified by argument number 10)  	[MsgId: MMSG-26577]
+Action.c(24): Warning -26547: Authentication required, please use "web_set_user", e.g. web_set_user("domain\\user", "password", "host:port");  	[MsgId: MWAR-26547]
+Action.c(24): Warning -26630: HTTP Status-Code=401 (Unauthorized) for "https://loadtest.uxcrowd.ru/api/account"  	[MsgId: MWAR-26630]
+Action.c(24): web_url("ru.json") highest severity level was "warning", 63860 body bytes, 958 header bytes  	[MsgId: MMSG-26388]
+Action.c(36): web_add_auto_header("X-XSRF-TOKEN") started  	[MsgId: MMSG-26355]
+Action.c(36): web_add_auto_header("X-XSRF-TOKEN") was successful  	[MsgId: MMSG-26392]
+Action.c(82): Notify: Transaction "UC03_TR01_mainpage_open" ended with a "Pass" status (Duration: 0,7230 Wasted Time: 0,1071).
+Action.c(84): Notify: Transaction "UC03_TR02_signupdata_post" started.
+Action.c(86): web_custom_request("register") started  	[MsgId: MMSG-26355]
+Action.c(86): web_custom_request("register") was successful, 0 body bytes, 578 header bytes  	[MsgId: MMSG-26386]
+Action.c(98): DB Connection "connectBD" started ... Wait ....
+Action.c(104): SQL Statement  execution "updatePassword" started
+Action.c(104): Warning :No dataset was created.
+Action.c(104): ================================================
+Action.c(110): SQL Statement  execution "updateRole" started
+Action.c(110): Warning :No dataset was created.
+Action.c(110): ================================================
+Action.c(116): SQL Statement  execution "updateTesterData" started
+Action.c(116): Warning :No dataset was created.
+Action.c(116): ================================================
+Action.c(122): DB disconnect "Disconnect" started
+Action.c(122): ================================================
+Action.c(125): Notify: Transaction "UC03_TR02_signupdata_post" ended with a "Pass" status (Duration: 1,3029 Wasted Time: 0,3720).
+Ending action Action.
+Ending iteration 3.
+Ending Vuser...
+Starting action vuser_end.
+Ending action vuser_end.
+Vuser Terminated.
