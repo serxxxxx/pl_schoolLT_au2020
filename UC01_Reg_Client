@@ -1,0 +1,76 @@
+Action()
+{
+
+	web_set_sockets_option("SSL_VERSION", "TLS1.2");
+
+	lr_start_transaction("UC01_TR01_Open_Main_Page");
+
+	web_url("loadtest.uxcrowd.ru",
+		"URL=https://loadtest.uxcrowd.ru/",
+		"TargetFrame=",
+		"Resource=0",
+		"RecContentType=text/html",
+		"Referer=",
+		"Snapshot=t14.inf",
+		"Mode=HTML",
+		LAST);
+
+	lr_end_transaction("UC01_TR01_Open_Main_Page", LR_AUTO);
+
+
+	lr_start_transaction("UC01_TR02_Reg_New_Client");
+
+	web_url("modal-login.html",
+		"URL=https://loadtest.uxcrowd.ru/tmpl/tmpl_home/modal-login.html",
+		"TargetFrame=",
+		"Resource=0",
+		"Referer=https://loadtest.uxcrowd.ru/",
+		"Snapshot=t24.inf",
+		"Mode=HTML",
+		LAST);
+
+	web_reg_save_param_ex(
+		"ParamName=xsrf",
+		"LB=XSRF-TOKEN=",
+		"RB=;",
+		LAST);
+
+	web_custom_request("account",
+		"URL=https://loadtest.uxcrowd.ru/apiaccount",
+		"Method=GET",
+		"TargetFrame=",
+		"Resource=1",
+		"Referer=https://loadtest.uxcrowd.ru/",
+		"Snapshot=t24.inf",
+		"Mode=HTML",
+		LAST);
+
+
+	web_add_auto_header("X-XSRF-TOKEN","{xsrf}");
+
+	web_custom_request("register",
+		"URL=https://loadtest.uxcrowd.ru/api/register",
+		"Method=POST",
+		"TargetFrame=",
+		"Resource=0",
+		"Referer=https://loadtest.uxcrowd.ru/",
+		"Snapshot=t25.inf",
+		"Mode=HTML",
+		"EncType=application/json;charset=UTF-8",
+		"BodyBinary={\"name\":\"\\xD0\\x90\\xD1\\x80\\xD0\\xBA\\xD0\\xB0\\xD0\\xB4\\xD0\\xB8\\xD0\\xB9\",\"position\":\"\\xD0\\x9C\\xD0\\xB5\\xD0\\xBD\\xD0\\xB5\\xD0\\xB4\\xD0\\xB6\\xD0\\xB5\\xD1\\x80\",\"company\":\"\\xD0\\xB3\\xD1\\x83\\xD0\\xB3\\xD0\\xBB\",\"email\":\"sa{emailR}es670@1secmail.com\",\"telNumber\":\"+1 111-111-1111\",\"site\":\"https://yandex.ru\",\"role\":\"ROLE_CUSTOMER\",\"tariffType\":\"PROJECT\"}",
+		LAST);
+
+	lr_end_transaction("UC01_TR02_Reg_New_Client", LR_AUTO);
+
+
+
+//	web_revert_auto_header("X-XSRF-TOKEN");
+//
+//	web_add_header("X-XSRF-TOKEN",
+//		"fd3b09f7-5bb6-47b1-aa5f-091044328f9b");
+
+
+
+
+	return 0;
+}
