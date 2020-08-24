@@ -1,0 +1,55 @@
+<div class="uxc_container">
+  <div class="left_menu_uxc">
+    <a ng-href="{{ fullUrl }}/app-customer-home/list-orders">
+      <div class="logo_left_menu">
+        <img ng-if="testStandLogo" class="test-stand-dynamic" src="../assets/images/test-stand.png" />
+      </div>
+    </a>
+
+    <aside class="left_menu">
+      <section class="item_menu_nav new-test-btn customer-left-menu" ui-sref-active="active"
+        ui-sref="order({ id:null })" data-testid="New test client menu button">
+        <div class="item_menu_logo new_test"></div>
+
+        <p class="item_menu_text" ng-tr="MTP.MTP">
+          Новый тест
+        </p>
+      </section>
+
+      <a class="item_menu_nav customer-left-menu" ng-href="{{ fullUrl }}/app-customer-home/list-orders"
+        data-testid="All tests client menu button">
+        <div class="item_menu_logo list"></div>
+
+        <p class="item_menu_text" ng-tr="MTP.MTP1">
+          Все тесты
+        </p>
+      </a>
+
+      <section class="item_menu_nav customer-left-menu" ui-sref-active="active" ui-sref="customer-profile"
+        data-testid="Profile client menu button">
+        <div class="item_menu_logo settings"></div>
+
+        <p class="item_menu_text" ng-tr="MTP.MTP4">
+          Профиль
+        </p>
+      </section>
+
+      <section class="item_menu_nav customer-left-menu" ui-sref-active="active" ui-sref="tariff"
+        data-testid="Tariff client button">
+        <div class="item_menu_logo settings">
+          <img src="../../assets/images/alert-icon.svg" class="item_menu_badge" ng-if="showTariffNotification" pop-over
+            data-class="popover-content-inn" data-content="{{'MTP.MTP6' | translate}}" data-toggle="popover"
+            data-placement="right" data-trigger="hover popover focus"></img>
+        </div>
+
+        <p class="item_menu_text" ng-tr="TRF.TRF0"></p>
+      </section>
+    </aside>
+  </div>
+
+  <div class="main_container">
+    <div ui-view="header" class="header_main_container"></div>
+
+    <div ui-view="main_content_customer" class="sub_container_menu"></div>
+  </div>
+</div>

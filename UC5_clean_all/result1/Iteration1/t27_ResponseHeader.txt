@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Server: nginx/1.14.2
+Date: Fri, 21 Aug 2020 16:39:50 GMT
+Content-Type: video/mp4
+Content-Length: 1921107
+Connection: keep-alive
+Last-Modified: Fri, 21 Aug 2020 09:21:58 GMT
+ETag: "5f3f9236-1d5053"
+Cache-Control: no-cache
+Strict-Transport-Security: max-age=120
+X-Content-Type-Options: nosniff
+Accept-Ranges: bytes
+Content-Security-Policy-Report-Only: default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline'; img-src https: data:; font-src https: data:; report-uri /csp-report
+Strict-Transport-Security: max-age=86400;
+

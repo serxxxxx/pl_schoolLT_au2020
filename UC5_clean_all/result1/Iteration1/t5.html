@@ -1,0 +1,201 @@
+<div class="nl-footer">
+  <div class="nl-footer-wrapper">
+    <ul class="footer-list">
+      <li class="footer-item">
+        <a href="/" class="footer-link">
+          <img
+            class="footer-copyright-img"
+            src="../../assets/images/ux-logo-new-white.svg"
+          />
+        </a>
+      </li>
+      <li class="footer-item" style="margin-top: 10px;">
+        <span class="footer-copyright" ng-tr="NLFOO.NLFOO1"> </span>
+      </li>
+    </ul>
+
+    <ul class="footer-list">
+      <li class="footer-item">
+        <a href="/about" class="footer-link" ng-tr="NLFOO.NLFOO2"> </a>
+      </li>
+      <li class="footer-item">
+        <a href="/price" class="footer-link" ng-tr="NLFOO.NLFOO3"></a>
+      </li>
+      <li class="footer-item">
+        <a href="/faq" class="footer-link" ng-tr="NLFOO.NLFOO4"> </a>
+      </li>
+      <li class="footer-item">
+        <a href="/tester-register" class="footer-link" ng-tr="NLFOO.NLFOO5">
+        </a>
+      </li>
+    </ul>
+
+    <ul class="footer-list">
+      <li class="footer-item">
+        <a
+          href=""
+          ng-click="$state.go('contacts');"
+          class="footer-link item-underline"
+          ng-tr="NLFOO.NLFOO6"
+        >
+        </a>
+      </li>
+      <li class="footer-item">
+        <a
+          href="tel:+7 (499) 707-2939"
+          class="footer-link"
+          ng-tr="NLFOO.NLFOO7"
+        >
+        </a>
+      </li>
+      <li class="footer-item">
+        <a
+          href="mailto:contact@uxcrowd.ru"
+          class="footer-link"
+          ng-tr="NLFOO.NLFOO8"
+        >
+        </a>
+      </li>
+      <li class="footer-item">
+        <span
+          class="footer-support"
+          ng-tr="NLFOO.NLFOO9"
+        >
+        </span>
+      </li>
+    </ul>
+
+    <ul class="footer-list right-list">
+      <li class="footer-item">
+        <a
+          href="https://www.youtube.com/channel/UC0cm1YoFrD0GtEjD3EIBB3g"
+          class="footer-link"
+        >
+          <img src="../../assets/images/youtube.svg" />
+        </a>
+        <a href="https://www.facebook.com/uxcrowd.ru/" class="footer-link">
+          <img
+            class="footer-facebook-img"
+            src="../../assets/images/facebook.svg"
+          />
+        </a>
+      </li>
+      <li class="footer-item">
+        <a
+          href="https://play.google.com/store/apps/details?id=ru.pflb.mobile.uxcrowd"
+          class="footer-link"
+        >
+          <img
+            class="footer-google-img"
+            src="../../assets/images/google-play-btn.png"
+          />
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<style>
+  .item-underline {
+    text-decoration: underline !important;
+  }
+
+  .footer-facebook-img {
+    padding-left: 20px;
+  }
+
+  .footer-copyright {
+    color: white;
+  }
+
+  .footer-copyright-img {
+    margin-bottom: 30px;
+    color: white;
+  }
+
+  .footer-support {
+    color: white;
+  }
+
+  .footer-google-img {
+    margin-right: -10px;
+  }
+
+  .footer-list.right-list {
+    text-align: right !important;
+    padding-right: 0px !important;
+  }
+
+  .nl-footer {
+    width: 100%;
+    border-top: 1px solid #ffffff;
+    background-color: transparent;
+  }
+  .nl-footer .nl-footer-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1120px;
+    padding: 30px 0px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "futura-pt" !important;
+    text-align: left;
+  }
+  .nl-footer .nl-footer-wrapper .footer-list {
+    display: inline-block;
+    vertical-align: top;
+    list-style: none;
+    padding: 0px;
+  }
+  .nl-footer .nl-footer-wrapper .footer-list li {
+    padding: 5px;
+  }
+
+  .nl-footer .nl-footer-wrapper .footer-list .footer-item .footer-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 400;
+  }
+  .nl-footer
+    .new-footer-wrapper
+    .footer-list
+    .footer-item
+    .footer-link
+    .fb-icon {
+    vertical-align: top;
+  }
+  .nl-footer .nl-footer-wrapper .footer-list .footer-item .footer-link:active {
+    color: #464646;
+  }
+  .nl-footer .nl-footer-wrapper .footer-list .footer-item:hover > .footer-link {
+    color: #464646;
+  }
+  .nl-footer
+    .nl-footer-wrapper
+    .footer-list
+    .footer-item:active
+    > .footer-link {
+    color: #464646;
+  }
+  @media (min-width: 0px) and (max-width: 1120px) {
+    .nl-footer .nl-footer-wrapper {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+    }
+    .nl-footer .footer-list {
+      margin-bottom: 30px;
+    }
+  }
+  @media (min-width: 769px) and (max-width: 1199px) {
+    .nl-footer .nl-footer-wrapper {
+      max-width: 550px;
+      padding: 25px 10px;
+    }
+  }
+  @media (max-width: 768px) {
+    .nl-footer .nl-footer-wrapper {
+      padding: 25px 6.25%;
+    }
+  }
+</style>

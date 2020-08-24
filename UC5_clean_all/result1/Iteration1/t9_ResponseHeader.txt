@@ -1,0 +1,19 @@
+HTTP/1.1 200 
+Server: nginx/1.14.2
+Date: Fri, 21 Aug 2020 16:38:30 GMT
+Content-Length: 0
+Connection: keep-alive
+Set-Cookie: XSRF-TOKEN=; Max-Age=0; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/
+Set-Cookie: XSRF-TOKEN=418f2068-5c9e-460d-afe5-3fc4313cb636; Path=/
+Set-Cookie: remember-me=NGhXdmhiajQxTFJmTW5INkZCQ0ZVdyUzRCUzRDpWN2g2azlOU0tVbWt0anNWTjdQTWFRJTNEJTNE; Max-Age=2678400; Expires=Mon, 21-Sep-2020 16:38:30 GMT; Path=/; HttpOnly
+Set-Cookie: userId=493310069; Max-Age=604800; Expires=Fri, 28-Aug-2020 16:38:30 GMT; Path=/
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Set-Cookie: JSESSIONID=871ECC068618622C0E9CF4FAFFDC3A70; Path=/; HttpOnly
+Access-Control-Origin: https://test.uxcrowd.ru
+Content-Security-Policy-Report-Only: default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline'; img-src https: data:; font-src https: data:; report-uri /csp-report
+Strict-Transport-Security: max-age=86400;
+

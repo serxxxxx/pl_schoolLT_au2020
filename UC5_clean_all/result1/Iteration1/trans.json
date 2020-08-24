@@ -1,0 +1,32 @@
+[
+    {
+        "transactionName": "UC05_TR01_login",
+        "rawStartTime": 1598027909764,
+        "rawEndTime": 1598027924781
+    },
+    {
+        "transactionName": "UC05_TR02_test_page_open",
+        "rawStartTime": 1598027925422,
+        "rawEndTime": 1598027926654
+    },
+    {
+        "transactionName": "UC05_TR03_test_video_open",
+        "rawStartTime": 1598027927618,
+        "rawEndTime": 1598028047678
+    },
+    {
+        "transactionName": "UC05_TR04_test_video_play",
+        "rawStartTime": 1598028048325,
+        "rawEndTime": 1598028059658
+    },
+    {
+        "transactionName": "UC05_TR05_test_video_stop",
+        "rawStartTime": 1598028061378,
+        "rawEndTime": 1598028064078
+    },
+    {
+        "transactionName": "UC05_TR06_logout",
+        "rawStartTime": 1598028069168,
+        "rawEndTime": 1598028073998
+    }
+]

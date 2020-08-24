@@ -1,0 +1,140 @@
+[
+    {
+        "stepId": "STEP1",
+        "stepName": "Url: loadtest.uxcrowd.ru",
+        "infFile": "t1.inf",
+        "time": 1598027895444
+    },
+    {
+        "stepId": "STEP2",
+        "stepName": "Url: ru.json",
+        "infFile": "t2.inf",
+        "time": 1598027896315
+    },
+    {
+        "stepId": "STEP3",
+        "stepName": "Url: headerGreenWhite.html",
+        "infFile": "t3.inf",
+        "time": 1598027897283
+    },
+    {
+        "stepId": "STEP4",
+        "stepName": "Url: home.html",
+        "infFile": "t4.inf",
+        "time": 1598027908309
+    },
+    {
+        "stepId": "STEP5",
+        "stepName": "Url: footer.html",
+        "infFile": "t5.inf",
+        "time": 1598027909506
+    },
+    {
+        "stepId": "STEP6",
+        "stepName": "Url: ux-logo-new-white.svg",
+        "infFile": "t6.inf",
+        "time": 1598027909761
+    },
+    {
+        "stepId": "STEP7",
+        "stepName": "Url: modal-login.html",
+        "infFile": "t7.inf",
+        "time": 1598027910707
+    },
+    {
+        "stepId": "STEP8",
+        "stepName": "Submit Data: authentication",
+        "infFile": "t9.inf",
+        "time": 1598027911271
+    },
+    {
+        "stepId": "STEP9",
+        "stepName": "Url: account",
+        "infFile": "t10.inf",
+        "time": 1598027911678
+    },
+    {
+        "stepId": "STEP10",
+        "stepName": "Url: list-orders",
+        "infFile": "t11.inf",
+        "time": 1598027912365
+    },
+    {
+        "stepId": "STEP11",
+        "stepName": "Url: main_template.html",
+        "infFile": "t12.inf",
+        "time": 1598027913189
+    },
+    {
+        "stepId": "STEP12",
+        "stepName": "Url: header.html",
+        "infFile": "t13.inf",
+        "time": 1598027913559
+    },
+    {
+        "stepId": "STEP13",
+        "stepName": "Url: new.video.html",
+        "infFile": "t14.inf",
+        "time": 1598027923937
+    },
+    {
+        "stepId": "STEP14",
+        "stepName": "Url: user",
+        "infFile": "t15.inf",
+        "time": 1598027924332
+    },
+    {
+        "stepId": "STEP15",
+        "stepName": "Custom Request: orders",
+        "infFile": "t18.inf",
+        "time": 1598027924779
+    },
+    {
+        "stepId": "STEP16",
+        "stepName": "Url: {OrderID}",
+        "infFile": "t20.inf",
+        "time": 1598027926254
+    },
+    {
+        "stepId": "STEP17",
+        "stepName": "Url: get-tester_task_link",
+        "infFile": "t21.inf",
+        "time": 1598027926652
+    },
+    {
+        "stepId": "STEP18",
+        "stepName": "Url: user_3",
+        "infFile": "t22.inf",
+        "time": 1598027928424
+    },
+    {
+        "stepId": "STEP19",
+        "stepName": "Url: relatedVideoIds",
+        "infFile": "t23.inf",
+        "time": 1598027929166
+    },
+    {
+        "stepId": "STEP20",
+        "stepName": "Url: {videoID}",
+        "infFile": "t24.inf",
+        "time": 1598027929566
+    },
+    {
+        "stepId": "STEP21",
+        "stepName": "Url: tags",
+        "infFile": "t25.inf",
+        "time": 1598027929974
+    },
+    {
+        "stepId": "STEP22",
+        "stepName": "Url: notes",
+        "infFile": "t26.inf",
+        "time": 1598027930373
+    },
+    {
+        "stepId": "STEP23",
+        "stepName": "Custom Request: logout",
+        "infFile": "t31.inf",
+        "time": 1598028072997
+    }
+]

@@ -1,0 +1,43 @@
+
+
+angular.module('app')
+    .factory('authExpiredInterceptor', function ($rootScope, $q, $injector) {
+        return {
+            responseError: function (response) {
+                // If we have an unauthorized request we redirect to the login page
+                // Don't do this check on the account API to avoid infinite loop
+                if (response.status == 401 && response.data.path !== undefined && response.data.path.indexOf("/api/account") == -1) {
+                    var Auth = $injector.get('Auth');
+                    var $state = $injector.get('$state');
+                    var to = $rootScope.toState;
+                    var params = $rootScope.toStateParams;
+                    Auth.logout();
+                    $rootScope.previousStateName = to;
+                    $rootScope.previousStateNameParams = params;
+                    $state.go('new_main_index');
+                } else if (response.status == 403 && response.config.method != 'GET' && response.headers('CSRF-Expired') === 'true') {
+                    // If the CSRF token expired, then try to get a new CSRF token and retry the old request
+                     var Account = $injector.get('Account');
+                     var $http = $injector.get('$http');
+                     var deferred = $q.defer();
+
+                     // Create a new session (recover the session)
+                     // We use login method that logs the user in using the current credentials and
+                     // returns a promise
+                     $http.get('/api/renewToken').then(deferred.resolve, deferred.reject);
+
+                     // When the session recovered, make the same backend call again and chain the request
+                     return deferred.promise.then(function(newResponse) {
+                         if (newResponse.headers('CSRF-Expired') !== 'true') {
+                             // retry the old request after the new CSRF-TOKEN is obtained
+                             return $http(response.config);
+                         } else {
+                             // unlikely get here but reject with the old response any way and avoid infinite loop
+                             return $q.reject(response);
+                         }
+                     })
+                }
+                return $q.reject(response);
+            }
+        };
+    });

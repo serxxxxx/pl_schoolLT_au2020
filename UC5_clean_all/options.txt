@@ -1,0 +1,9 @@
+-+
+-DCCI
+-D_IDA_XL
+-DWINNT
+-IC:\Perfomance Lab\LoadRunner\UC5_clean_all
+-IC:\Program Files (x86)\HPE\LoadRunner\include
+-ec:\perfomance lab\loadrunner\uc5_clean_all\\logfile.log
+c:\perfomance lab\loadrunner\uc5_clean_all\\combined_UC5_clean_all.c
+c:\perfomance lab\loadrunner\uc5_clean_all\\pre_cci.c

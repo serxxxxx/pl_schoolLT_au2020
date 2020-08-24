@@ -1,0 +1,24 @@
+<!--<div class="nav_menu_main_container">
+    <a href="#" class="item_menu_nav">Личный кабинет</a>
+    <a href="#" class="item_menu_nav">Профиль</a>
+</div>-->
+<div class="title_main_container">
+    <span class="second-title">{{page_title}}</span>
+</div>
+
+<div class="settings_block">
+
+    <div class="exit_btn btn_settings" ng-click="logout()" data-testid="Logout button">
+        <div class="block_exit_logo logo_settings"></div>
+
+        <div class="block_exit_text text_settings" translate="global.menu.account.logout" id="logout" ng-tr="PRV.PRV73">
+             Выйти
+        </div>
+    </div>
+
+    <a class="inline-btn btn_settings" href="/app-customer-home/profile" ng-tr="PRV.PRV74">
+        Настройки профиля
+    </a>
+</div>
+
+<div ui-view="insert_content" class="insert_content"></div>

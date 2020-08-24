@@ -1,0 +1,14 @@
+POST /api/v3/customer/orders HTTP/1.1
+Cookie: CSRF-TOKEN=62c1f654-902d-4d44-a278-7fa17fb1ba0e; XSRF-TOKEN=418f2068-5c9e-460d-afe5-3fc4313cb636; remember-me=NGhXdmhiajQxTFJmTW5INkZCQ0ZVdyUzRCUzRDpWN2g2azlOU0tVbWt0anNWTjdQTWFRJTNEJTNE; userId=493310069; JSESSIONID=871ECC068618622C0E9CF4FAFFDC3A70
+Content-Type: application/json;charset=UTF-8
+Referer: https://loadtest.uxcrowd.ru/app-customer-home/list-orders
+X-XSRF-TOKEN: 418f2068-5c9e-460d-afe5-3fc4313cb636
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Accept: */*
+Host: loadtest.uxcrowd.ru
+Content-Length: 120
+Connection: Keep-Alive
+Cache-Control: no-cache
+

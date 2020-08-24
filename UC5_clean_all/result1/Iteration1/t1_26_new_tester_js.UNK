@@ -1,0 +1,22 @@
+
+
+app.factory('NewTester', function ($resource) {
+        return $resource('api/tester/has-completed-video', {}, {save: {method: 'GET'}});
+    });
+
+
+app.factory('NewTesters', function f($rootScope, NewTester) {
+        return {
+            hasCompletedTask: function (callback) {
+                var cb = callback || angular.noop;
+
+                return NewTester.save(
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });
