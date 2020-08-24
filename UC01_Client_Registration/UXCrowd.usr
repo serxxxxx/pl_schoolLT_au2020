@@ -1,0 +1,69 @@
+[General]
+Type=Multi
+DefaultCfg=default.cfg
+ParameterFile=UXCrowd.prm
+GlobalParameterFile=
+NewFunctionHeader=1
+RunType=cci
+ActionLogicExt=action_logic
+LastActiveAction=Action
+MajorVersion=12
+MinorVersion=55
+ActiveTypes=QTWeb
+GenerateTypes=QTWeb
+AdditionalTypes=QTWeb
+DevelopTool=Vugen
+LastModifyVer=12.55.0.911
+ParamLeftBrace={
+ParamRightBrace=}
+ScriptLanguage=C
+LastCodeGenerationVer=12.55.0.911
+DisableRegenerate=0
+Encoding=ANSI
+Description=
+ScriptLocale=ru-RU
+[Actions]
+vuser_init=vuser_init.c
+UC01_Client_Registration=UC01_Client_Registration.c
+vuser_end=vuser_end.c
+[RunLogicFiles]
+Default Profile=default.usp
+[VuserProfiles]
+Profiles=Default Profile
+[CfgFiles]
+Default Profile=default.cfg
+[ExtraFiles]
+globals.h=
+WebSocketBuffer.h=
+WebSocketCB.c=
+[Modified Actions]
+vuser_init=1
+UC01_Client_Registration=1
+vuser_end=1
+[Recorded Actions]
+vuser_init=0
+UC01_Client_Registration=1
+vuser_end=0
+[Replayed Actions]
+vuser_init=1
+UC01_Client_Registration=1
+vuser_end=1
+[Interpreters]
+vuser_init=cci
+UC01_Client_Registration=cci
+vuser_end=cci
+[TransactionsOrder]
+Order="VTS_Connect__*delimiter*__UC01_TR01_Open_Main_Page__*delimiter*__UC01_TR02_Reg_New_Client__*delimiter*__UC01_TR03_DB_update__*delimiter*__VTS_disconnect"
+[StateManagement]
+LastReplayStatus=1
+[ActiveReplay]
+LastReplayedRunName=result1
+ActiveRunName=result1
+[ExtraFilesToParse]
+WebSocketCB.c=
+[Transactions]
+VTS_Connect=
+UC01_TR01_Open_Main_Page=
+UC01_TR02_Reg_New_Client=
+UC01_TR03_DB_update=
+VTS_disconnect=
