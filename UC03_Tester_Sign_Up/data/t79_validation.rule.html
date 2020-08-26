@@ -1,0 +1,101 @@
+app
+  .config(['$validationProvider', function($validationProvider) {
+    var validationExpression = {
+      integer: INTEGER_REGEXP,
+      number: NUMBER_REGEXP,
+      name: NAME_REGEXP,
+      surname: SURNAME_REGEXP,
+      email: EMAIL_REGEXP,
+      cyrillicname: NAME_CYRILLIC_REGEXP,
+      login: LOGIN_REGEXP,
+      loginnumber: LOGIN_NUMBER_REGEXP,
+      site: SITE_REGEXP,
+      siteru: SITE_REGEXP_RU,
+      fullurlsiteru: FULL_URL_SITE_REGEXP_RU,
+      fullurlsite: FULL_URL_SITE_REGEXP,
+      allstringchar: ALL_STRING_CHAR,
+      allruchar: ALL_RU_CHAR,
+      password: PASSWORD_REGEXP,
+      cyrillic: CYRILLIC_REGEXP,
+      cyrillicduo: CYRILLIC_DUO_REGEXP,
+      fio: FIO_REGEXP,
+      fullurlsitetest: FULL_URL_SITE_REGEXP_TEST,
+      numbertwochar: NUMBER_TWO_CHAR,
+      numbersixchar: NUMBER_SIX_CHAR,
+      birthday: BIRTHDAY_REGEXP,
+
+      required: function(value) {
+        return !!value;
+      },
+      minlength: function(value, scope, element, attrs, param) {
+        return value && value.length >= param;
+      },
+      maxlength: function(value, scope, element, attrs, param) {
+        return !value || value.length <= param;
+      },
+      birthday18: function(value, scope, element, attrs, param) {
+        var _birthday = moment(value, "DD.MM.YYYY");
+        var _today = moment();
+        var res = _birthday.isAfter(_today.add(-18, 'year'));
+        return !value || !res;
+      },
+      pastdate: function(value, scope, element, attrs, param) {
+        var _value = moment(value, "DD.MM.YYYY");
+        var _today = moment().add(-1, 'day');
+        var res = _value.isAfter(_today);
+        return !value || !res;
+      },
+    };
+
+    var validationDefaultMessages = {
+      required: {
+        success: 'It\'s Required'
+      },
+      password: {
+        error: 'This should be a password'
+      },
+      email: {
+        error: 'This should be Email',
+        success: 'It\'s Email'
+      },
+      number: {
+        error: 'This should be Number',
+        success: 'It\'s Number'
+      },
+      cyrillicduo: {
+        error: 'Only cyrillic',
+        success: 'It\'s cyrillic'
+      },
+      minlength: {
+        error: 'This should be longer',
+        success: 'Long enough!'
+      },
+      maxlength: {
+        error: 'This should be shorter',
+        success: 'Short enough!'
+      },
+      birthday18: {
+        error: 'Error',
+        success: 'Correct'
+      },
+      pastdate: {
+        error: 'Error',
+        success: 'Correct'
+      },
+    };
+
+    $validationProvider.invalidCallback = function(element) {
+      $(element).addClass('validation-has-error');
+    };
+
+    $validationProvider.validCallback = function(element) {
+      $(element).removeClass('validation-has-error');
+    };
+
+    $validationProvider
+      .setExpression(validationExpression)
+      .setDefaultMsg(validationDefaultMessages);
+
+    $validationProvider
+      .showSuccessMessage = false;
+  }]);

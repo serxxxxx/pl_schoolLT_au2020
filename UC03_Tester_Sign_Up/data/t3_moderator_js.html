@@ -1,0 +1,318 @@
+
+app.service('ArchiveVideoService',['$http', function ($http) {
+
+    function loadAll(pageNumber,size,field,sort) {
+        pageNumber = pageNumber > 0?pageNumber - 1:0;
+        var url = 'api/moderator/archive-video?page='+pageNumber+'&size='+size;
+      if (field != null && sort != null) {
+        url = url + '&sort=' + field + ',' + sort;
+        }
+        return $http({
+            method: 'GET',
+            url: url
+        });
+    }
+
+    return {
+        loadAll: loadAll
+    };
+}]);
+
+
+
+app.factory('BookingVideo', function ($resource) {
+        return $resource('api/moderator/booking-video', {}, {});
+    });
+app.factory('ClaimAnswer', function ($resource) {
+        return $resource('api/moderator/claimAnswer', {}, {});
+    });
+
+app.factory('Claim', function ($resource) {
+    return $resource('api/video/claims/:id');
+});
+
+app.service('ClaimsPageable',['$http', function ($http) {
+
+    function loadAll(pageNumber,size,field,sort) {
+        pageNumber = pageNumber > 0 ? pageNumber - 1:0;
+        var url = 'api/moderator/claims?page='+pageNumber+'&size='+size;
+      if (field != null && sort != null) {
+        url = url + '&sort=' + field + ',' + sort;
+        }
+        return $http({
+            method: 'GET',
+            url: url
+        });
+    }
+
+    return {
+        loadAll: loadAll
+    };
+}]);
+
+app.factory('Claims', function f($rootScope, Claim, ClaimAnswer) {
+        return {
+            saveClaim: function (claim, callback) {
+                var cb = callback || angular.noop;
+
+                return Claim.save(claim,
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+
+            getAllClaims: function (callback) {
+                var cb = callback || angular.noop;
+
+                return Claim.query(
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+
+            claimAnswer: function (claim, callback) {
+                var cb = callback || angular.noop;
+
+                return ClaimAnswer.save(claim,
+                    function () {
+                        return cb(claim);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });
+
+app.service('CommercialVideoService',['$http', function ($http) {
+
+    function loadAll(pageNumber,size,field,sort) {
+        pageNumber = pageNumber > 0?pageNumber - 1:0;
+        var url = 'api/moderator/commercial-video?page='+pageNumber+'&size='+size;
+      if (field != null && sort != null) {
+        url = url + '&sort=' + field + ',' + sort;
+        }
+        return $http({
+            method: 'GET',
+            url: url
+        });
+    }
+    return {
+        loadAll: loadAll
+    };
+}]);
+
+
+
+app.factory('EmailNotificationsResource', function ($resource) {
+        return $resource('api/moderator/newOrderNotification', {}, {});
+    });
+
+app.factory('EmailNotifications', function Auth($rootScope, EmailNotificationsResource) {
+        return {
+            newOrderNotification: function (orderId, callback) {
+                var cb = callback || angular.noop;
+
+                return EmailNotificationsResource.get({orderId: orderId},
+                    function () {
+                        return cb(orderId);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+        };
+    });
+
+
+
+app.factory('NewBookingPrepare', function ($resource) {
+        return $resource('api/public/booking', {}, {});
+    });
+
+app.factory('NewBooking', function Auth($rootScope, NewBookingPrepare) {
+        return {
+            booking: function (order, callback) {
+                var cb = callback || angular.noop;
+
+                return NewBookingPrepare.save(order,
+                    function () {
+                        return cb(order);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+        };
+    });
+
+
+app.service('PromoCodeService',['$http', function ($http) {
+
+    function loadAll(pageNumber,size,field,sort) {
+        pageNumber = pageNumber > 0?pageNumber - 1:0;
+        var url = 'api/v2/promo-code?page='+pageNumber+'&size='+size;
+        if (sort != null && field != null){
+          url = url + '&sort='+field+","+sort;
+        }
+        return $http({
+            method: 'GET',
+            url: url
+        });
+    }
+    return {
+        loadAll: loadAll
+    };
+}]);
+
+app.factory('PromoCodes', function f($rootScope, PromoCodeService) {
+
+    return {
+            getAllPromoCodes: function (pageNumber,size,field,sort) {
+                return PromoCodeService.loadAll(pageNumber,size,field,sort);
+            }
+        };
+    });
+
+app.factory('PromoCode', ['$http', function ($http) {
+    var apiUrl = '/api/v2/promo-code';
+
+    return {
+        getAll: function () {
+            return $http.get(apiUrl);
+        },
+
+
+        create: function (data) {
+            return $http.post(apiUrl, data);
+        },
+
+
+        delete: function (item) {
+            return $http.delete(apiUrl + '/' + item.id);
+        },
+
+
+        update: function (item, data) {
+            return $http.put(apiUrl + '/' + item.id, data);
+        },
+
+
+        switchAvailability: function (item, enabled) {
+            return $http.put(apiUrl + '/' + item.id + '/enabled/' + String(enabled));
+        }
+    }
+}]);
+
+
+app.factory('Review', function ($resource) {
+        return $resource('api/moderator/review', {}, {});
+    });
+
+app.factory('LockReview', function ($resource) {
+        return $resource('api/moderator/lock', {}, {});
+    });
+
+app.factory('UnlockReview', function ($resource) {
+        return $resource('api/moderator/unlock', {}, {});
+    });
+
+app.factory('RollbackReview', function ($resource) {
+        return $resource('api/moderator/rollback', {}, {});
+    });
+
+
+app.factory('Reviews', function f($rootScope, Review, UnlockReview, LockReview, RollbackReview) {
+        return {
+            saveReview: function (review, callback) {
+                var cb = callback || angular.noop;
+
+                return Review.save(review,
+                    function () {
+                        return cb(review);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            lock: function (review, callback) {
+                var cb = callback || angular.noop;
+
+                return LockReview.save(review,
+                    function () {
+                        return cb(review);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            unlock: function (review, callback) {
+                var cb = callback || angular.noop;
+
+                return UnlockReview.save(review,
+                    function () {
+                        return cb(review);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            rollback: function (review, callback) {
+                var cb = callback || angular.noop;
+
+                return RollbackReview.save(review,
+                    function () {
+                        return cb(review);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });
+app.service("TrialVideoResult", ["$http", function ($http) {
+    function loadVideoResult(videoId) {
+      let url = "/api/v3/moderator/trial-video/result/" + videoId;
+
+      return $http({
+        method: "GET",
+        url: url,
+      });
+    }
+    return {
+      loadVideoResult: loadVideoResult,
+    };
+  },
+]);
+
+app.service("TrialTasks", [
+  "$http",
+  function ($http) {
+    function loadAll(pageNumber, size, field, sort, query = "") {
+      pageNumber = pageNumber > 0 ? pageNumber - 1 : 0;
+      var url =
+        "api/moderator/trial-video?page=" +
+        pageNumber +
+        "&size=" +
+        size +
+        "&query=" +
+        query;
+      if (field != null && sort != null) {
+        url = url + "&sort=" + field + "," + sort;
+      }
+      return $http({
+        method: "GET",
+        url: url,
+      });
+    }
+    return {
+      loadAll: loadAll,
+    };
+  },
+]);

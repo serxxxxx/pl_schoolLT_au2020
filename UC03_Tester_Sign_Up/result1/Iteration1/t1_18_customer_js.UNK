@@ -1,0 +1,309 @@
+
+
+app.factory('CustomerFeedback', function ($resource) {
+        return $resource('api/customer/feedback', {}, {});
+    });
+
+app.factory('CustomerTariff', function ($resource) {
+        return $resource('api/customer/tariffs', {}, {});
+    });
+
+app.factory('UserTariff', function ($resource) {
+  return $resource('api/v2/tariff/user', {}, {});
+});
+
+app.factory('Customer',
+    function f($rootScope, CustomerFeedback, CustomerTariff, UserTariff) {
+
+        return {
+            sendFeedbackGet: function (callback) {
+                var cb = callback || angular.noop;
+
+                return Customer.query(
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            getTariffs: function (callback) {
+                var cb = callback || angular.noop;
+
+                return CustomerTariff.query(
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+          getTariff: function (callback) {
+            var cb = callback || angular.noop;
+
+            return UserTariff.get(
+                function () {
+                  return cb();
+                },
+                function (err) {
+                  return cb(err);
+                }.bind(this)).$promise;
+          },
+            sendFeedback: function (feedback, callback) {
+                var cb = callback || angular.noop;
+
+                return CustomerFeedback.save(feedback,
+                    function () {
+                        return cb(feedback);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });
+
+
+app.factory('Order', function ($resource) {
+        return $resource('api/public/orders/:id');
+    });
+
+app.factory('Payments', function ($resource) {
+        return $resource('api/public/paymentInitRequest', {}, {});
+    });
+
+app.factory('CustomerAllTester', function ($resource) {
+    return $resource('api/customer/all-testers', {}, {});
+});
+app.factory('PromoCodeCheck', function ($resource) {
+        return $resource('api/public/checkPromoCode', {}, {});
+    });
+app.factory('Price', function ($resource) {
+        return $resource('api/customer/calculatePrice', {}, {});
+    });
+
+app.factory('CopyOrder', function ($resource) {
+        return $resource('api/customer/copy-order', {}, {});
+    });
+app.factory('StopOrder', function ($resource) {
+        return $resource('/api/v2/customer/stopOrder', {}, {});
+    });
+app.factory('ActiveOrder', function ($resource) {
+        return $resource('api/moderator/active-orders', {}, {});
+    });
+app.factory('Orders', function f($rootScope, Order, Payments, CopyOrder, StopOrder, Price,
+                                 PromoCode, PromoCodeCheck, CustomerAllTester, ActiveOrder) {
+
+        var draftId;
+
+        var addDraftId = function(newObj) {
+            draftId = newObj;
+        };
+
+        var getDraftId = function(){
+            return draftId;
+        };
+        
+
+        return {
+            addDraftId: addDraftId,
+            getDraftId: getDraftId,
+            getOrders: function (callback) {
+                var cb = callback || angular.noop;
+
+                return Order.query(
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            getOrder: function (id, callback) {
+                var cb = callback || angular.noop;
+
+                return Order.get({id: id},
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            saveOrder: function (order, callback) {
+                var cb = callback || angular.noop;
+
+                return Order.save(order,
+                    function () {
+                        return cb(order);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            goToPay: function (id, promoCode, callback) {
+                var cb = callback || angular.noop;
+
+                return Payments.get({id: id, promoCode: promoCode},
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            checkPromoCode: function (orderId, promoCode, callback) {
+                var cb = callback || angular.noop;
+
+                return PromoCodeCheck.get({orderId: orderId, promoCode: promoCode},
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            calculatePrice: function (orderId, isSpecialOrMobile, callback) {
+                var cb = callback || angular.noop;
+
+                return Price.get({orderId: orderId,isSpecialOrMobile: isSpecialOrMobile},
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            copyOrder: function (id, callback) {
+                var cb = callback || angular.noop;
+                var res = CopyOrder.get({id: id},
+                    function (data) {
+                        return cb(data);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+                return res;
+
+            },
+            stopOrder: function (id, callback) {
+                var cb = callback || angular.noop;
+
+                return StopOrder.save({orderId: id},
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            getAllTesters: function (callback) {
+                var cb = callback || angular.noop;
+
+                return CustomerAllTester.query(
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            getAllActiveOrders: function (callback) {
+                var cb = callback || angular.noop;
+
+                return ActiveOrder.query(
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });
+
+
+app.factory('CustomerProfile', function ($resource) {
+        return $resource('api/customer/profile', {}, {});
+    });
+
+app.factory('CustomerProfiles', function f($rootScope, CustomerProfile) {
+        return {
+            getCustomerProfile:  function (id, callback) {
+                var cb = callback || angular.noop;
+
+                return CustomerProfile.get({id: id},
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            saveCustomerProfile: function (profile, callback) {
+                var cb = callback || angular.noop;
+
+                return CustomerProfile.save(profile,
+                    function () {
+                        return cb(profile);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });
+
+
+app
+    .factory('Transaction', function ($resource) {
+        return $resource('api/customer/transactions/:id');
+    })
+    .factory('Transactions', function Transactions(Transaction) {
+        return {
+            getAllTransactions: function (callback) {
+                var cb = callback || angular.noop;
+
+                return Transaction.query(
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            getTransaction: function (id, callback) {
+                var cb = callback || angular.noop;
+
+                return Transaction.get({id: id},
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            saveTransaction: function (transaction, callback) {
+                var cb = callback || angular.noop;
+
+                return Transaction.save(transaction,
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            deleteTransaction: function (transaction, callback) {
+                var cb = callback || angular.noop;
+
+                return Transaction.delete({id: id},
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        }
+    });

@@ -1,0 +1,47 @@
+define(['../../app'], function (app) {
+    app_cached_providers
+        .$controllerProvider
+        .register('homeSuccessController', function ($rootScope, $scope, $sce, $state, Principal, NewTesters) {
+            Principal.identity().then(function (account) {
+                if ($rootScope.successMessage) {
+                    $scope.successMessage = $rootScope.successMessage;
+                    if ($rootScope.successMessage.header) {
+                        $scope.successMessage.header = $sce.trustAsHtml($rootScope.successMessage.header);
+                        localStorage.setItem('header', $rootScope.successMessage.header);
+                    } else {
+                        $scope.successMessage.header = '';
+                        localStorage.setItem('header', '');
+                    }
+                    if ($rootScope.successMessage.description) {
+                        $scope.successMessage.description = $sce.trustAsHtml($rootScope.successMessage.description);
+                        localStorage.setItem('description', $rootScope.successMessage.description);
+                    } else {
+                        $scope.successMessage.description = '';
+                        localStorage.setItem('description', '');
+                    }
+                    if ($rootScope.successMessage.btn) {
+                        $scope.successMessage.btn = $sce.trustAsHtml($rootScope.successMessage.btn);
+                        localStorage.setItem('btn', $rootScope.successMessage.btn);
+                    } else {
+                        $scope.successMessage.btn = '';
+                        localStorage.setItem('btn', '');
+                    }
+                    if ($rootScope.successMessage.tmpl) {
+                        localStorage.setItem('tmpl', $rootScope.successMessage.tmpl);
+                        $(".tmpl_header_modal_window").load($rootScope.successMessage.tmpl);
+                    } else {
+                        $scope.successMessage.tmpl = '';
+                        localStorage.setItem('tmpl', '');
+                    }
+                } else {
+                    $scope.successMessage = {};
+                    $scope.successMessage.header = $sce.trustAsHtml(localStorage.getItem('header') || '');
+                    $scope.successMessage.description = $sce.trustAsHtml(localStorage.getItem('description') || '');
+                    $scope.successMessage.btn = $sce.trustAsHtml(localStorage.getItem('btn') || '');
+                    if(localStorage.getItem('tmpl')!=''){
+                        $(".tmpl_header_modal_window").load(localStorage.getItem('tmpl'));
+                    }
+                }
+            });
+        });
+});

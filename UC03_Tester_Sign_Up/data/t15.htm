@@ -1,0 +1,518 @@
+<div class="modal-body newprice-modal" style="text-align: center;">
+  <div class="modal-lk">
+    <span
+      class="share-close"
+      ng-click="cancel()"
+      style="
+        color: black;
+        position: absolute;
+        top: 0px;
+        right: 0;
+        z-index: 1;
+        opacity: 0.2;
+      "
+      >×</span
+    >
+
+    <!-- ВХОД В ЛК -->
+    <input
+      type="radio"
+      id="enterLk"
+      name="mainEnterForm"
+      checked
+      style="display: none;"
+    />
+    <div
+      class="modal-lk-wrapper modal-lk-enterlk"
+      style="height: 410px;"
+      ng-class="{'opened': currentSlide === 'modal-lk-enterlk'}"
+    >
+      <h3 class="modal-lk-title" ng-tr="WHE.WHE19">Вход</h3>
+
+      <section class="switch-login-type">
+        <label
+          class="link-lk"
+          ng-click="cleanBlockError(); openSlide('modal-lk-registrationlk')"
+          for="registrationLk"
+          ng-tr="WHE.WHE20"
+          >Зарегистрироваться</label
+        >
+      </section>
+
+      <form
+        id="form_auth"
+        class="ng-invalid-elevalidation"
+        name="loginForm"
+        role="form"
+        style="margin-bottom: 10px;"
+      >
+        <input
+          class="modal-lk-email-input"
+          data-type="login_number"
+          data-text-error="{{ 'WHE1.WHE' | translate }}"
+          id="login"
+          name="login"
+          validator="required"
+          valid-method="watch"
+          placeholder="{{ 'WHE1.WHE1' | translate }}"
+          ng-model="username"
+          required-error-message="{{ 'WHE1.WHE' | translate }}"
+          type="text"
+          data-testid="Email input"
+        />
+
+        <input
+          class="modal-lk-password-input"
+          data-type="password"
+          data-text-error="{{ 'WHE1.WHE2' | translate }}"
+          ng-model="password"
+          validator="required,"
+          valid-method="watch"
+          type="password"
+          name="password"
+          required-error-message="{{ 'WHE1.WHE2' | translate }}"
+          placeholder="{{ 'WHE1.WHE3' | translate }}"
+          data-testid="Password input"
+        />
+
+        <div
+          class="error-block"
+          style="margin-top: 10px; color: #ff3580;"
+          ng-tr="LCT.LCT1"
+          ng-show="authenticationError"
+        ></div>
+
+        <button
+          ng-disabled="{{ loginForm.$invalid }}"
+          ng-click="login()"
+          class="lk-enter-btn"
+          ng-tr="WHE1.WHE4"
+          data-testid="Login button"
+        >
+          Войти
+        </button>
+      </form>
+
+      <section class="switch-login-type">
+        <label
+          class="link-lk"
+          for="forgetLk"
+          ng-click="cleanBlockError(); openSlide('modal-lk-forgetlk')"
+          ng-tr="WHE.WHE23"
+          >Забыли пароль?</label
+        >
+      </section>
+    </div>
+
+    <!-- РЕГИСТРАЦИЯ ПОЛЬЗОВАТЕЛЯ -->
+    <input
+      type="radio"
+      id="registrationLk"
+      name="mainEnterForm"
+      style="display: none;"
+    />
+    <div
+      class="modal-lk-wrapper modal-lk-registrationlk"
+      ng-class="{'opened': currentSlide === 'modal-lk-registrationlk'}"
+    >
+      <h3 ng-if="!userRole" class="modal-lk-title" ng-tr="WHE1.WHE5">
+        Регистрация
+      </h3>
+      <h3
+        ng-if="userRole=='CUSTOMER'"
+        class="modal-lk-title"
+        ng-tr="WHE1.WHE5_CLIENT"
+      >
+        Регистрация клиента
+      </h3>
+      <h3
+        ng-if="userRole=='TESTER'"
+        class="modal-lk-title"
+        ng-tr="WHE1.WHE5_TESTER"
+      >
+        Регистрация тестировщика
+      </h3>
+
+      <section class="switch-login-type">
+        <label
+          class="link-lk"
+          ng-click="cleanBlockError(); openSlide('modal-lk-enterlk')"
+          for="enterLk"
+          ng-tr="WHE.WHE25"
+          >Войти</label
+        >
+      </section>
+      <section class="user-type-choose" ng-if="!userRole">
+        <div class="button-wrapper">
+          <button ng:click="switchUserRole('CUSTOMER')" ng-tr="WHE1.WHE12">
+            Стать клиентом
+          </button>
+          <p ng-tr="WHE1.WHE14">
+            Я хочу протестировать свой<br />сайт/прототип/приложение
+          </p>
+        </div>
+
+        <div class="button-wrapper">
+          <button ng:click="switchUserRole('TESTER')" ng-tr="WHE1.WHE13">
+            Стать тестировщиком
+          </button>
+          <p ng-tr="WHE1.WHE15">
+            Я хочу тестировать сайты<br />и зарабатывать деньги
+          </p>
+        </div>
+      </section>
+
+      <form
+        id="form_register_customer"
+        name="registerForm"
+        role="form"
+        novalidate
+      >
+        <section ng-if="userRole=='CUSTOMER'">
+          <input
+            class="modal-lk-email-input"
+            data-type="text"
+            data-text-error="{{ 'WHE1.WHE7' | translate }}"
+            placeholder="Ваше имя*"
+            type="text"
+            validator="required"
+            valid-method="watch"
+            required-error-message="{{ 'WHE1.WHE7' | translate }}"
+            id="name"
+            name="name"
+            ng-model="registerAccount.name"
+          />
+          <input
+            class="modal-lk-email-input"
+            data-type="text"
+            placeholder="Должность"
+            type="text"
+            id="position"
+            name="position"
+            ng-model="registerAccount.position"
+          />
+          <input
+            class="modal-lk-email-input"
+            data-type="text"
+            data-text-error="{{ 'WHE1.WHE8' | translate }}"
+            placeholder="Компания*"
+            type="text"
+            validator="required"
+            valid-method="watch"
+            required-error-message="{{ 'WHE1.WHE8' | translate }}"
+            id="company"
+            name="company"
+            ng-model="registerAccount.company"
+          />
+          <input
+            class="modal-lk-email-input"
+            placeholder="Почта*"
+            type="text"
+            validator="required, email"
+            valid-method="watch"
+            required-error-message="{{ 'WHE1.WHE6' | translate }}"
+            email-error-message="{{ 'WHE1.WHE6' | translate }}"
+            id="emails"
+            name="email"
+            ng-model="registerAccount.email"
+          />
+          <div class="modal-lk-phone-input-wrapper">
+            <input
+              class="modal-lk-phone-input"
+              type="tel"
+              validator="required"
+              required-error-message="{{ 'WHE1.WHE17' | translate }}"
+              id="phoneNumber"
+              name="phoneNumber"
+              ng-model="registerAccount.telNumber"
+              ng-keyup="phoneNumberMask($event)"
+              ng-blur="phoneNumberMask($event)"
+            />
+          </div>
+          <p class="phone-input-validate validation-invalid">Введите телефон</p>
+          <input
+            class="modal-lk-email-input"
+            data-type="text"
+            placeholder="Ссылка на сайт или приложение"
+            type="text"
+            id="site"
+            name="site"
+            ng-model="registerAccount.site"
+          />
+
+          <div class="tester-row-checkbox-register-form text-left">
+            <span>Нажимая "Зарегистрироваться", вы принимаете </span>
+            <a
+              target="_blank"
+              href="assets/files/tester_conditions.pdf"
+              class="link"
+              ng-if="config.locale == 'ru'"
+              >Условия передачи информации</a
+            >
+          </div>
+        </section>
+
+        <section ng-if="userRole=='TESTER'">
+          <input
+            class="modal-lk-email-input"
+            placeholder="Почта*"
+            type="email"
+            validator="required, email"
+            valid-method="watch"
+            required-error-message="{{ 'WHE1.WHE6' | translate }}"
+            email-error-message="{{ 'WHE1.WHE6' | translate }}"
+            id="emails"
+            name="email"
+            ng-model="registerAccount.email"
+          />
+        </section>
+
+        <div
+          class="error-block"
+          style="margin-top: 10px; color: #ff3580;"
+          ng-show="registrationEmailExists"
+        >
+          <span ng-tr="LCT.LCT6"></span>
+          <br />
+          <span ng-tr="LCT.LCT7"></span>
+        </div>
+
+        <button
+          ng-if="config.locale == 'ru' && userRole"
+          ng-click="register()"
+          class="lk-enter-btn"
+          ng-tr="WHE.WHE26"
+        >
+          Зарегистрироваться
+        </button>
+      </form>
+
+      <!-- <section ng-if="config.locale == 'ru'">
+        <label
+          class="forget-password link-lk"
+          for="forgetLk"
+          ng-click="cleanBlockError(); openSlide('modal-lk-forgetlk')"
+          ng-tr="WHE.WHE27"
+          >Забыли пароль?</label
+        >
+      </section> -->
+    </div>
+
+    <!-- ВОССТАНОВЛЕНИЕ ПАРОЛЯ -->
+    <input
+      type="radio"
+      id="forgetLk"
+      name="mainEnterForm"
+      style="display: none;"
+    />
+    <div
+      class="modal-lk-wrapper modal-lk-forgetlk"
+      ng-class="{'opened': currentSlide === 'modal-lk-forgetlk'}"
+    >
+      <h3 class="modal-lk-title reset-pass" ng-tr="WHE.WHE31">
+        Восстановление пароля
+      </h3>
+
+      <form class="" name="resetPasswordForm" role="form">
+        <input
+          class="modal-lk-email-input"
+          data-type="email_valid"
+          data-text-error="{{ 'WHE1.WHE6' | translate }}"
+          id="email_valid"
+          validator="required, email"
+          valid-method="watch"
+          name="email"
+          required-error-message="{{ 'WHE1.WHE6' | translate }}"
+          email-error-message="{{ 'WHE1.WHE6' | translate }}"
+          placeholder="Почта"
+          ng-model="resetEmail"
+          type="text"
+        />
+
+        <div
+          class="error-block"
+          style="margin-top: 10px; color: #ff3580;"
+          ng-show="resetPasswordEmailNotFound"
+        >
+          <span ng-tr="LCT.LCT13"></span>
+          <span ng-tr="LCT.LCT14"></span>
+        </div>
+
+        <div
+          class="error-block"
+          style="margin-top: 10px; color: #ff3580;"
+          ng-show="resetPasswordUserNotActivated"
+        >
+          <span ng-tr="LCT.LCT15"></span>
+        </div>
+
+        <button
+          ng-click="passwordReset()"
+          class="lk-enter-btn"
+          ng-tr="WHE.WHE32"
+        >
+          Восстановить
+        </button>
+      </form>
+
+      <section>
+        <label
+          class="link-lk forget-password"
+          ng-click="cleanBlockError(); openSlide('modal-lk-enterlk')"
+          for="enterLk"
+          ng-tr="WHE.WHE33"
+          >Я помню пароль</label
+        >
+      </section>
+    </div>
+  </div>
+</div>
+
+<style>
+  .user-type-choose {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-type-choose .button-wrapper {
+    padding: 15px;
+    border: 1px solid #20c997;
+    border-radius: 7px;
+    margin: 10px 0;
+  }
+  .user-type-choose .button-wrapper button {
+    display: block;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    background-color: #20c997;
+    max-width: 280px;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 5px;
+  }
+  .user-type-choose .button-wrapper p {
+    margin: 15px 10px 0 10px;
+  }
+  .in-form-role-switcher {
+    text-decoration: underline;
+    margin: 10px 0;
+    cursor: pointer;
+  }
+  .enter-popup-modal .modal.in {
+    overflow-y: auto;
+  }
+  .enter-popup-modal .modal.in .modal-dialog {
+    top: 0;
+  }
+  @media (min-width: 768px) {
+    .enter-popup-modal .modal.in .modal-dialog.modal-sm {
+      width: 370px;
+      top: 50%;
+      margin: 0 auto;
+      transform: translate(0, -50%);
+    }
+  }
+  .enter-popup-modal .modal.in .modal-dialog .modal-lk-title {
+    color: #20c997;
+  }
+  .modal-lk-phone-input-wrapper {
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+  }
+  .modal-lk-phone-input-wrapper .modal-lk-phone-input {
+    border: 0;
+    padding: 10px 15px 10px 50px !important;
+    width: 100%;
+    border: 2px solid #20c997;
+    border-radius: 5px;
+  }
+  .iti {
+    width: 100%;
+    display: block;
+  }
+  .iti__selected-flag {
+    outline: 0;
+  }
+  .iti__country-name,
+  .iti__dial-code,
+  .iti__flag-box {
+    font-size: 16px;
+  }
+  .iti__country-list {
+    max-width: 276px;
+  }
+  .phone-input-validate {
+    display: none;
+  }
+  .phone-input-validate-show {
+    display: block;
+  }
+  @media (max-width: 767px) {
+    .enter-popup-modal .modal.in .modal-dialog.modal-sm {
+      top: 0;
+    }
+    .enter-popup-modal .modal.in .modal-dialog .modal-lk-title {
+      padding-bottom: 0;
+      margin-bottom: 0px;
+      border-bottom: none;
+    }
+    .enter-popup-modal .modal.in .modal-dialog .modal-lk-email-input,
+    .enter-popup-modal .modal.in .modal-dialog .lk-enter-btn,
+    .enter-popup-modal .modal.in .modal-dialog .custom_select select {
+      margin-top: 10px;
+    }
+  }
+  .modal-lk {
+    top: 0;
+    margin: 0;
+    transform: none;
+    border: none;
+    width: auto;
+    box-shadow: none;
+    min-height: 0;
+    position: relative;
+  }
+  .modal-lk-enterlk.opened {
+    position: static;
+    right: 0;
+    opacity: 1;
+  }
+
+  .modal-lk-registrationlk.opened {
+    position: static;
+    left: 0;
+    opacity: 1;
+    height: 100%;
+    overflow: auto;
+  }
+  .modal-lk-registrationlk .custom_select {
+    display: inline-block;
+  }
+  .modal-lk-registrationlk .custom_select select {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid #20c997;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #fff;
+    height: 25px;
+  }
+  .modal-lk-forgetlk.opened {
+    position: static;
+    top: 0;
+    opacity: 1;
+  }
+  .modal-lk-wrapper.block_error_valid {
+    border: none;
+  }
+</style>

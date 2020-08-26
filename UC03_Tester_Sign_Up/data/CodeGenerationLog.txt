@@ -1,0 +1,72 @@
+****** Start Log Message ******
+Web Recorder version : 12.55.911.0 
+Recording Mode: HTML-based script containing explicit URLs only
+Recording headers not in list:
+	accept
+	accept-charset
+	accept-encoding
+	accept-language
+	accept-ranges
+	age
+	allow
+	cache-control
+	content-base
+	content-disposition
+	content-encoding
+	content-language
+	content-location
+	content-md5
+	content-range
+	content-type
+	date
+	etag
+	expires
+	from
+	if-modified-since
+	if-match
+	if-none-match
+	if-range
+	if-unmodified-since
+	location
+	last-modified
+	max-forwards
+	pragma
+	public
+	range
+	retry-after
+	server
+	transfer-encoding
+	upgrade
+	user-agent
+	vary
+	via
+	warning
+	method
+	path
+	scheme
+Not excluding content types
+Do not record this content types as a resource:
+	text/html
+	text/xml
+	application/json
+Reset context between actions
+Record non-HTML elements in current HTML function
+Protocol Type: Multi-QTWeb
+
+$$$$$$ End Log Message $$$$$$
+
+Code generation version: 12.55.911.0
+
+****** Analyze segments filter initialization ******
+[Traffic Filtering] Filtering 2.21.99.129
+[Traffic Filtering] Filtering 31.13.72.12
+[Traffic Filtering] Filtering 2.21.99.113
+[Traffic Filtering] Filtering 31.13.72.12
+[Traffic Filtering] Filtering 2.21.99.129
+[Traffic Filtering] Filtering 31.13.72.12
+[Traffic Filtering] Filtering 2.21.99.113
+[Traffic Filtering] Filtering 31.13.72.12
+[Traffic Filtering] Filtering 2.21.99.129
+[Traffic Filtering] Filtering 2.21.99.113
+[Traffic Filtering] Filtering 2.21.99.129
+[Traffic Filtering] Filtering 2.21.99.113

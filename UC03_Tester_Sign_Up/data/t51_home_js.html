@@ -1,0 +1,600 @@
+
+
+app
+    .factory('BookingPrepare', function ($resource) {
+        return $resource('api/public/booking', {}, {});
+    });
+
+app
+    .factory('BookingConfirm', function ($resource) {
+        return $resource('api/public/roger', {}, {
+            'get': {method: 'GET', params: {}, isArray: false}
+        });
+    });
+
+app
+    .factory('Booking', function Auth($rootScope, BookingPrepare, BookingConfirm) {
+        return {
+            booking: function (order, callback) {
+                var cb = callback || angular.noop;
+
+                return BookingPrepare.save(order,
+                    function () {
+                        return cb(order);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+
+            confirm: function (key, callback) {
+                var cb = callback || angular.noop;
+
+                return BookingConfirm.get(key,
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });
+
+FB = null;
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  //if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+
+app
+    .factory('TagService', function ($resource) {
+        return $resource('api/video/tags', {}, {
+            'get': {
+                method: 'GET', params: {}, isArray: true,
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    return data;
+                }
+            }
+        });
+    });
+
+
+app
+    .factory('VideoService', function ($resource) {
+        return $resource('api/video/fileName', {}, {})
+    })
+    .factory('VideoUpdateNotes', function ($resource) {
+        return $resource('api/video/notes', {}, {
+            'update': {method: 'POST'}
+        });
+    })
+    .factory('VideoCreatedComment', function ($resource) {
+        return $resource('api/video/createdComment', {}, {
+            'update': {method: 'POST'}
+        });
+    })
+    .factory('VideoSetPrivate', function ($resource) {
+        return $resource('api/video/setPrivate', {}, {
+            'update': {method: 'POST'}
+        });
+    })
+.factory('VideoSetPrivateByOrderId', function ($resource) {
+  return $resource('api/video/setPrivateByOrderId', {}, {});
+    })
+
+.factory('Video', function Video(TagService, VideoService, VideoUpdateNotes,
+    VideoCreatedComment, VideoSetPrivate, VideoSetPrivateByOrderId) {
+        return {
+            loadTags: function (videoId, callback) {
+                var cb = callback || angular.noop;
+
+                return TagService.get(videoId,
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            loadVideoFileName: function (videoId, callback) {
+                var cb = callback || angular.noop;
+
+                return VideoService.save(videoId,
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            updateVideoNotes: function (video, callback) {
+                var cb = callback || angular.noop;
+
+                return VideoUpdateNotes.update(video,
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            videoCreatedComment: function (comment, callback) {
+                var cb = callback || angular.noop;
+
+                return VideoCreatedComment.update(comment,
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            setPrivate: function (video, callback) {
+                var cb = callback || angular.noop;
+
+                return VideoSetPrivate.update(video,
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+          setPrivateByOrderId: function (id, callback) {
+                var cb = callback || angular.noop;
+
+            return VideoSetPrivateByOrderId.get({id: id},
+                    function (response) {
+                        return cb(response);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+        }
+    });
+//var video = document.getElementById("pflb-video");
+var timer = null,
+    startTimeNote = '',
+    arrayStep = [];
+//var fullhref='qwe';
+//var pathPoster = fullhref + '/assets/images/preview_template.png';
+$(window).bind('hashchange', function () {
+    clearInterval(timer);
+});
+Share = {
+    vkontakte: function (purl, ptitle, pimg, text) {
+        url = 'http://vkontakte.ru/share.php?';
+        url += 'url=' + encodeURIComponent(purl);
+        url += '&title=' + encodeURIComponent(ptitle);
+        url += '&description=' + encodeURIComponent(text);
+        url += '&image=' + encodeURIComponent(pimg);
+        url += '&noparse=true';
+        Share.popup(url);
+    },
+    odnoklassniki: function (purl, text) {
+        url = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+        url += '&st.comments=' + encodeURIComponent(text);
+        url += '&st._surl=' + encodeURIComponent(purl);
+        Share.popup(url);
+    },
+    facebook: function (purl, ptitle, pimg, text) {
+        url = 'http://www.facebook.com/sharer.php?s=100';
+        url += '&p[title]=' + encodeURIComponent(ptitle);
+        url += '&p[summary]=' + encodeURIComponent(text);
+        url += '&p[url]=' + encodeURIComponent(purl);
+        url += '&p[images][0]=' + encodeURIComponent(pimg);
+        Share.popup(url);
+    },
+    twitter: function (purl, ptitle) {
+        url = 'http://twitter.com/share?';
+        url += 'text=' + encodeURIComponent(ptitle);
+        url += '&url=' + encodeURIComponent(purl);
+        url += '&counturl=' + encodeURIComponent(purl);
+        Share.popup(url);
+    },
+    popup: function (url) {
+        window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
+    }
+};
+
+$('.btn_copy_full_href').click(function (e) {
+    e.stopPropagation();
+    $('#insight-full-href').select();
+    if (document.execCommand('copy')) {
+        $('.block_info_share').text('Ссылка скопирована');
+    } else {
+        $('.block_info_share').text('Копирование не удалось');
+    }
+    $('#block_copy_img').removeClass('open');
+    $('.block_info_share').addClass('open');
+    setTimeout(function () {
+        $('.block_info_share').removeClass('open');
+    }, 2000)
+});
+
+$('.close_btn_share').click(function (e) {
+    e.stopPropagation();
+    $('#block_copy_img').removeClass('open');
+});
+
+$('.btn_close_right_form').click(function () {
+    $('.style_active_panel_absolute').removeClass('open');
+});
+
+
+var currenturl = location.href;
+
+document.displayurl = { 'offseturl': { 'value': currenturl } };
+
+var arrayTime = [];
+var arrayNote = [];
+var show_note = false;
+var allTimePoint = [];
+function init_sup_video() {
+    arrayTime = [];
+    arrayNote = [];
+    allTimePoint = [];
+    $('[data-router="article"]').each(function () {
+        var arrayAllTimeFrom = $(this).data('interval-from') || 0;
+        var arrayAllTimeTo = $(this).data('interval-to') || 0;
+        var at1, at2;
+
+        if (arrayAllTimeFrom) {
+            at1 = timeStrToSeconds(arrayAllTimeFrom)
+        }
+
+        if (arrayAllTimeTo) {
+            at2 = timeStrToSeconds(arrayAllTimeTo)
+        }
+
+        arrayTime.push({ start_time: at1, end_time: at2, $this: $(this) });
+    });
+    // раскоментировать для изменения времени при открытой заметки
+    /*$('#pflb-video').on('timeupdate', function (e) {
+     if (show_note) {
+     updateNote($(this)[0].getCurrentTime());
+     }
+     });*/
+
+}
+/**
+ * Преобразовывает строку формата "hh:mm:ss" в секунды
+ * @param {string} time - строка формата "hh:mm:ss" 
+ */
+function timeStrToSeconds(time) {
+    var split = time.split(':');
+
+    return split[0] * 60 * 60 + split[1] * 60 + +split[2];
+}
+
+function loadVideoPlayer(obj) {
+    arrayNote = obj;
+
+    function sortNote(a, b) {
+        if (a.stringStartSecond > b.stringStartSecond) return 1;
+        if (a.stringStartSecond < b.stringStartSecond) return -1;
+    }
+
+    var allTime = $('#pflb-video')[0].getDuration();
+    var allHtmlPoint = '';
+    if (arrayNote && arrayNote.length > 0) {
+        arrayNote.sort(sortNote);
+        if (location.href.indexOf('video-embed') == -1) {
+            for (var n = 0; n < obj.length; n++) {
+                allTimePoint.push({ time: obj[n].stringStartSecond * 100 / allTime, el: $(obj[n].$this) });
+                allHtmlPoint += '<span class="uxc_point_note after" data_num_point="[n]" style="left:' + obj[n].stringStartSecond * 100 / allTime + '%"></span>'
+            }
+        }
+        $('.uxc_point_note').remove();
+    }
+    for (var n = 0; n < arrayTime.length; n++) {
+        allTimePoint.push({ time: arrayTime[n].start_time * 100 / allTime, el: $(arrayTime[n].$this) });
+        allHtmlPoint += '<span class="uxc_point_task ' + (n == 0 ? "circle" : "") + ' after" data_num_point="[n]" style="left:' + arrayTime[n].start_time * 100 / allTime + '%"></span>'
+    }
+    $('.uxc_point_task').remove();
+
+    var container_point = $('.uxc__time-total');
+    container_point.append(allHtmlPoint);
+
+    $('.duration_step').text(new Date(allTime * 1000).toLocaleTimeString('ru-RU', { timeZone: 'UTC' }));
+}
+var i = 0;
+
+function active_time() {
+    if ($('#pflb-video').length > 0) {
+        var time = $('#pflb-video')[0].getCurrentTime();
+
+        arrayTime.forEach((timeInfo, index) => {
+            var start_time = timeInfo.start_time,
+                end_time = timeInfo.end_time;
+
+            var $activePoint = $('.uxc_point_task.active'),
+                $eqPoint = $('.uxc_point_task:eq(' + index + ')'),
+                $elem = $(timeInfo.$this);
+
+            if (start_time < end_time) {
+                if (time > end_time) {
+                    $activePoint.removeClass('before');
+                    $eqPoint.removeClass('after').removeClass('active').addClass('before')
+                }
+
+                if (time < start_time) {
+                    $activePoint.removeClass('after');
+                    $eqPoint.removeClass('before').removeClass('active').addClass('after')
+                }
+
+                if (time > start_time && time < end_time) {
+                    $('.is_active').removeClass('is_active');
+                    $elem.addClass('is_active');
+                    $activePoint.removeClass('active');
+                    $eqPoint.removeClass('before').removeClass('after').addClass('active')
+                } else {
+                    $elem.removeClass('is_active');
+                }
+            } else {
+                if ((end_time == null || end_time == 0) && time > start_time) {
+                    $('.is_active').removeClass('is_active');
+                    $elem.addClass('is_active');
+                    $activePoint.removeClass('active');
+                    $eqPoint.removeClass('before').removeClass('after').addClass('active')
+                } else {
+                    if (time < start_time && (end_time == null || end_time == 0)) {
+                        $activePoint.removeClass('after');
+                        $eqPoint.removeClass('before').removeClass('active').addClass('after')
+                    }
+                }
+            }
+        })
+
+        for (var i in arrayNote) {
+            if (i == (arrayNote.length - 1)) {
+                if (arrayNote[i].stringStartSecond < time) {
+                    $('[data-order=' + arrayNote[i].orderNum + ']').addClass('is_active');
+                    $('.uxc_point_note:eq(' + i + ')').removeClass('after').addClass('active')
+                } else {
+                    $('[data-order=' + arrayNote[i].orderNum + ']').removeClass('is_active');
+                    $('.uxc_point_note:eq(' + i + ')').removeClass('active').addClass('after')
+                }
+            } else {
+                if ((arrayNote[i].stringStartSecond <= time) && (arrayNote[Number(i) + 1].stringStartSecond > time)) {
+                    $('[data-order=' + arrayNote[i].orderNum + ']').addClass('is_active');
+                    $('.uxc_point_note:eq(' + i + ')').removeClass('after').addClass('active')
+                } else {
+                    $('[data-order=' + arrayNote[i].orderNum + ']').removeClass('is_active');
+                    $('.uxc_point_note:eq(' + i + ')').removeClass('active').addClass('after')
+                }
+            }
+        }
+    }
+}
+
+
+// parse the time hash out of the given ur
+function retrieveTimeFragment(url) {
+    var pageoffset = 0;
+    var offsettime = 0;
+    if (url.split("#")[1] != null) {
+        pageoffset = url.split("#")[1];
+        if (pageoffset.substring(2) != null) {
+            offsettime = pageoffset.substring(2);
+        }
+    }
+    return offsettime;
+}
+
+
+function getQueryStringValue(key) {
+    return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+}
+
+// borrowed from https://gist.github.com/niyazpk/f8ac616f181f6042d1e0
+function updateUrlParameter(uri, key, value) {
+    // remove the hash part before operating on the uri
+    var
+        i = uri.indexOf('#'),
+        hash = i === -1 ? '' : uri.substr(i)
+        ;
+
+    uri = i === -1 ? uri : uri.substr(0, i);
+
+    var
+        re = new RegExp("([?&])" + key + "=.*?(&|$)", "i"),
+        separator = uri.indexOf('?') !== -1 ? "&" : "?"
+        ;
+
+    if (!value) {
+        // remove key-value pair if value is empty
+        uri = uri.replace(new RegExp("([?&]?)" + key + "=[^&]*", "i"), '');
+
+        if (uri.slice(-1) === '?') {
+            uri = uri.slice(0, -1);
+        }
+        // replace first occurrence of & by ? if no ? is present
+
+        if (uri.indexOf('?') === -1) {
+            uri = uri.replace(/&/, '?');
+        }
+
+    } else if (uri.match(re)) {
+        uri = uri.replace(re, '$1' + key + "=" + value + '$2');
+    } else {
+        uri = uri + separator + key + "=" + value;
+    }
+    return uri + hash;
+}
+
+var lang = getQueryStringValue('lang') || 'en',
+    stretching = getQueryStringValue('stretching') || 'auto'
+    ;
+
+$('select[name=sources]').on('change', function () {
+    var
+        _this = $(this),
+        media = _this.closest('.players').find('.media-wrapper').children('div:first').attr('id'),
+        player = mejs.players[media];
+
+    player.setSrc(_this.val().replace('&amp;', '&'));
+    player.load();
+
+    var renderer = $('#' + player.media.id + '-rendername');
+    renderer.find('.src').html('<a href="' + _this.val() + '" target="_blank">' + _this.val() + '</a>')
+        .end()
+        .find('.renderer').html(player.media.rendererName)
+        .end()
+        .find('.error').html('')
+        ;
+
+});
+$('[show-tab]').each(function () {
+    $(this).click(function () {
+        $('.btn_select_type.active').removeClass('active');
+        $(this).parent('.btn_select_type').addClass('active');
+    })
+});
+
+function formTime(int_obj) {
+    switch (true) {
+        case int_obj == 0:
+            return '00';
+            break;
+        case (int_obj > 0 && int_obj < 10):
+            return '0' + int_obj;
+            break;
+        case (int_obj >= 10):
+            return int_obj;
+            break;
+    }
+}
+function updateNote(time) {
+    var newMinTime = formTime(Math.floor(time / 60)),
+        newSecTime = formTime(Math.floor(time % 60)),
+        newFormatTime = newMinTime + ':' + newSecTime;
+    $('.header_modal_note .time_note').attr({
+        'data-formatTime-notes': newFormatTime,
+        'data-secTime-notes': time
+    }).text(newFormatTime);
+}
+function createNote(time) {
+    $('.uxc__pause').click();
+    var newMinTime = formTime(Math.floor(time / 60)),
+        newSecTime = formTime(Math.floor(time % 60)),
+        newFormatTime = newMinTime + ':' + newSecTime;
+    // if (!show_note) {
+    $('.header_modal_note .time_note').attr({
+        'data-formattime-notes': newFormatTime,
+        'data-sectime-notes': time
+    }).text(newFormatTime);
+    // }
+
+    var allTime = $('#pflb-video')[0].getDuration();
+    var leftpx = time * 100 / allTime;
+    $('body').append('<style>.style_active_panel_absolute .header_modal_note .block_time_bar:after{width: ' + leftpx + '%;}</style>');
+
+    var bottom = 170;
+
+    if ($(window).height() <= 715) {
+        bottom = 270;
+    }
+
+    if ($(window).height() <= 615) {
+        bottom = 370;
+    }
+
+    $('.style_active_panel_absolute').css({
+        'right': ($('video').width() - ($('video').width() - 50)),
+        'bottom': ($('video').height() - ($('video').height() - bottom))
+    }).addClass('open');
+    $('#textarea_block').focus();
+    show_note = true;
+    $('.uxc__addnote-button button').addClass('active')
+}
+
+$('.line_pay_btn').on('click', function () {
+    show_note = false;
+    $('.style_active_panel_absolute').removeClass('open');
+    $('.uxc__addnote-button button').removeClass('active')
+});
+$('.btnCreateNote').on('click', function () {
+    createNote($('#pflb-video')[0].getCurrentTime());
+});
+
+function jumpToTimeoffset(time) {
+    $('#pflb-video')[0].setCurrentTime(time);
+}
+var active_step = 0;
+// рендер подсказки, вызов из /assets/js/main_js/mediaelement-and-player.js
+function renderHelper(pos, time) {
+    for (var i in arrayTime) {
+        if (arrayTime[i].start_time < arrayTime[i].end_time) {
+            if (time > arrayTime[i].start_time && time < arrayTime[i].end_time) {
+                active_step = i;
+            }
+        } else {
+            if (arrayTime[i].end_time == 0 && time > arrayTime[i].start_time) {
+                active_step = i;
+            }
+        }
+    }
+    if (arrayStep.length > 0 && arrayStep.length > (active_step)) {
+        return [arrayStep[active_step].step.stepDetails[0].value, active_step];
+    } else {
+        return []
+    }
+}
+var i, c, y, v, s, n;
+v = document.getElementsByClassName("youtube");
+if (v.length > 0) {
+    s = document.createElement("style");
+    s.type = "text/css";
+    s.innerHTML = '.youtube{background-color:#000;max-width:100%;overflow:hidden;position:relative;cursor:hand;cursor:pointer}.youtube .thumb{bottom:0;display:block;left:0;margin:auto;max-width:100%;position:absolute;right:0;top:0;width:100%;height:auto}.youtube .play{filter:alpha(opacity=80);opacity:.8;height:77px;left:50%;margin-left:-38px;margin-top:-38px;position:absolute;top:50%;width:77px;background:url("/assets/images/1.png") no-repeat}';
+    document.body.appendChild(s)
+}
+for (n = 0; n < v.length; n++) {
+    y = v[n];
+    i = document.createElement("img");
+    if(y.id == 'uKLmtq0RjSs'){
+        i.setAttribute("src", "/assets/images/usability-testing.jpg");
+        i.setAttribute("alt", "Юзабилити-тестирование");
+    }else{
+        i.setAttribute("src", "https://i.ytimg.com/vi/" + y.id + "/hqdefault.jpg");
+    }
+    i.setAttribute("class", "thumb");
+    c = document.createElement("div");
+    c.setAttribute("class", "play");
+    y.appendChild(i);
+    y.appendChild(c);
+    y.onclick = function () {
+        var a = document.createElement("iframe");
+        a.setAttribute("src", "https://www.youtube.com/embed/" + this.id + "?rel=0&autoplay=1&autohide=1&border=0&wmode=opaque&enablejsapi=1");
+        a.setAttribute("id", this.id + '_uxc');
+        a.setAttribute("allowfullscreen", true);
+        a.style.width = this.style.width;
+        a.style.height = this.style.height;
+        a.style.position = this.style.position;
+        a.style.top = this.style.top;
+        a.style.left = this.style.left;
+        a.style.right = this.style.right;
+        a.style.bottom = this.style.bottom;
+        this.parentNode.replaceChild(a, this);
+       // onYouTubePlayerAPIReadys();
+    }
+}
+
+$('.close_modal_btn').click(function () {
+  $('.main_page_modal_el_bg').removeClass('open');
+  //$('#uxc_video_example').removeClass('open');
+  var iframe = document.getElementById('uxc_video_example');
+  iframe.src = iframe.src;
+});
+
+/*
+$('.href_el_video').click(function () {
+    $('.main_page_modal_el_bg').addClass('open');
+});*/

@@ -1,0 +1,14 @@
+GET /tmpl/tmpl_landing_new/header.html HTTP/1.1
+Host: loadtest.uxcrowd.ru
+Connection: keep-alive
+Accept: text/html
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+X-XSRF-TOKEN: 74364f46-5ab1-4005-8ff0-a672004b9171
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: https://loadtest.uxcrowd.ru/
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: XSRF-TOKEN=74364f46-5ab1-4005-8ff0-a672004b9171; CSRF-TOKEN=74364f46-5ab1-4005-8ff0-a672004b9171; intercom-id-fkbc3no8=1d15fc26-3fd0-4cdb-af9a-87375c22225c; intercom-session-fkbc3no8=
+

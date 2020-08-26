@@ -1,0 +1,330 @@
+define(['../../app'], function (app) {
+    app_cached_providers
+        .$controllerProvider
+        .register('homeLoginController', function ($rootScope, $scope, $state, $config, Principal, Profiles, $timeout, Auth, $http, Translation) {
+
+           if ($config.profileId == 'dev') {
+               $scope.isDev = true;
+           }
+
+           $scope.versionNumber = window.$config.version;
+
+        //    $('.modal-lk').addClass('ng-hide');
+
+            // $window.onclick = function(e) {
+            //     $('.modal-lk').addClass('ng-hide');
+            //     $('.errors_block').html('');
+            // };
+
+            $scope.toggleLoginPopup = function($event) {
+                if ($('.modal-lk').hasClass('ng-hide')) {
+                    $('.modal-lk').removeClass('ng-hide');
+                } else {
+                    $('.modal-lk').addClass('ng-hide');
+                    $('.errors_block').html('');
+                }
+
+                $event.stopPropagation();
+            };
+
+
+            $scope.user = {};
+            $scope.errors = {};
+            $scope.rememberMe = true;
+
+
+            $timeout(function () {
+                angular.element('[ng-model="username"]').focus();
+            });
+
+
+            Principal.identity().then(function (account) {
+              if (account != null && account.id) {
+                if (account.role === 'ROLE_CUSTOMER') {
+                //   $state.go('list-orders');
+                  window.location.href = $config.fullUrl + '/app-customer-home/list-orders';
+                } else if (account.role === 'ROLE_TESTER') {
+                  Profiles.getProfile().then(function (data) {
+                    $scope.profile = data;
+                    if ($scope.profile.fio == null || $scope.profile.birthday == null || $scope.profile.gender == null ||
+                        $scope.profile.education == null || $scope.profile.income == null || $scope.profile.socialStatus == null ||
+                        $scope.profile.familyStatus == null || $scope.profile.kids == null) {
+                      $scope.testerProfile = false;
+                    } else {
+                      $scope.testerProfile = true;
+                    }
+                    if ($scope.testerProfile) {
+                      $state.go('new-tasks');
+                    } else {
+                      $state.go('tester-profile');
+                    }
+                  })
+                } else if (account.role === 'ROLE_NEW_TESTER') {
+                  $state.go('welcome');
+                } else if (account.role === 'ROLE_MODERATOR') {
+                  $state.go('trial-video');
+                } else if (account.role === 'ROLE_LOCKED_TESTER') {
+                  $state.go('app-locked-tester-home');
+                } else if (account.role === 'ROLE_ADMIN') {
+                  $state.go('app-admin-home');
+                }
+              }
+            });
+
+
+
+
+
+            $scope.testerProfile = false;
+            $scope.uloginUrl = $config.fullUrl.replace(new RegExp(":", 'g'), "%3A").replace(new RegExp("/", 'g'), "%2F");
+            $scope.testStandLogo = $config.testStandLogo;
+            $scope.fullUrl = $config.fullUrl;
+            $scope.extensionID = Translation.getExtensionId();
+
+
+            $scope.login = function (event) {
+                //event.preventDefault();
+                var form = $scope['loginForm'];
+                show_error_valid({
+                    'selected_container': '.modal-lk-enterlk'
+                });
+                if ($('.modal-lk-enterlk').find('.ng-invalid-elevalidation').length <= 0) {
+                    $('.modal-lk-enterlk').removeClass('block_error_valid');
+                    Auth.login({
+                        username: $scope.username,
+                        password: $scope.password,
+                        rememberMe: $scope.rememberMe
+                    }).then(function (data) {
+                        pushToDataLayer({'event':'login_success'});
+
+                        $scope.authenticationError = false;
+                        Principal.identity().then(function (account) {
+                            function setCookie(name,value,days) {
+                                var expires = "";
+                                if (days) {
+                                    var date = new Date();
+                                    date.setTime(date.getTime() + (days*24*60*60*1000));
+                                    expires = "; expires=" + date.toUTCString();
+                                }
+                                document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+                            }
+
+                            setCookie('userId', String(account.id), 30);
+                            // if (window.gtag) {
+                            //     gtag('set', { 'user_id': account.id });
+                            // }
+                            if (window.ga) {
+                                ga('create', 'UA-76628941-1', 'auto', {
+                                    userId: String(account.id)
+                                });
+                            }
+                            if (account.role == 'ROLE_CUSTOMER') {
+                                window.location.href = $config.fullUrl + '/app-customer-home/list-orders';
+                                // $state.go('list-orders');
+                            } else {
+                                if (account.role == 'ROLE_TESTER') {
+                                    Profiles.getProfile().then(function (data) {
+                                        $scope.profile = data;
+                                        if ($scope.profile.fio == null || $scope.profile.birthday == null || $scope.profile.gender == null ||
+                                            $scope.profile.education == null || $scope.profile.income == null || $scope.profile.socialStatus == null ||
+                                            $scope.profile.familyStatus == null || $scope.profile.kids == null) {
+                                            $scope.testerProfile = false;
+                                        } else {
+                                            $scope.testerProfile = true;
+                                        }
+                                        if ($scope.testerProfile) {
+                                            $state.go('new-tasks');
+                                        } else {
+                                            $state.go('tester-profile');
+                                        }
+                                    });
+                                } else if (account.role === 'ROLE_NEW_TESTER') {
+                                  $state.go('welcome');
+                                } else {
+                                    $state.go('home');
+                                }
+                            }
+                        });
+                    }).catch(function () {
+                        $scope.authenticationError = true;
+                        $('.errors_block').html("<p class='valid_element'>"+Translation.translate('LCT.LCT1')+"</p>");
+
+                    });
+                } else {
+                    var error = "";
+                    var el_clear = 0;
+                    $('.modal-lk-enterlk').find('.ng-invalid-elevalidation:not("form")').each(function () {
+                        if ($(this).val().length >= 1) {
+                            //$(this).removeClass('ng-invalid-elevalidation');
+                        } else {
+                            el_clear++;
+                        }
+                    });
+                    if (el_clear > 0) {
+                        $('.modal-lk-enterlk').find('.ng-invalid-elevalidation:not("form")').each(function () {
+                            var type = (($(this).data('type') == "site_ru") || ($(this).data('type') == "step") || ($(this).data('type') == "string") || ($(this).data('type') == "select")) ? $(this).data('type-title') : $(this).data('type');
+                            error += "<p class='" + type + " valid_element' >" + $(this).attr('data-text-error') + "</p>";
+                        }).removeClass('ng-pristine');
+                        $('.errors_block').html(error);
+                        $('.modal-lk-enterlk').addClass('block_error_valid');
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            };
+
+
+            $scope.registerAccount = {};
+
+
+            $scope.register = function () {
+                show_error_valid({
+                    'selected_container': '.modal-lk-registrationlk'
+                });
+                if ($('.modal-lk-registrationlk').find('.ng-invalid-elevalidation').length <= 0) {
+                    $('.modal-lk-registrationlk').removeClass('block_error_valid');
+                    if ($scope.registerAccount.password !== $scope.confirmPassword) {
+                        $scope.doNotMatch = 'ERROR';
+                        $('[name=confirmPassword]').removeClass('ng-valid-elevalidation').addClass('ng-invalid-elevalidation');
+                        $('.doNotMatchPassword').show();
+                    } else {
+                        $('.doNotMatchPassword').hide();
+                        $scope.doNotMatch = null;
+                        $scope.error = null;
+                        var form = $scope['form'];
+                        $scope.registerAccount.role = 'ROLE_CUSTOMER';
+                        Auth.createAccount($scope.registerAccount).then(function (response) {
+                            pushToDataLayer({'event':'registration_form'});
+
+                            $scope.success = 'OK';
+                            $scope.error = null;
+                            $scope.message = "OK";
+                            $rootScope.successMessage = {
+                                'header': Translation.translate('LCT.LCT2'),
+                                 'description': Translation.translate('LCT.LCT3')+
+                                     '<strong style="font: 700 16px/18px futura-pt, sans-serif !important;">'+
+                                     $scope.registerAccount.email+
+                                     '</strong>. '+
+                                     "</div></div><div class=\"col-xs-12\"><div class=\"row\"><div class=\"sub_header_modal_window text-center\" ng-bind-html=\"successMessage.description\">" +
+                                     Translation.translate('LCT.LCT4')+
+                                     ' <strong style="font: 700 16px/18px futura-pt, sans-serif !important;">'+
+                                     Translation.translate('LCT.LCT5')+
+                                     '</strong>.</div>'
+                            };
+                            $state.go('success', {notify: false}, {reload: true});
+                        }).catch(function (response) {
+                            if (response.data == "E_MAIL_ADDRESS_ALREADY_IN_USE" || response.data == "TESTER_USER_ALREADY_EXISTS") {
+                                $scope.email_not_valid = $scope.registerAccount.email;
+                            }
+
+                            if ((response.data == "E_MAIL_ADDRESS_ALREADY_IN_USE") || (response.data == "TESTER_USER_ALREADY_EXISTS")) {
+                                $('.errors_block').html('<p class="email valid_element">'+Translation.translate('LCT.LCT6') + $scope.email_not_valid + Translation.translate('LCT.LCT7')+'</p>');
+                            }
+
+                            $scope.success = null;
+                            $scope.error = 'ERROR';
+                            $scope.message = response.data;
+                        });
+                    }
+                } else {
+                    var error = "";
+                    var el_clear = 0;
+                    $('.modal-lk-registrationlk').find('.ng-invalid-elevalidation:not("form")').each(function () {
+                        if ($(this).val().length >= 1) {
+                            //$(this).removeClass('ng-invalid-elevalidation');
+                        } else {
+                            el_clear++;
+                        }
+                    });
+                    if (el_clear > 0) {
+                        $('.modal-lk-registrationlk').find('.ng-invalid-elevalidation:not("form")').each(function () {
+                            var type = (($(this).data('type') == "site_ru") || ($(this).data('type') == "step") || ($(this).data('type') == "string") || ($(this).data('type') == "select")) ? $(this).data('type-title') : $(this).data('type');
+                            error += "<p class='" + type + " valid_element' >" + $(this).attr('data-text-error') + "</p>";
+                        }).removeClass('ng-pristine');
+                        $('.errors_block').html(error);
+                        $('.modal-lk-registrationlk').addClass('block_error_valid');
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            };
+
+
+            $scope.passwordReset = function (event) {
+                show_error_valid({
+                    'selected_container': '.modal-lk-forgetlk'
+                });
+                if ($('.modal-lk-forgetlk').find('.ng-invalid-elevalidation').length <= 0) {
+                    $('.modal-lk-forgetlk').removeClass('block_error_valid');
+                    Auth.resetPasswordInit({
+                        email: $scope.resetEmail
+                    }).then(function () {
+                        $scope.successSend = true;
+                        $rootScope.successMessage = {
+                            'header': Translation.translate('LCT.LCT8'),
+                            'description': '<div>'+Translation.translate('LCT.LCT9')+'<span class="red-underline">' + $scope.resetEmail + '</span>'+Translation.translate('LCT.LCT10')+'</div><div>'+Translation.translate('LCT.LCT11')+'</div>',
+                            'btn': '<a class="uxc_btn_green btn btn-primary col-xs-12" href="/">'+Translation.translate('LCT.LCT12')+'</a>'
+                        };
+                        $state.go('success', {notify: true}, {reload: true});
+                    }).catch(function (response) {
+                        if (response.data == "E_MAIL_NOT_FOUND") {
+                            $scope.email_not_valid = $scope.resetEmail;
+                            $('.errors_block').html('<p class="email valid_element">'+Translation.translate('LCT.LCT13') + $scope.email_not_valid + Translation.translate('LCT.LCT14')+'</p>');
+                        }
+                        if (response.data=='USER_IS_NOT_ACTIVATED') {
+                            $('.errors_block').html("<p class='valid_element'>"+Translation.translate('LCT.LCT15')+"</p>");
+                        }
+                        $scope.errorSend = true;
+                    });
+                } else {
+                    var error = "";
+                    var el_clear = 0;
+                    $('.modal-lk-forgetlk').find('.ng-invalid-elevalidation:not("form")').each(function () {
+                        if ($(this).val().length >= 1) {
+                            //$(this).removeClass('ng-invalid-elevalidation');
+                        } else {
+                            el_clear++;
+                        }
+                    });
+                    if (el_clear > 0) {
+                        $('.modal-lk-forgetlk').find('.ng-invalid-elevalidation:not("form")').each(function () {
+                            var type = (($(this).data('type') == "site_ru") || ($(this).data('type') == "step") || ($(this).data('type') == "string") || ($(this).data('type') == "select")) ? $(this).data('type-title') : $(this).data('type');
+                            error += "<p class='" + type + " valid_element' >" + $(this).attr('data-text-error') + "</p>";
+                        }).removeClass('ng-pristine');
+                        $('.errors_block').html(error);
+                        $('.modal-lk-forgetlk').addClass('block_error_valid');
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            };
+
+
+            $scope.cleanBlockError = function () {
+                $('.errors_block').html('');
+            };
+
+
+            $scope.openMenu = function () {
+                $scope.burgerBtn = $('.burger-icon');
+                $scope.menuList = $('#navbar');
+                $scope.greenHeader = $('#greenHeader');
+                $scope.whiteHeader = $('#whiteHeader');
+                if ($scope.burgerBtn.hasClass('active')) {
+                    $scope.burgerBtn.removeClass('active');
+                    $scope.menuList.removeClass('active');
+                } else {
+                    $scope.burgerBtn.addClass('active');
+                    $scope.menuList.addClass('active');
+                }
+                if ($scope.whiteHeader) {
+                    $scope.whiteHeader.hasClass('openMenu') ? $scope.whiteHeader.removeClass('openMenu') : $scope.whiteHeader.addClass('openMenu')
+                } else {
+                    $scope.greenHeader.hasClass('openMenu') ? $scope.greenHeader.removeClass('openMenu') : $scope.greenHeader.addClass('openMenu')
+                }
+            }
+        });
+});

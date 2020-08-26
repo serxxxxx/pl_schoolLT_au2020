@@ -1,0 +1,17 @@
+[t29]
+FileName1=t29.html
+URL1=https://loadtest.uxcrowd.ru/
+Total=5
+RequestHeaderFile=t29_RequestHeader.txt
+RequestBodyFile=NONE
+ResponseHeaderFile=t29_ResponseHeader.txt
+ContentType=application/javascript
+SnapshotXmlFile=snapshot_21.xml
+FileName2=t29_newMain.controller.html
+URL2=https://loadtest.uxcrowd.ru/controller/controller_home/newMain.controller.js?bust=1597655269596
+FileName3=t29_login.controller.html
+URL3=https://loadtest.uxcrowd.ru/controller/controller_home/login.controller.js?bust=1597655269596
+FileName4=t29_b-count.html
+URL4=https://ulclick.ru/b-count.js
+FileName5=t29_app.html
+URL5=https://loadtest.uxcrowd.ru/app.js?bust=1597655269596

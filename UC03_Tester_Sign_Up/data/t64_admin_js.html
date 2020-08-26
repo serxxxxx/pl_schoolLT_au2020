@@ -1,0 +1,47 @@
+
+app.service('AllTester',['$http', function ($http) {
+
+    function loadAll(url) {
+        return $http({
+            method: 'GET',
+            url: url
+        }).$promise;
+    }
+    return {
+        loadAll: loadAll
+    };
+}]);
+   
+app.factory('GeneratePayments', function ($resource) {
+    return $resource('api/admin/generatePayments', {}, {});
+});
+app.factory('AdminPayInfo', function ($resource) {
+    return $resource('api/admin/pay-info', {}, {});
+});
+
+app.factory('AdminPayInfos', function f($rootScope, AdminPayInfo) {
+    return {
+        getPayInfo: function (id, callback) {
+            var cb = callback || angular.noop;
+
+            return AdminPayInfo.get({id: id},
+                function () {
+                    return cb();
+                },
+                function (err) {
+                    return cb(err);
+                }.bind(this)).$promise;
+        },
+        savePayInfo: function (payInfo, callback) {
+            var cb = callback || angular.noop;
+
+            return AdminPayInfo.save(payInfo,
+                function () {
+                    return cb(payInfo);
+                },
+                function (err) {
+                    return cb(err);
+                }.bind(this)).$promise;
+        }
+    };
+});

@@ -1,0 +1,37 @@
+define(['../../app'], function (app) {
+    app_cached_providers
+        .$controllerProvider
+        .register('homeMainController', function ($scope, $state, Principal, NewTesters) {
+            Principal.identity().then(function (account) {
+                $scope.account = account;
+                $scope.isAuthenticated = Principal.isAuthenticated;
+                if (account) {
+                    if ($scope.account.role === "ROLE_TESTER") {
+                        $state.go('new-tasks');
+                    } else if ($scope.account.role === "ROLE_NEW_TESTER") {
+                        NewTesters.hasCompletedTask().then(function (result) {
+                            if (result.data) {
+                                $state.go('congratulations');
+                            } else {
+                                if (getCookie('newTesterState') == null || getCookie('newTesterState') == '') {
+                                    $state.go('welcome');
+                                }
+                                else {
+                                    ($state.go(getCookie('newTesterState')));
+                                }
+                            }
+                        });
+                    } else if ($scope.account.role === "ROLE_MODERATOR") {
+                        $state.go('trial-video');
+                    } else if ($scope.account.role === "ROLE_CUSTOMER") {
+                        window.location.href = $config.fullUrl + '/app-customer-home/list-orders';
+                        // $state.go('list-orders');
+                    } else if ($scope.account.role === "ROLE_LOCKED_TESTER" && window.location.pathname != '/contacts') {
+                        $state.go('app-locked-tester-home');
+                    } else if ($scope.account.role === "ROLE_ADMIN") {
+                        $state.go('app-admin-home');
+                    }
+                }
+            });
+        });
+});

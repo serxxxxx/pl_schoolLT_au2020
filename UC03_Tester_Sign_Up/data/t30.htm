@@ -1,0 +1,445 @@
+<div class="nl-header">
+  <div class="nl-header-wrapper">
+    <!-- Desktop -->
+    <div class="nl-header-desktop">
+      <a href="/" class="nl-header-logo">
+        <img src="../../assets/images/uxcrowd-logo-new.svg" />
+      </a>
+      <ul id="nl-header-links" class="nl-header-links nl-header-links-white">
+        <li>
+          <a class="nl-header-link" ng-tr="NLHEA.NLHEA1" href="/about"></a>
+        </li>
+        <li>
+          <a class="nl-header-link" href="/price" ng-tr="NLHEA.NLHEA2"></a>
+        </li>
+        <li><a class="nl-header-link" href="/faq" ng-tr="NLHEA.NLHEA3"></a></li>
+        <li>
+          <a
+            class="nl-header-link"
+            href="/tester-register"
+            ng-tr="NLHEA.NLHEA4"
+          ></a>
+        </li>
+        <li>
+          <a
+            id="header-lk-button"
+            class="nl-btn nl-btn-white lk-btn header-button-lk"
+            href=""
+            ng-click="openLoginModal()"
+            ng-tr="NLHEA.NLHEA5"
+            data-testid="Login menu button"
+          ></a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Mobile -->
+    <div class="nl-header-mobile">
+      <!-- Collapse button -->
+      <a
+        id="openMenuBtn"
+        class="navbar-toggler toggler-example"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent1"
+        aria-controls="navbarSupportedContent1"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <img
+          id="mobileBurger"
+          src="../../assets/images/burger-white-mobile.svg"
+          class="header-uxcrowd-icon"
+        />
+      </a>
+
+      <!-- Logo -->
+      <a href="/">
+        <img
+          id="mobileLogo"
+          src="../../assets/images/uxcrowd-logo-white-mobile.svg"
+          class="header-uxcrowd-icon"
+        />
+      </a>
+
+      <!-- Avatar -->
+      <a href="#" ng-click="openLoginModal()">
+        <img
+          id="mobileAvatar"
+          src="../../assets/images/avatar-white-mobile.svg"
+          class="header-uxcrowd-icon"
+      /></a>
+
+      <!-- Collapsible content -->
+      <div class="ul-mobile-wrapper green-background" id="mobileMenu">
+        <!-- Links -->
+        <ul class="ul-mobile">
+          <li>
+            <a
+              class="nl-header-link-mobile"
+              ng-tr="NLHEA.NLHEA1"
+              href="/about"
+            ></a>
+          </li>
+          <li>
+            <a
+              class="nl-header-link-mobile"
+              href="/price"
+              ng-tr="NLHEA.NLHEA2"
+            ></a>
+          </li>
+          <li>
+            <a
+              class="nl-header-link-mobile"
+              href="/faq"
+              ng-tr="NLHEA.NLHEA3"
+            ></a>
+          </li>
+          <li>
+            <a
+              class="nl-header-link-mobile"
+              href="/tester-register"
+              ng-tr="NLHEA.NLHEA4"
+            ></a>
+          </li>
+          <li>
+            <a
+              class="nl-header-link-mobile contact-us-link"
+              href=""
+              ng-tr="NLHEA.NLHEA6"
+              ng-click="$state.go('contacts');"
+            ></a>
+          </li>
+        </ul>
+
+        <div class="mobile-social-links">
+          <a href="https://www.youtube.com/channel/UC0cm1YoFrD0GtEjD3EIBB3g">
+            <img src="../../assets/images/youtube-colored.svg" />
+          </a>
+          <a href="https://www.facebook.com/uxcrowd.ru/">
+            <img src="../../assets/images/facebook-colored.svg" />
+          </a>
+          <a
+            href="https://play.google.com/store/apps/details?id=ru.pflb.mobile.uxcrowd"
+          >
+            <img src="../../assets/images/google-play-btn.png" />
+          </a>
+        </div>
+        <!-- Links -->
+      </div>
+      <!-- Collapsible content -->
+    </div>
+  </div>
+</div>
+
+<script></script>
+
+<style>
+  .nl-header-mobile {
+    display: none;
+  }
+
+  .nl-btn {
+    border-radius: 50px;
+    padding: 22px 45px !important;
+    transition: background-color 0.2s ease, transform 70ms ease,
+      -webkit-transform 70ms ease;
+    font: 400 18px/18px futura-pt, sans-serif;
+    color: #fff;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .nl-btn:focus {
+    color: #fff;
+  }
+
+  .nl-btn:hover {
+    color: #fff;
+    -webkit-transform: scale(1.05, 1.05);
+    -ms-transform: scale(1.05, 1.05);
+    transform: scale(1.05, 1.05);
+  }
+
+  .nl-btn:active {
+    color: #fff;
+    -webkit-transform: scale(1.1, 1.1);
+    -ms-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+  }
+
+  .nl-btn.nl-btn-white {
+    background-color: transparent;
+    border: 1px solid white;
+  }
+
+  .nl-btn.nl-btn-white:hover {
+    background-color: white;
+    color: #464646;
+  }
+
+  .nl-header-logo {
+    display: flex;
+    width: 180px;
+  }
+
+  .nl-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100vw;
+    transition: 0.5s;
+  }
+
+  .nl-header-wrapper {
+    width: 1120px;
+  }
+
+  .nl-header-links {
+    display: flex;
+    align-items: center;
+    height: 80px;
+  }
+
+  .nl-header-wrapper ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .nl-header-wrapper .nl-header-desktop ul > li {
+    display: inline-block;
+    padding: 20px 30px;
+  }
+
+  .nl-header-link {
+    color: #fff;
+    transition: border-color 0.2s linear, background-color 0.2s ease;
+    border-bottom: 5px solid transparent;
+  }
+
+  .nl-header-link-mobile {
+    color: black;
+    transition: border-color 0.2s linear, background-color 0.2s ease;
+    border-bottom: 5px solid transparent;
+  }
+
+  .nl-header .nl-header-links .nl-btn.lk-btn {
+    margin-right: -30px;
+    padding: 15px 40px !important;
+  }
+
+  .nl-header .nl-header-link:hover {
+    border-bottom: 5px solid #fff;
+    color: #fff;
+  }
+
+  .nl-header .nl-header-link:active {
+    border-bottom: 5px solid #fff;
+    color: #fff;
+  }
+
+  .nl-header .nl-header-link:focus {
+    color: #fff;
+  }
+
+  .nl-header .new-green-btn {
+    border-radius: 50px;
+  }
+
+  .nl-header-desktop {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  #openMenuBtn {
+    width: 30px;
+  }
+</style>
+
+<style>
+  /* ---- Набор классов для фиксировннго меню ---- */
+  .nl-fixed-header {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    position: fixed;
+  }
+
+  .nl-fixed-header .nl-header-link {
+    color: #464646 !important;
+  }
+
+  .nl-fixed-header .nl-header-link:hover {
+    border-bottom: 5px solid #20c997 !important;
+    color: #464646 !important;
+  }
+
+  .nl-fixed-header .nl-header-link:active {
+    border-bottom: 5px solid #20c997 !important;
+    color: #464646 !important;
+  }
+
+  .nl-fixed-header .nl-header-link:focus {
+    color: #464646 !important;
+  }
+
+  .nl-btn.nl-btn-green {
+    background-color: #20c997;
+    border: 1px solid #20c997;
+  }
+
+  .nl-btn.nl-btn-green:hover {
+    background-color: #00ac79;
+    border: 1px solid #20c997;
+  }
+</style>
+
+<!-- Mobile menu -->
+<style>
+  @media (max-width: 1120px) {
+    .contact-us-link {
+      text-decoration: underline;
+      color: #20c997;
+    }
+
+    .nl-header-mobile {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 15px;
+    }
+
+    .nl-header-mobile a {
+      background-color: transparent;
+    }
+
+    .nl-header-desktop {
+      display: none;
+    }
+
+    .ul-mobile-wrapper {
+      position: fixed;
+      top: 0;
+      padding-top: 70px;
+      left: -1120px;
+      width: 100%;
+      height: 100vh;
+      overflow-x: hidden;
+      -webkit-transition: all 0.2s ease;
+      -o-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+      z-index: -1;
+    }
+
+    .green-background {
+      background: white;
+    }
+
+    .ul-mobile li {
+      color: black;
+      padding: 15px;
+      font-weight: 500;
+    }
+
+    .active {
+      left: 0;
+    }
+
+    .mobile-social-links {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+      align-items: center;
+      max-width: 320px;
+    }
+  }
+</style>
+
+<script>
+  var header = $(".nl-header");
+  var button = $("#header-lk-button");
+  var fixedHeaderClass = "nl-fixed-header";
+  var normalButtonClass = "nl-btn-white";
+  var fixedButtonClass = "nl-btn-green";
+  var mobileLogo = $("#mobileLogo");
+  var mobileAvatar = $("#mobileAvatar");
+  var mobileBurger = $("#mobileBurger");
+  var isMenuActive = false;
+
+  $("#openMenuBtn").click(function() {
+    $("#mobileMenu").toggleClass("active");
+
+    isMenuActive = !isMenuActive;
+    if (isMenuActive) {
+      turnColoredMenu();
+    } else {
+      turnColoredMenu();
+      !isMenuFixed() && turnWhiteMenu();
+    }
+  });
+
+  $(window).resize(function() {
+    if (document.body.clientWidth > 800) {
+      $("mobileMenu").removeClass("active");
+    }
+  });
+
+  window.onscroll = function() {
+    scrollFunction();
+  };
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
+      if (!isMenuFixed()) {
+        fixHeader();
+        turnColoredMenu();
+      }
+    } else {
+      if (isMenuFixed()) {
+        unfixHeader();
+
+        if (!isMenuActive) {
+          turnWhiteMenu();
+        }
+      }
+    }
+  }
+
+  function fixHeader() {
+    header.addClass(fixedHeaderClass);
+    button.removeClass(normalButtonClass);
+    button.addClass(fixedButtonClass);
+  }
+
+  function unfixHeader() {
+    header.removeClass(fixedHeaderClass);
+    button.removeClass(fixedButtonClass);
+    button.addClass(normalButtonClass);
+  }
+
+  function turnColoredMenu() {
+    mobileLogo.attr("src", "../../assets/images/uxcrowd-logo-green-mobile.svg");
+    mobileAvatar.attr("src", "../../assets/images/avatar-gray-mobile.svg");
+    mobileBurger.attr(
+      "src",
+      `../../assets/images/${
+        isMenuActive ? "close-gray-mobile.svg" : "burger-gray-mobile.svg"
+      }`
+    );
+  }
+
+  function turnWhiteMenu() {
+    mobileLogo.attr("src", "../../assets/images/uxcrowd-logo-white-mobile.svg");
+    mobileAvatar.attr("src", "../../assets/images/avatar-white-mobile.svg");
+    mobileBurger.attr("src", "../../assets/images/burger-white-mobile.svg");
+  }
+
+  function isMenuFixed() {
+    return header.hasClass(fixedHeaderClass);
+  }
+</script>

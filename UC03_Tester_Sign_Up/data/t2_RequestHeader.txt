@@ -1,0 +1,14 @@
+POST /ext/stat?id=gfjocjagfinihkkaahliainflifnlnfc&name=%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C%20%D0%BC%D1%83%D0%B7%D1%8B%D0%BA%D1%83%20c%20VK&version=2.0.0.6 HTTP/1.1
+Host: letor.online
+Connection: keep-alive
+Content-Length: 0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+Accept: */*
+Origin: chrome-extension://gfjocjagfinihkkaahliainflifnlnfc
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: gfjo=3d1edc1d-19dc-477a-a2e1-dbf4cc7740f5; guid=pimovjbmeosmemvnudvzbolnqiqyvhvy
+

@@ -1,0 +1,98 @@
+Warning: Failed to get NV emulation handle.
+Virtual User Script started at: 26.08.2020 13:06:04
+Starting action vuser_init.
+Web Turbo Replay of LoadRunner 12.55.0 for Windows 10; build 911 (èþë 24 2017 19:46:00)  	[MsgId: MMSG-26983]
+Run mode: HTML  	[MsgId: MMSG-26993]
+Replay user agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36  	[MsgId: MMSG-26988]
+Run-Time Settings file: "C:\Users\pleti\Desktop\PRFLB NT\pl_schoolLT_au2020\UC03_Tester_Sign_Up\\default.cfg"  	[MsgId: MMSG-27141]
+Warning: Failed to get NV emulation handle.
+Ending action vuser_init.
+Running Vuser...
+Starting iteration 1.
+Maximum number of concurrent connections per server: 6  	[MsgId: MMSG-26989]
+Starting action Tester_Sign_Up.
+Warning: Failed to get NV emulation handle.
+Retrieved value is: 2cvbnm@xxx.xxx
+Tester_Sign_Up.c(10): web_set_sockets_option started  	[MsgId: MMSG-26355]
+Tester_Sign_Up.c(10): web_set_sockets_option was successful  	[MsgId: MMSG-26392]
+Tester_Sign_Up.c(13): web_reg_save_param_ex started  	[MsgId: MMSG-26355]
+Tester_Sign_Up.c(13): Registering web_reg_save_param_ex was successful  	[MsgId: MMSG-26390]
+Tester_Sign_Up.c(19): Notify: Transaction "UC03_TC01_open_site_uxcrowd" started.
+Tester_Sign_Up.c(19): Warning: Failed to get NV emulation handle.
+Tester_Sign_Up.c(21): web_url("{host}") started  	[MsgId: MMSG-26355]
+Tester_Sign_Up.c(21): Downloading resource "https://loadtest.uxcrowd.ru/api/account" (specified by argument number 10)  	[MsgId: MMSG-26577]
+Tester_Sign_Up.c(21): Found resource "https://fonts.googleapis.com/css?family=Roboto&display=swap" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/sup_css.css" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/css/landing/webflow.css" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/css/landing/uxcrowd.webflow.css" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/css/landing/YouTube.HD.Thumbnail.css" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/env.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://use.typekit.net/hym5rnq.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://www.googletagmanager.com/gtag/js?id=UA-76628941-1" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://ulogin.ru/js/ulogin.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/library/jquery.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/library/jquery.form.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/library/moment.min.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/library/jquery.uploadfile.min.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/validation.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/library/FileSaver.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/sup_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/init.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/validation.rule.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/js/app_js/auth.interceptor.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/mediaelement-and-player.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/app_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/admin_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Warning -26547: Authentication required, please use "web_set_user", e.g. web_set_user("domain\\user", "password", "host:port");  	[MsgId: MWAR-26547]
+Tester_Sign_Up.c(21): Warning -26630: HTTP Status-Code=401 (Unauthorized) for "https://loadtest.uxcrowd.ru/api/account"  	[MsgId: MWAR-26630]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/customer_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/blog_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/home_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/moderator_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/new_tester_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/gulp/tester_js.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/library/require.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/path_controller.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/js/landing/jQuery.YouTube.HD.Thumbnail.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Found resource "https://loadtest.uxcrowd.ru/assets/js/main_js/main_route.js" in HTML "https://loadtest.uxcrowd.ru/"  	[MsgId: MMSG-26659]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 1439 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 4899 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 467 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 1249 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 5952 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 618 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 5619 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 1198 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26570: Ignoring 2268 byte(s) of data beyond the logical end of the response  	[MsgId: MWAR-26570]
+Tester_Sign_Up.c(21): Warning -26373: Parameter "token" saved from a resource (URL="https://loadtest.uxcrowd.ru/api/account")  	[MsgId: MWAR-26373]
+Tester_Sign_Up.c(21): web_url("{host}") highest severity level was "warning", 8860499 body bytes, 18200 header bytes  	[MsgId: MMSG-26388]
+Tester_Sign_Up.c(32): Notify: Transaction "UC03_TC01_open_site_uxcrowd" ended with a "Pass" status (Duration: 4,8981 Wasted Time: 0,3815).
+Tester_Sign_Up.c(34): web_add_auto_header("X-XSRF-TOKEN") started  	[MsgId: MMSG-26355]
+Tester_Sign_Up.c(34): web_add_auto_header("X-XSRF-TOKEN") was successful  	[MsgId: MMSG-26392]
+Tester_Sign_Up.c(38): Notify: Transaction "UC03_TC02_registration_tester" started.
+Tester_Sign_Up.c(38): Warning: Failed to get NV emulation handle.
+Tester_Sign_Up.c(40): web_custom_request("register") started  	[MsgId: MMSG-26355]
+Tester_Sign_Up.c(40): web_custom_request("register") was successful, 0 body bytes, 566 header bytes  	[MsgId: MMSG-26386]
+Tester_Sign_Up.c(51): Notify: Transaction "UC03_TC02_registration_tester" ended with a "Pass" status (Duration: 0,4060 Wasted Time: 0,0096).
+Tester_Sign_Up.c(53): Notify: Transaction "UC03_TC03_DB" started.
+Tester_Sign_Up.c(53): Warning: Failed to get NV emulation handle.
+Tester_Sign_Up.c(54): DB Connection "connectBD" started ... Wait ....
+Tester_Sign_Up.c(60): SQL Statement  execution "updatePassword" started
+Tester_Sign_Up.c(60): Warning :No dataset was created.
+Tester_Sign_Up.c(60): ================================================
+Tester_Sign_Up.c(66): SQL Statement  execution "updateRole" started
+Tester_Sign_Up.c(66): Warning :No dataset was created.
+Tester_Sign_Up.c(66): ================================================
+Tester_Sign_Up.c(72): SQL Statement  execution "updateTesterData" started
+Tester_Sign_Up.c(72): Warning :No dataset was created.
+Tester_Sign_Up.c(72): ================================================
+Tester_Sign_Up.c(78): DB disconnect "Disconnect" started
+Tester_Sign_Up.c(78): ================================================
+Tester_Sign_Up.c(79): Notify: Transaction "UC03_TC03_DB" ended with a "Pass" status (Duration: 0,4760 Wasted Time: 0,2965).
+Ending action Tester_Sign_Up.
+Ending iteration 1.
+Ending Vuser...
+Starting action vuser_end.
+Warning: Failed to get NV emulation handle.
+Ending action vuser_end.
+Vuser Terminated.

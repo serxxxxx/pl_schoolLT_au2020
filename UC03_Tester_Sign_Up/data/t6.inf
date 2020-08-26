@@ -1,0 +1,17 @@
+[t6]
+FileName1=t6_ru.json
+URL1=https://loadtest.uxcrowd.ru/assets/lang/ru.json
+Total=4
+ContentType=application/json
+SnapshotXmlFile=snapshot_4.xml
+RequestHeaderFile=t6_RequestHeader.txt
+RequestBodyFile=NONE
+ResponseHeaderFile=t6_ResponseHeader.txt
+FileName2=t6_login.controller.html
+URL2=https://loadtest.uxcrowd.ru/controller/controller_home/login.controller.js?bust=1597648409126
+FileName3=t6_newMain.controller.html
+URL3=https://loadtest.uxcrowd.ru/controller/controller_home/newMain.controller.js?bust=1597648409126
+FileName4=t6_app.html
+URL4=https://loadtest.uxcrowd.ru/app.js?bust=1597648409126
+[ProtocolInfo]
+ProtocolId=QTWeb

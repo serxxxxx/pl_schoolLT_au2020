@@ -1,0 +1,709 @@
+[API Trapper      ( 798:1ce0)] Recording in 64-bit mode: C:\Program Files\Mozilla Firefox\firefox.exe
+[API Trapper      ( 444:1d78)] Recording in 64-bit mode: C:\Program Files\Mozilla Firefox\firefox.exe
+[Network Analyzer ( 444: ca4)] ------------------------------------------------------------------------------------------
+[Network Analyzer ( 444: ca4)] Load Network Traffic Analyzers:
+[Network Analyzer ( 444: ca4)]     Analyzer Module: WPLUS (value=)
+[Network Analyzer ( 444: ca4)]     Analyzer Module: WebBase (value=GetHttpProtocolAnalyzer:api_http_filter_x64.dll)
+[Network Analyzer ( 444: ca4)]     + Network Analyzer: api_http_filter_x64.dll @ GetHttpProtocolAnalyzer Loaded!
+[Network Analyzer ( 444: ca4)]     + Interception Auditors: WinInetWplusInterceptionAudit:api_http_filter_x64.dll
+[Network Analyzer ( 444: ca4)]     Analyzer Module: QTWeb (value=GetWebSocketProtocolAnalyzer:WebSocketAnalyzer_x64.dll)
+[Network Analyzer ( 444: ca4)]     + Network Analyzer: WebSocketAnalyzer_x64.dll @ GetWebSocketProtocolAnalyzer Loaded!
+[Network Analyzer ( 444: ca4)]     Analyzer Module: local_server (value=)
+[Network Analyzer ( 444: ca4)] ------------------------------------------------------------------------------------------
+[Network Analyzer ( 444:3038)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[API Trapper      (2bac:22c0)] Recording in 64-bit mode: C:\Program Files\Mozilla Firefox\firefox.exe
+[Network Analyzer ( 444: ca4)] Establish Listener @ 127.0.0.1:55554
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:55554   (Service=)  (Sid=  2)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 11 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000  (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 31.13.72.12:443   (Service=)  (Sid=  3)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 139.59.202.15:443   (Service=)  (Sid=  4)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 139.59.202.15:443   (Service=)  (Sid=  5)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 139.59.202.15:443   (Service=)  (Sid=  6)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 2.21.99.129:443   (Service=)  (Sid=  7)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 80.87.202.200:443   (Service=)  (Sid=  8)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: 61c)]   (Sid:  3) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-ECDSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:1c70)]   (Sid:  5) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:334c)]   (Sid:  4) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:26ac)]   (Sid:  6) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:33c8)]   (Sid:  7) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES256-GCM-SHA384)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000  (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:334c)]   (Sid:  4) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: 61c)]   (Sid:  3) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:26ac)]   (Sid:  6) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:1c70)]   (Sid:  5) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:33c8)]   (Sid:  7) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:1490)]   (Sid:  8) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES256-GCM-SHA384)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000   (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:1490)]   (Sid:  8) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 13.33.17.18:443   (Service=)  (Sid=  9)  PROXIED!
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 205.251.219.37:443   (Service=)  (Sid= 10)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:239c)]   (Sid: 10) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:347c)]   (Sid:  9) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000   (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:239c)]   (Sid: 10) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:347c)]   (Sid:  9) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  8) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid:  5) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid:  6) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid:  3) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid:  4) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid:  7) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid: 10) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid:  9) Connection Terminated (by Client)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000   (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000  (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000   (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 13.33.17.212:443   (Service=)  (Sid= 11)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 13.33.17.18:443   (Service=)  (Sid= 12)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: 370)]   (Sid: 11) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:15f4)]   (Sid: 12) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000   (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: 370)]   (Sid: 11) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:15f4)]   (Sid: 12) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 35.160.220.219:443   (Service=)  (Sid= 13)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:10b4)]   (Sid: 13) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid: 11) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid: 12) Connection Terminated (by Client)
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 139.59.202.15:443   (Service=)  (Sid= 14)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:10b4)]   (Sid: 13) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:35f8)]   (Sid: 14) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 35.160.220.219:443   (Service=)  (Sid= 15)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 2 bytes 
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444:35f8)]   (Sid: 14) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid: 13) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:2d2c)]   (Sid: 15) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 127.0.0.1:8000   (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:2d2c)]   (Sid: 15) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 13.33.17.18:443   (Service=)  (Sid= 16)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:18c8)]   (Sid: 16) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid: 15) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid: 14) Connection Terminated (by Client)
+[Network Analyzer ( 444: ca4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer ( 444: ca4)] Request Connection: Remote Server @ 13.33.17.176:443   (Service=)  (Sid= 17)  PROXIED!
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:18c8)]   (Sid: 16) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: 718)]   (Sid: 17) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid: 16) Connection Terminated (by Client)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000  (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444: 718)]   (Sid: 17) Negotiate Client -> Proxy SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #1. Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #2. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Warning  ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000 (Service=) Failed attempt #3. Unable to connect to remote server: rc = -1 , le = 10061)
+[Net An. Error    ( 444: ca4)] Request Connection: Remote Server @ 0:0:0:0:0:0:0:1: - 8000  (Service=)  NOT PROXIED! (REASON: Unable to connect to remote server: rc = -1 , le = 10061)
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 1 bytes 
+[Network Analyzer ( 444:3038)]   (Sid:  2) Client -> Server @ : 3 bytes 
+[API Trapper      (1408:30d0)] Recording in 64-bit mode: C:\Program Files\Mozilla Firefox\pingsender.exe
+[Network Analyzer (1408:1fd4)] ------------------------------------------------------------------------------------------
+[Network Analyzer (1408:1fd4)] Load Network Traffic Analyzers:
+[Network Analyzer (1408:1fd4)]     Analyzer Module: WPLUS (value=)
+[Network Analyzer (1408:1fd4)]     Analyzer Module: WebBase (value=GetHttpProtocolAnalyzer:api_http_filter_x64.dll)
+[Network Analyzer (1408:1fd4)]     + Network Analyzer: api_http_filter_x64.dll @ GetHttpProtocolAnalyzer Loaded!
+[Network Analyzer (1408:1fd4)]     + Interception Auditors: WinInetWplusInterceptionAudit:api_http_filter_x64.dll
+[Network Analyzer (1408:1fd4)]     Analyzer Module: QTWeb (value=GetWebSocketProtocolAnalyzer:WebSocketAnalyzer_x64.dll)
+[Network Analyzer (1408:1fd4)]     + Network Analyzer: WebSocketAnalyzer_x64.dll @ GetWebSocketProtocolAnalyzer Loaded!
+[Network Analyzer (1408:1fd4)]     Analyzer Module: local_server (value=)
+[Network Analyzer (1408:1fd4)] ------------------------------------------------------------------------------------------
+[Network Analyzer (1408:3748)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer (1408:1fd4)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer (1408:1fd4)] Request Connection: Remote Server @ 35.160.220.219:443   (Service=)  (Sid=  1)  PROXIED!
+[Network Analyzer (1408:1c38)]   (Sid:  1) Negotiate Proxy -> Server SSL Handshake (ssl:TLSv1.2, ciphers:ECDHE-RSA-AES128-GCM-SHA256)
+[Network Analyzer (1408:2388)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer (1408:2388)] Request Connection: Remote Server @ 93.184.220.29:80   (Service=)  (Sid=  2)  PROXIED!
+[Web Request      (1408:3748)] "GET /MFEwTzBNMEswSTAJBgUrDgMCGgUABBQY%2BIWplxzce%2B%2BGCW0BmDyo%2BZ8lVgQUJPIuTg%2B9yvc%2BKVXKco1ph1ZE6XoCEAd1LOvlIi%2FPXH0gOJhMUZg%3D"   
+[Network Analyzer (1408:3748)]   (Sid:  2) Client -> Server @ : 246 bytes (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  2) Server -> Client : 764 bytes  (Service=HTTP)
+[Web Request      (1408:3748)] "GET /MFEwTzBNMEswSTAJBgUrDgMCGgUABBQY%2BIWplxzce%2B%2BGCW0BmDyo%2BZ8lVgQUJPIuTg%2B9yvc%2BKVXKco1ph1ZE6XoCEAd1LOvlIi%2FPXH0gOJhMUZg%3D"   
+[Network Analyzer (1408:3748)]   (Sid:  2) Client -> Server @ : 289 bytes (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  2) Server -> Client : 795 bytes  (Service=HTTP)
+[Network Analyzer (1408:2170)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer (1408:2170)] Request Connection: Remote Server @ 93.184.220.29:80   (Service=)  (Sid=  3)  PROXIED!
+[Web Request      (1408:3748)] "GET /ssca-sha2-g6.crl"   
+[Network Analyzer (1408:3748)]   (Sid:  3) Client -> Server @ : 246 bytes (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  3) Server -> Client : 273 bytes  (Service=HTTP)
+[Web Request      (1408:3748)] "GET /ssca-sha2-g6.crl"   
+[Network Analyzer (1408:3748)]   (Sid:  3) Client -> Server @ : 256 bytes (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  3) Server -> Client : 273 bytes  (Service=HTTP)
+[Network Analyzer (1408:2388)] Address lookup for DESKTOP-35HSN4C = 192.168.1.39
+[Network Analyzer (1408:2388)] Request Connection: Remote Server @ 93.184.220.29:80   (Service=)  (Sid=  4)  PROXIED!
+[Web Request      (1408:3748)] "GET /ssca-sha2-g6.crl"   
+[Network Analyzer (1408:3748)]   (Sid:  4) Client -> Server @ : 134 bytes (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 1460 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 9572 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 1460 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 4220 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 1460 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 14600 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 15576 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 1460 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16060 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 16384 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 12656 bytes  (Service=HTTP)
+[Network Analyzer (1408:3748)]   (Sid:  4) Server -> Client : 1460 bytes  (Service=HTTP)

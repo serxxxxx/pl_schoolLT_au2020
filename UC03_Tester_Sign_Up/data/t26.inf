@@ -1,0 +1,11 @@
+[t26]
+FileName1=t26.html
+URL1=https://letor.online/ext/stat?id=gfjocjagfinihkkaahliainflifnlnfc&name=%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C%20%D0%BC%D1%83%D0%B7%D1%8B%D0%BA%D1%83%20c%20VK&version=2.0.0.6
+Total=1
+RequestHeaderFile=t26_RequestHeader.txt
+RequestBodyFile=NONE
+ResponseHeaderFile=t26_ResponseHeader.txt
+ContentType=application/x-javascript
+SnapshotXmlFile=snapshot_18.xml
+[ProtocolInfo]
+ProtocolId=QTWeb

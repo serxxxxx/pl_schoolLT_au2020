@@ -1,0 +1,83 @@
+require.config({
+    baseUrl: "",
+    urlArgs: "bust=" + (new Date()).getTime(),
+    paths: {
+        /* Контроллеры общих прав */
+        "homeBookingController": "controller/controller_home/booking.controller",
+        "homeConfirmController": "controller/controller_home/confirm.controller",
+        "homeMainController": "controller/controller_home/home.controller",
+        "testerIntegrationController": "controller/controller_home/tester-integration.controller",
+        "homeLoginController": "controller/controller_home/login.controller",
+        "homeContactsController": "controller/controller_home/contacts.controller",
+        "homeNavigationBarController": "controller/controller_home/navbar.controller",
+        "homePasswordResetController": "controller/controller_home/password-reset.controller",
+        "homeUnsubscribeController": "controller/controller_home/unsubscribe.controller",
+        "homePayController": "controller/controller_home/pay.controller",
+        "homeTesterRegisterController": "controller/controller_home/tester_register.controller",
+        "homeSliderController": "controller/controller_home/slider.controller",
+        "homeBlogController": "controller/controller_home/blog.controller",
+        "homeBlogEntryNewController": "controller/controller_home/blog-entry-new.controller",
+        "homeBlogPostController": "controller/controller_home/blog-entry.controller",
+        "homeVideoController": "controller/controller_home/video.controller",
+        "homeInsightEmbedController": "controller/controller_home/insight_embed.controller",
+        "homeSuccessController": "controller/controller_home/success.controller",
+        "homeMainBrowser": "controller/controller_home/homeMainBrowser",
+        "homeNewMainController": "controller/controller_home/newMain.controller",
+
+        "homeFormLoginViewController": "controller/controller_home/form-login-view.controller",
+        "homeFormRegisterViewController": "controller/controller_home/form-register-view.controller",
+        "homeFormRestoreViewController": "controller/controller_home/form-restore-view.controller",
+
+        /* Контроллеры прав Админ */
+        "adminHomeController": "controller/controller_admin/home.controller",
+        "adminTesterController": "controller/controller_admin/testers.controller",
+        "adminCustomerController": "controller/controller_admin/customers.controller",
+        "adminOrdersController": "controller/controller_admin/orders.controller",
+        "adminTechnicalController": "controller/controller_admin/technical.controller",
+        "adminOfertasController": "controller/controller_admin/ofertas.controller",
+        "adminPaymentsController": "controller/controller_admin/payments.controller",
+
+        /* Контроллеры прав Модератор */
+        "moderatorArchiveVideoController": "controller/controller_moderator/archive-video.controller",
+        "moderatorEmailNotificationsController": "controller/controller_moderator/email-notifications.controller",
+        "moderatorCreateMagicLinkController": "controller/controller_moderator/createMagicLink.controller",
+        "moderatorCommercialVideoController": "controller/controller_moderator/commercial-video.controller",
+        "moderatorPromoCodeController": "controller/controller_moderator/promoCode.controller",
+        "moderatorHeaderController": "controller/controller_moderator/header.controller",
+        "moderatorHomeController": "controller/controller_moderator/home.controller",
+        "moderatorTrialVideoController": "controller/controller_moderator/trial-video.controller",
+        "moderatorTrialVideoResultsController": "controller/controller_moderator/trial-video-results.controller",
+        "moderatorActiveOrdersController": "controller/controller_moderator/active-orders.controller",
+        "moderatorClaimsController": "controller/controller_moderator/claims.controller",
+
+        /* Контроллеры прав Клиент */
+        "customerOrderListController": "controller/controller_customer/ordersList.controller",
+        "customerOrderListHeaderController": "controller/controller_customer/ordersListHeader.controller",
+        "customerInsightController": "controller/controller_customer/insight.controller",
+        "customerOrderEditController": "controller/controller_customer/edit-order.controller",
+        "customerHeaderController": "controller/controller_customer/header.controller",
+        "customerHomeController": "controller/controller_customer/home.controller",
+        "customerProfileController": "controller/controller_customer/profile.controller",
+        "customerTariffController": "controller/controller_customer/tariff.controller",
+        "customerStepsController": "controller/controller_customer/steps.controller",
+
+        /* Контроллеры прав Тестировщик */
+        "testerLockedHomeController": "controller/controllers_testers/controller_locked_tester/home.controller",
+        "testerNewTesterHeaderController": "controller/controllers_testers/controller_new_tester/header.controller",
+        "testerSideTesterHeaderController": "controller/controllers_testers/controller_side_tester/header.controller",
+        "testerMobileSideTesterHeaderController": "controller/controllers_testers/controller_side_tester/header.controller",
+        "testerMobileSideTesterHeaderController": "controller/controllers_testers/controller_mobile_side_tester/header.controller",
+        "testerMobileTesterHeaderController": "controller/controllers_testers/controller_mobile_tester/header.controller",
+        "testerNewTesterHomeController": "controller/controllers_testers/controller_new_tester/home.controller",
+        "testerSideTesterHomeController": "controller/controllers_testers/controller_side_tester/home.controller",
+        "testerMobileSideTesterHomeController": "controller/controllers_testers/controller_mobile_side_tester/home.controller",
+        "testerMobileTesterHomeController": "controller/controllers_testers/controller_mobile_tester/home.controller",
+        "testerDoneTasksController": "controller/controllers_testers/controller_tester/done-tasks.controller",
+        "testerHeaderController": "controller/controllers_testers/controller_tester/header.controller",
+        "testerHomeController": "controller/controllers_testers/controller_tester/home.controller",
+        "testerNewTaskController": "controller/controllers_testers/controller_tester/new-tasks.controller",
+        "testerPayInfoController": "controller/controllers_testers/controller_tester/pay-info.controller",
+        "testerProfileController": "controller/controllers_testers/controller_tester/profile.controller"
+    },
+    deps: [app]
+});

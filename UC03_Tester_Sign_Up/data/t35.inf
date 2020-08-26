@@ -1,0 +1,11 @@
+[t35]
+FileName1=t35.htm
+URL1=https://loadtest.uxcrowd.ru/tmpl/tmpl_home/modal-login.html
+Total=1
+RequestHeaderFile=t35_RequestHeader.txt
+RequestBodyFile=NONE
+ResponseHeaderFile=t35_ResponseHeader.txt
+ContentType=text/html
+SnapshotXmlFile=snapshot_26.xml
+[ProtocolInfo]
+ProtocolId=QTWeb

@@ -1,0 +1,11 @@
+[t37]
+FileName1=t37_5-xEz8tF0C8c37D7HLkn3Z8IHHDfHpnEO9TBkr66WxRidl5A7ObrWRxzMUuMolhJDrwY6i6IgmX4fMhzyq4rl3Rs6uqx-hOLpOS2OO.html
+URL1=https://nexus-websocket-a.intercom.io/pubsub/5-xEz8tF0C8c37D7HLkn3Z8IHHDfHpnEO9TBkr66WxRidl5A7ObrWRxzMUuMolhJDrwY6i6IgmX4fMhzyq4rl3Rs6uqx-hOLpOS2OO?X-Nexus-New-Client=true&X-Nexus-Version=0.5.2&user_role=undefined
+Total=1
+ContentType=
+SnapshotXmlFile=snapshot_28.xml
+RequestHeaderFile=t37_RequestHeader.txt
+RequestBodyFile=NONE
+ResponseHeaderFile=t37_ResponseHeader.txt
+[ProtocolInfo]
+ProtocolId=QTWeb

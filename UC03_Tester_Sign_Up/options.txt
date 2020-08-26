@@ -1,0 +1,9 @@
+-+
+-DCCI
+-D_IDA_XL
+-DWINNT
+-IC:\Users\pleti\Desktop\PRFLB NT\pl_schoolLT_au2020\UC03_Tester_Sign_Up
+-IA:\Program Files (x86)\HPE\LoadRunner\include
+-ec:\users\pleti\desktop\prflb nt\pl_schoollt_au2020\uc03_tester_sign_up\\logfile.log
+c:\users\pleti\desktop\prflb nt\pl_schoollt_au2020\uc03_tester_sign_up\\combined_UC03_Tester_Sign_Up.c
+c:\users\pleti\desktop\prflb nt\pl_schoollt_au2020\uc03_tester_sign_up\\pre_cci.c

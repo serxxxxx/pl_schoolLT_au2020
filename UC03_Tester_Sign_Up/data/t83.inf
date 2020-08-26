@@ -1,0 +1,6 @@
+[t83]
+FileName1=t83_seed.html
+URL1=https://clientservices.googleapis.com/chrome-variations/seed?osname=win&channel=stable&milestone=84
+Total=1
+ContentType=
+SnapshotXmlFile=snapshot_83.xml

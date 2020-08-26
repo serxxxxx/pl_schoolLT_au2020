@@ -1,0 +1,15 @@
+[t19]
+FileName1=t19.html
+URL1=https://loadtest.uxcrowd.ru/api/register
+Total=3
+RequestHeaderFile=t19_RequestHeader.txt
+RequestBodyFile=t19_RequestBody.txt
+ResponseHeaderFile=t19_ResponseHeader.txt
+ContentType=application/javascript
+SnapshotXmlFile=snapshot_12.xml
+FileName2=t19_home.controller.html
+URL2=https://loadtest.uxcrowd.ru/controller/controller_home/home.controller.js?bust=1597648409126
+FileName3=t19_success.controller.html
+URL3=https://loadtest.uxcrowd.ru/controller/controller_home/success.controller.js?bust=1597648409126
+[ProtocolInfo]
+ProtocolId=QTWeb

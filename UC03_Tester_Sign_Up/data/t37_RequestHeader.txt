@@ -1,0 +1,14 @@
+GET /pubsub/5-xEz8tF0C8c37D7HLkn3Z8IHHDfHpnEO9TBkr66WxRidl5A7ObrWRxzMUuMolhJDrwY6i6IgmX4fMhzyq4rl3Rs6uqx-hOLpOS2OO?X-Nexus-New-Client=true&X-Nexus-Version=0.5.2&user_role=undefined HTTP/1.1
+Host: nexus-websocket-a.intercom.io
+Connection: Upgrade
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+Upgrade: websocket
+Origin: https://loadtest.uxcrowd.ru
+Sec-WebSocket-Version: 13
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Sec-WebSocket-Key: kBuY+ITPQ807l2lyA8B6VA==
+Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+

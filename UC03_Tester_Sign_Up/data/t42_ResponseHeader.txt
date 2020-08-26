@@ -1,0 +1,27 @@
+HTTP/1.1 200 OK
+Date: Mon, 17 Aug 2020 09:08:09 GMT
+Content-Type: application/json; charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Status: 200 OK
+Cache-Control: max-age=0, private, must-revalidate
+X-RateLimit-Limit: 20000
+X-RateLimit-Reset: 1597655340
+Strict-Transport-Security: max-age=31556952; includeSubDomains; preload
+X-RateLimit-Remaining: 19999
+Access-Control-Allow-Origin: https://loadtest.uxcrowd.ru
+X-Intercom-Version: 25bbc766f6fcd0963e9f28815fe66f63b7ea5e1e
+X-XSS-Protection: 1; mode=block
+Vary: Accept-Encoding
+Content-Encoding: gzip
+X-Request-Id: 003tna5urusfqm91dte0
+Access-Control-Allow-Headers: Content-Type
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: POST, GET, OPTIONS
+ETag: W/"3dbe12052f249a7b25a21148ed38d29f"
+X-Runtime: 0.179472
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+X-Ami-Version: ami-00508eefab57e1a60
+Server: nginx
+

@@ -1,0 +1,14 @@
+HTTP/2.0 201
+Status: 201
+Server: nginx/1.14.2
+Date: Wed, 26 Aug 2020 10:06:10 GMT
+Content-Length: 0
+X-Content-Type-Options: nosniff
+X-Xss-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Access-Control-Origin: https://test.uxcrowd.ru
+Content-Security-Policy-Report-Only: default-src https:; script-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline'; img-src https: data:; font-src https: data:; report-uri /csp-report
+Strict-Transport-Security: max-age=86400;
+

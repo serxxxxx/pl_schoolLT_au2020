@@ -1,0 +1,76 @@
+
+
+app.factory('PayInfo', function ($resource) {
+        return $resource('api/tester/pay-info', {}, {});
+    });
+
+app.factory('PayInfos', function f($rootScope, PayInfo) {
+        return {
+            getPayInfo:  function (id, callback) {
+                var cb = callback || angular.noop;
+
+                return PayInfo.get({id: id},
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            savePayInfo: function (payInfo, callback) {
+                var cb = callback || angular.noop;
+
+                return PayInfo.save(payInfo,
+                    function () {
+                        return cb(payInfo);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            }
+        };
+    });
+
+
+app.factory('Profile', function ($resource) {
+        return $resource('api/v2/tester/profile', {}, {});
+    });
+app.factory('TesterFiles', function ($resource) {
+        return $resource('api/tester/getFiles?id=:id', {id:'@id'}, {});
+    });
+app.factory('Profiles', function f($rootScope, Profile) {
+        return {
+            getProfile:  function (callback) {
+                var cb = callback || angular.noop;
+
+                return Profile.get({},
+                    function () {
+                        return cb();
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+            saveProfile: function (profile, callback) {
+
+                var cb = callback || angular.noop;
+
+                return Profile.save(profile,
+                    function () {
+                        return cb(profile);
+                    },
+                    function (err) {
+                        return cb(err);
+                    }.bind(this)).$promise;
+            },
+        };
+    });
+
+
+app.factory('NewTasks', function ($resource) {
+        return $resource('api/tester/new-tasks?isMobile=false', {}, {});
+    });
+
+app.factory('DoneTasks', function ($resource) {
+        return $resource('api/tester/done-tasks', {}, {});
+    });

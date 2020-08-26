@@ -1,0 +1,216 @@
+// Регулярки
+
+var INTEGER_REGEXP = /^[a-zа-яё]+$/i;
+var NAME_REGEXP = /^[a-zа-яА-ЯёЁA-Z]{2,}$/i;
+var SURNAME_REGEXP = /^[a-zа-яА-ЯёЁA-Z\-]{2,}$/i;
+var EMAIL_REGEXP = /^[-\w.+]{2,}@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,6}$/i;
+var NAME_CYRILLIC_REGEXP = /^[а-яА-ЯёЁ]{2,}$/i;
+var LOGIN_REGEXP = /^[a-zA-Z]{2,100}$/i;
+var LOGIN_NUMBER_REGEXP = /^[a-zA-Z0-9\._]{2,100}$/i;
+var SITE_REGEXP = /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$/i;
+var SITE_REGEXP_RU = /^([a-zа-яA-ZА-ЯёЁ0-9]([a-zа-яA-ZА-ЯёЁ0-9\-]{0,61}[a-zа-яA-ZА-ЯёЁ0-9])?\.)+[a-zа-яA-ZА-ЯёЁ]{2,6}$/i;
+var FULL_URL_SITE_REGEXP_RU = /^(https?:\/\/)?([\w\.]+)\.([a-zа-яA-ZА-ЯёЁ\.-]{2,6}\.?)(\/[\w\.-]*)*\/?$/i;
+var BIRTHDAY_REGEXP = /^\d{2}([./-])\d{2}([./-])\d{4}$/;
+
+var FULL_URL_SITE_REGEXP = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9\-]+[a-zA-Z0-9\-]\.[^\s]{2,}|www\.[a-zA-Z0-9\-]+[a-zA-Z0-9\-]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9\-]\.[^\s]{2,}|www\.[a-zA-Z0-9\-]\.[^\s]{2,})/;
+// var FULL_URL_SITE_REGEXP = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+var ALL_STRING_CHAR = /^[a-zA-Z\D\d]{6,}.*$/;
+var ALL_RU_CHAR = /[а-яА-ЯёЁ]/;
+var PASSWORD_REGEXP = /(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+var CYRILLIC_REGEXP = /^[а-яА-ЯёЁ\-]{2,}$/i;
+var CYRILLIC_DUO_REGEXP = /^([а-яА-ЯёЁ\-]+)([ ][а-яА-ЯёЁ\-]+)*$/i;
+var FIO_REGEXP = /^[A-zа-яА-ЯёЁ\s\-]{2,}$/i;
+var NUMBER_REGEXP = /^[0-9]{1,}$/;
+var FULL_URL_SITE_REGEXP_TEST = /^(?:([a-z]+):(?:([a-z]*):)?\/\/)?(?:([^:@]*)(?::([^:@]*))?@)?((?:[a-z0-9_-]+\.)+[a-z]{2,}|localhost|(?:(?:[01]?\d\d?|2[0-4]\d|25[0-5])\.){3}(?:(?:[01]?\d\d?|2[0-4]\d|25[0-5])))(?::(\d+))?(?:([^:\?\#]+))?(?:\?([^\#]+))?(?:\#([^\s]+))?$/i;
+var NUMBER_TWO_CHAR = /^[0-9_]{1,2}$/;
+var NUMBER_SIX_CHAR = /^[0-9_]{1,6}$/;
+
+// Маски
+
+var PHONE_MASK = "+7 (999) 999-99-99";
+var INN_MASK_FL = "999999999999";
+var OGRNIP_MASK = "999999999999999";
+var SNILS_MASK = "999-999-999 99";
+var NUMBER_PASSPORT_MASK = "99 99 999999";
+var CHECKING_ACCOUNT_MASK = "99999999999999999999";
+var CORRESPONDENT_ACCOUNT_MASK = "99999999999999999999";
+var BIC_MASK = "999999999";
+var CODE_DEPARTMENT = "999-999";
+var DATE_PASSPORT_MASK = "99.99.9999";
+var TIME_MASK = "99:99:99";
+
+var PHONE_UNMASK = "99999999999";
+
+// Шаринг конфиг
+var SHEREDESCRIPTION = 'Проверь удобство своего сайта настоящими пользователями на uxcrowd.ru';
+var SHERETITLE = 'Пользовательское тестирование сайта';
+var NEWSHERETITLE = '';
+
+
+// Тестовые
+
+//var PASSWORD_REGEXP = /^[a-zа-яё]+$/i;
+
+function show_error_valid(obj) {
+    if (obj) {
+        if (obj == 'ng-valid') {
+            $('.ng-invalid-elevalidation:not("form")').each(function () {
+                if ($(this).val() == "") {
+                    $(this).removeClass('ng-untouched');
+                    $(this).removeClass('ng-valid');
+                    $(this).removeClass('ng-pristine');
+                }
+            });
+            return '';
+        }
+
+        if (obj.selected_container) {
+            $(obj.selected_container).find('.ng-invalid-elevalidation').each(function () {
+                if ($(this).attr('radio_group')) {
+                    var col_select = 0;
+                    $('[radio_group=' + $(this).attr('radio_group') + ']').each(function () {
+                        if ($(this).prop("checked")) {
+                            col_select++;
+                        }
+                    });
+                    if (col_select != 0) {
+                        $(this).removeClass('ng-untouched');
+                        $(this).removeClass('ng-pristine');
+                        $(this).removeClass('ng-invalid-elevalidation');
+                        $(this).addClass('ng-valid-elevalidation')
+                    }
+                } else {
+                    if ($(this).data('type') == 'range') {
+                        if ($(this).val()) {
+                            if ($(this).val().split('рублей')[0] != 0) {
+                                $(this).removeClass('ng-untouched');
+                                $(this).removeClass('ng-pristine');
+                                $(this).removeClass('ng-invalid-elevalidation');
+                                $(this).addClass('ng-valid-elevalidation');
+                                $(this).val($(this).val().split('рублей')[0] + ' рублей');
+                            }
+                        }
+                    } else {
+                        if (($(this).val() != "") && ($(this).val() != "? string:0 ?") && (($(this).hasClass('ng-valid')) || ($(this).hasClass('hasDatepicker')))) {
+                            $(this).removeClass('ng-untouched');
+                            $(this).removeClass('ng-pristine');
+                            $(this).removeClass('ng-invalid-elevalidation');
+                            $(this).addClass('ng-valid-elevalidation')
+                        }
+                    }
+                }
+            });
+            return '';
+        }
+        if ($(obj).val().length == '') {
+            $(obj).addClass('ng-invalid-elevalidation')
+        }
+    }
+    $('.ng-invalid-elevalidation:not("form")').each(function () {
+        if (($(this).val() != "") && ($(this).hasClass('ng-valid'))) {
+            $(this).removeClass('ng-untouched');
+            $(this).removeClass('ng-pristine');
+            $(this).removeClass('ng-invalid-elevalidation');
+            $(this).addClass('ng-valid-elevalidation')
+        }
+    })
+}
+
+//  Список Доменов Почтовых клеинтов запрещенных к проверки
+
+function format_price(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ").replace('.', ',');
+}
+
+function width_placholder() {
+
+}
+
+$(window).load(function () {
+    setTimeout(function () {
+        width_placholder();
+    }, 500);
+});
+
+$(window).resize(function () {
+    setTimeout(function () {
+        width_placholder();
+    }, 100)
+});
+
+/*
+ ifBrowser 0.0.3
+ a function which returns specified data depending on a user's browser
+ written by Plyushch Gregory, 2012
+ is free to use for everyone in condition of saving the author's name
+ */
+function ifBrowser(obj) {
+    var none = obj["none"] || "none";
+
+    function cBrowser() {
+        var ua = navigator.userAgent;
+        var bName = function () {
+            if (ua.search(/MSIE/) > -1) return "ie";
+            if (ua.search(/Firefox/) > -1) return "firefox";
+            if (ua.search(/Opera/) > -1) return "opera";
+            if (ua.search(/Chrome/) > -1) return "chrome";
+            if (ua.search(/Safari/) > -1) return "safari";
+            if (ua.search(/Konqueror/) > -1) return "konqueror";
+            if (ua.search(/Iceweasel/) > -1) return "iceweasel";
+            if (ua.search(/SeaMonkey/) > -1) return "seamonkey";
+        }();
+        var version = function (bName) {
+            switch (bName) {
+                case "ie" :
+                    return (ua.split("MSIE ")[1]).split(";")[0];
+                    break;
+                case "firefox" :
+                    return ua.split("Firefox/")[1];
+                    break;
+                case "opera" :
+                    return ua.split("Version/")[1];
+                    break;
+                case "chrome" :
+                    return (ua.split("Chrome/")[1]).split(" ")[0];
+                    break;
+                case "safari" :
+                    return (ua.split("Version/")[1]).split(" ")[0];
+                    break;
+                case "konqueror" :
+                    return (ua.split("KHTML/")[1]).split(" ")[0];
+                    break;
+                case "iceweasel" :
+                    return (ua.split("Iceweasel/")[1]).split(" ")[0];
+                    break;
+                case "seamonkey" :
+                    return ua.split("SeaMonkey/")[1];
+                    break;
+            }
+        }(bName);
+        return [bName, bName + version.split(".")[0], bName + version];
+    }
+
+    var current_browser = cBrowser();
+    for (var key in obj) {
+        var trg = key.toLowerCase();
+        if (trg.indexOf(current_browser[2]) > -1) return obj[key];
+        else if (trg.indexOf(current_browser[1]) > -1) return obj[key];
+        else {
+            var nsymbol = trg.charAt(trg.indexOf(current_browser[0]) + current_browser[0].length);
+            if (trg.indexOf(current_browser[0]) > -1 && (nsymbol == " " || nsymbol == "")) return obj[key];
+        }
+    }
+    return none;
+}
+//текущий браузер - Chrome?
+var uxc_chrome = ((navigator.userAgent.toLowerCase().indexOf('chrome') > -1) && (navigator.vendor.toLowerCase().indexOf("google") > -1));
+
+
+function secondsToMinutes (d) {
+   d = Number(d);
+   var hours = Math.floor(d / 3600);
+   var minutes = Math.floor(d % 3600 / 60) + hours * 60;
+   var seconds = Math.floor(d % 3600 % 60);
+
+   return (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+}

@@ -1,0 +1,17 @@
+[
+    {
+        "transactionName": "UC03_TC01_open_site_uxcrowd",
+        "rawStartTime": 1598436364490,
+        "rawEndTime": 1598436369389
+    },
+    {
+        "transactionName": "UC03_TC02_registration_tester",
+        "rawStartTime": 1598436369398,
+        "rawEndTime": 1598436369804
+    },
+    {
+        "transactionName": "UC03_TC03_DB",
+        "rawStartTime": 1598436369806,
+        "rawEndTime": 1598436370282
+    }
+]

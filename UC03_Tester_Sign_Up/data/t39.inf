@@ -1,0 +1,11 @@
+[t39]
+FileName1=t39.htm
+URL1=https://loadtest.uxcrowd.ru/tmpl/tmpl_home/modal_window.html
+Total=1
+RequestHeaderFile=t39_RequestHeader.txt
+RequestBodyFile=NONE
+ResponseHeaderFile=t39_ResponseHeader.txt
+ContentType=text/html
+SnapshotXmlFile=snapshot_30.xml
+[ProtocolInfo]
+ProtocolId=QTWeb

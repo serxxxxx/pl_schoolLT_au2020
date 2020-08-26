@@ -1,0 +1,1953 @@
+var app = angular.module('app', [
+    'ngResource',
+    'ui.router',
+    'ui.bootstrap',
+    'ngStorage',
+    'angular-loading-bar',
+    'angular-extend-promises',
+    'checklist-model',
+    'ui.grid',
+    'ui.grid.pagination',
+    'ui.grid.autoResize',
+    'yandex-metrika',
+    'ngTable',
+    'validation'
+]);
+
+if (window) {
+    app.constant('$config', window.$config);
+}
+
+app.config(function ($provide, $metrikaProvider, $config, $locationProvider) {
+    $provide.decorator('Grid', function ($delegate, $timeout) {
+        $delegate.prototype.renderingComplete = function () {
+            if (angular.isFunction(this.options.onRegisterApi)) {
+                this.options.onRegisterApi(this.api);
+            }
+            this.api.core.raise.renderingComplete(this.api);
+            $timeout(function () {
+                var $viewport = $('.ui-grid-render-container');
+                ['touchstart', 'touchmove', 'touchend', 'keydown', 'wheel', 'mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'].forEach(function (eventName) {
+                    $viewport.unbind(eventName);
+                });
+            }.bind(this));
+        };
+        return $delegate;
+    });
+
+    // window.$config.environment === 'LOCAL' ? $locationProvider.html5Mode(false) : $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true);
+
+    if ($config.isProd) {
+        $metrikaProvider.configureCounter({
+            id: $config.yandexMetrikaId,
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true,
+            trackHash: true
+        });
+    };
+});
+
+app.factory('Auth', function Auth($rootScope, $state, $q, Principal, AuthServerProvider, Account, Register,
+                                  PasswordResetInit, TesterIntegration, Unsubscribe) {
+    return {
+        login: function (credentials, callback) {
+            var cb = callback || angular.noop;
+            var deferred = $q.defer();
+
+            AuthServerProvider.login(credentials).then(function (data) {
+                // retrieve the logged account information
+                Principal.identity(true).then(function () {
+                    deferred.resolve(data);
+                });
+                return cb();
+            }).catch(function (err) {
+                this.logout();
+                deferred.reject(err);
+                return cb(err);
+            }.bind(this));
+
+            return deferred.promise;
+        },
+
+        logout: function () {
+            AuthServerProvider.logout();
+            Principal.authenticate(null);
+            // Reset state memory
+            $rootScope.previousStateName = undefined;
+            $rootScope.previousStateNameParams = undefined;
+        },
+
+        authorize: function (force) {
+            return Principal.identity(force)
+                .then(function () {
+
+                    var isAuthenticated = Principal.isAuthenticated();
+
+                    // an authenticated user can't access to login and register pages
+                    if (isAuthenticated && $rootScope.toState.parent === 'account' && ($rootScope.toState.name === 'login' || $rootScope.toState.name === 'register')) {
+                        $state.go('');
+                    }
+
+                    if ($rootScope.toState.data.authorities && $rootScope.toState.data.authorities.length > 0 && !Principal.hasAnyAuthority($rootScope.toState.data.authorities)) {
+                        if (isAuthenticated) {
+                            // user is signed in but not authorized for desired state
+                            //$state.go('accessdenied');
+                            $state.go('new_main_index');
+                        }
+                        else {
+                            // user is not authenticated. stow the state they wanted before you
+                            // send them to the signin state, so you can return them when you're done
+                            $rootScope.previousStateName = $rootScope.toState;
+                            $rootScope.previousStateNameParams = $rootScope.toStateParams;
+
+                            if ($rootScope.toState.name === 'new-video-customer') {
+                                $state.go('new-video',
+                                  {videoId: $rootScope.toStateParams.videoId}, {reload: false}
+                                );
+                            } else if ($rootScope.toState.name === 'insight') {
+                                $state.go('new-insight',
+                                  {insightId: $rootScope.toStateParams.insightId}, {reload: false}
+                                );
+                            } else {
+                                // now, send them to the signin state so they can log in
+                                $state.go('new_main_index');
+                            }
+                        }
+                    }
+                });
+        },
+        createAccount: function (account, callback) {
+            var cb = callback || angular.noop;
+
+            return Register.save(account,
+                function () {
+                    return cb(account);
+                },
+                function (err) {
+                    this.logout();
+                    return cb(err);
+                }.bind(this)).$promise;
+        },
+        createSideTesterAccount: function (account, callback) {
+            var cb = callback || angular.noop;
+
+            return TesterIntegration.save(account,
+                function (data) {
+                    return cb(data);
+                },
+                function (err) {
+                    this.logout();
+                    return cb(err);
+                }.bind(this)).$promise;
+        },
+        updateAccount: function (account, callback) {
+            var cb = callback || angular.noop;
+
+            return Account.save(account,
+                function () {
+                    return cb(account);
+                },
+                function (err) {
+                    return cb(err);
+                }.bind(this)).$promise;
+        },
+
+        activateAccount: function (keyAndPassword, callback) {
+            var cb = callback || angular.noop;
+
+            return Activate.save(keyAndPassword.keyAndPassword, function (user) {
+                return cb(user);
+            }, function (err) {
+                return cb(err);
+            }).$promise;
+        },
+
+        unsubscribe: function (email, signature, callback) {
+            var cb = callback || angular.noop;
+
+            return Unsubscribe.get({email: email, signature: signature},
+                function (response) {
+                    return cb(response);
+                },
+                function (err) {
+                    return cb(err);
+                }.bind(this)).$promise;
+        },
+
+        resetPasswordInit: function (mail, callback) {
+            var cb = callback || angular.noop;
+
+            return PasswordResetInit.save(mail, function () {
+                return cb();
+            }, function (err) {
+                return cb(err);
+            }).$promise;
+        }
+    };
+});
+
+app.service('ValidationService', function() {
+    var schemas = {};
+
+    return {
+        // List of schemas are stored here
+        schemas: schemas,
+
+        // Adding schema to object
+        set: function (name, hash) {
+            schemas[name] = hash;
+        },
+
+        // fetching from object
+        get: function (name) {
+            return schemas[name];
+        }
+    }
+});
+
+
+/**
+ * Directives
+ */
+
+app.directive('validationSchema', ['ValidationService', function (ValidationService) {
+    return {
+        restrict: 'AE',
+        compile: function (tElem, tAttrs) {
+            setTimeout(function(){
+            // Default schema to extend upon
+            var defaultSchema = {
+                // default validation is set to required
+                'validations': 'required',
+                'validate-on': 'watch'
+            };
+
+            var globalMessages = {};
+
+            console.log(tAttrs)
+            console.log(ValidationService)
+
+            // Grabbing schema the user wants
+            var schema = ValidationService.get(tAttrs.schema);
+
+            if (schema) {
+
+                // If it is an valid schema , then setFixtures
+                setFixtures(schema);
+
+            } else {
+
+                // Otherwise show warning of non-existing schema
+                warnDeveloper(tAttrs.schema);
+            }
+
+            // Warn developer method
+            function warnDeveloper(schema) {
+
+                // Error message
+                var error_message = schema + ' Schema not found';
+
+                // Outputting to console
+                console.warn('VALIDATION SCHEMA :', error_message);
+            }
+
+            function setFixtures(schema) {
+
+                // If schema has globals
+                if (schema.globals) {
+
+                    // Remove defaultSchema validations with globals
+                    defaultSchema.validations = schema.globals.validations || defaultSchema.validations;
+
+                    // Remove validate-on validations with globals
+                    defaultSchema["validate-on"] = schema.globals["validate-on"] || defaultSchema["validate-on"];
+
+                    // Set globalMessages if globals have one or empty object
+                    globalMessages = schema.globals.messages || {};
+
+                    // Delete schema globals as not required anymore
+                    delete schema.globals;
+                }
+
+                // Deep extending objects
+                function extendDeep(dst) {
+                    // Looping through all the values
+                    angular.forEach(arguments, function (obj) {
+                        if (obj !== dst) {
+                            angular.forEach(obj, function (value, key) {
+                                if (dst[key] && dst[key].constructor && dst[key].constructor === Object) {
+                                    // Rerun if above key is an Object
+                                    extendDeep(dst[key], value);
+                                } else {
+                                    // Extend here
+                                    dst[key] = dst[key] || value;
+                                }
+                            });
+                        }
+                    });
+
+                    return dst;
+                }
+
+                // Grabbing all form elements inside the tElem
+                var formElements = tElem[0].querySelectorAll('input,select,textarea');
+
+                // Looping through all form Elements
+                angular.forEach(formElements, function (input) {
+                    // Getting instance of angular element
+                    var i = angular.element(input);
+                    var input_name = i.attr('name');
+
+                    // If schema defination exists
+                    if (schema[input_name]) {
+                        // Deep extend rules to save undefined stuff
+                        var i_schema = extendDeep(schema[input_name], defaultSchema);
+                        // Setting validator on field
+                        i.attr('validator', i_schema.validations);
+                        // Setting valid-method on field
+                        i.attr('valid-method', i_schema['validate-on']);
+
+                        // Extends messages using global and field values
+                        i_schema.messages = i_schema.messages || {};
+                        i_schema.messages = extendDeep(i_schema.messages, globalMessages);
+
+                        // Looping through messages object
+                        angular.forEach(i_schema.messages, function (vals, key) {
+
+                            // Grabbing error message and replace %field% with input name
+                            var error_message = vals.error ? vals.error.replace('%field%', input_name) : '';
+
+                            // Grabbing success message and replace %field% with input name
+                            var success_message = vals.success ? vals.success.replace('%field%', input_name) : '';
+
+                            // Setting error message for validation type
+                            i.attr(key + '-error-message', error_message);
+
+                            // Setting success message for validation type
+                            i.attr(key + '-success-message', success_message);
+                        });
+                    }
+
+                });
+            }
+            }, 500);
+        }
+    }
+}]);
+
+app.directive("paypal", function($rootScope, $config, $compile, $window, $state) {
+  return {
+    link: function (scope, elm, attrs, ctls) {
+        scope.attrs=attrs;
+        paypal.Button.render({
+
+            env: $config.paypalMode, // sandbox | production
+            // Show the buyer a 'Pay Now' button in the checkout flow
+            commit: true,
+
+            style: {
+                      label: 'pay',
+                      fundingicons: true, // optional
+                      branding: true, // optional
+                      size:  'medium', // small | medium | large | responsive
+                      shape: 'rect',   // pill | rect
+                      color: 'gold'   // gold | blue | silve | black
+                  },
+
+
+            // Specify allowed and disallowed funding sources
+            //
+            // Options:
+            // - paypal.FUNDING.CARD
+            // - paypal.FUNDING.CREDIT
+            // - paypal.FUNDING.ELV
+
+            funding: {
+                allowed: [ paypal.FUNDING.CARD, paypal.FUNDING.CREDIT ],
+                disallowed: [ ]
+            },
+
+            // payment() is called when the button is clicked
+            payment: function() {
+
+                // Set up a url on your server to create the payment
+                var CREATE_URL = '/api/public/paymentPayPalInitRequest';
+                var data = {
+                    id: scope.attrs.orderid
+                };
+
+                // Make a call to your server to set up the payment
+                return paypal.request.post(CREATE_URL, data)
+                    .then(function(res) {
+                        scope.paymentID = res.id;
+                        return res.id;
+                    });
+            },
+
+            // onAuthorize() is called when the buyer approves the payment
+            onAuthorize: function(data, actions) {
+                console.log(scope);
+                // Set up a url on your server to execute the payment
+                var EXECUTE_URL = '/api/public/paymentPayPalExecuteRequest';
+
+                // Set up the data you need to pass to your server
+                var data = {
+                     paymentId: data.paymentID,
+                     PayerID: data.payerID
+                 };
+                // Make a call to your server to execute the payment
+                return paypal.request.post(EXECUTE_URL, data)
+                    .then(function (res) {
+                        if (scope.attrs.testertype!=null && scope.attrs.testertype=='THEIR'){
+                            parent.location=$config.fullUrl+'/app-customer-home/tests/'+scope.attrs.orderid;
+                            return;
+                        }
+                        $state.go('success', {notify: false});
+                        return;
+                    }).catch(function (data) {
+                        if (data.status = 405) {
+                            window.location.href = $config.fullUrl+'/app-customer-home/list-orders';
+                            // $state.go('list-orders', {}, {reload: true});
+                        }
+                    });;
+            }
+
+        }, '#paypal-button-container');
+    }
+  };
+});
+
+app.directive("paypaltariff", function($rootScope, $config, $compile, $window, $state, Translation) {
+  return {
+    link: function (scope, elm, attrs) {
+        $rootScope.paypalPayed=false;
+        scope.rootScope=$rootScope;
+        scope.state=$state;
+
+        scope.translation=Translation;
+        paypal.Button.render({
+
+            env: $config.paypalMode, // sandbox | production
+            // Show the buyer a 'Pay Now' button in the checkout flow
+            commit: true,
+
+            style: {
+                      label: 'pay',
+                      fundingicons: true, // optional
+                      branding: true, // optional
+                      size:  'medium', // small | medium | large | responsive
+                      shape: 'rect',   // pill | rect
+                      color: 'gold'   // gold | blue | silve | black
+                  },
+
+
+            // Specify allowed and disallowed funding sources
+            //
+            // Options:
+            // - paypal.FUNDING.CARD
+            // - paypal.FUNDING.CREDIT
+            // - paypal.FUNDING.ELV
+
+            funding: {
+                allowed: [ paypal.FUNDING.CARD, paypal.FUNDING.CREDIT ],
+                disallowed: [ ]
+            },
+
+            // payment() is called when the button is clicked
+            payment: function() {
+                scope.rootScope.tariffEmailFilled = true;
+                scope.rootScope.$apply();
+                $('#price_errors_block').text('');
+                if (scope.rootScope.tariffEmail==null){
+                    scope.rootScope.tariffEmailFilled = false;
+                    scope.rootScope.$apply();
+                    return null;
+                }
+                // Set up a url on your server to create the payment
+                var CREATE_URL = '/api/public/paymentPayPalInitRequestTariff';
+                var data = {
+                    email: scope.rootScope.tariffEmail,
+                    hasFree: scope.rootScope.hasFree
+                };
+
+                // Make a call to your server to set up the payment
+                return paypal.request.post(CREATE_URL, data)
+                    .then(function(res) {
+                        scope.paymentID = res.id;
+                        return res.id;
+                    }).catch(function (data) {
+                        if (data.message.indexOf("E_MAIL_ADDRESS_ALREADY_IN_USE")!== -1) {
+                           $('#price_errors_block').text(scope.translation.translate('LTR.LTR13'));
+                        }
+                        if (data.message.indexOf("CUSTOMER_ALREADY_HAS_PAYED_TARIFF")!== -1) {
+                           $('#price_errors_block').text(scope.translation.translate('LTR.LTR14'));
+                        }
+                        if (data.message.indexOf("CUSTOMER_ALREADY_HAS_FREE_TARIFF")!== -1) {
+                           scope.rootScope.hasFree = true;
+                           scope.rootScope.$apply();
+                        }
+                        if (data.message.indexOf("E_MAIL_ADDRESS_ALREADY_AS_TESTER")!== -1) {
+                           $('#price_errors_block').text(scope.translation.translate('LTR.LTR15'));
+                        }
+                    });
+            },
+
+            // onAuthorize() is called when the buyer approves the payment
+            onAuthorize: function(data, actions) {
+
+                // Set up a url on your server to execute the payment
+                var EXECUTE_URL = '/api/public/paymentPayPalExecuteRequestTariff';
+
+                // Set up the data you need to pass to your server
+                var data = {
+                     paymentId: data.paymentID,
+                     PayerID: data.payerID
+                 };
+                // Make a call to your server to execute the payment
+                return paypal.request.post(EXECUTE_URL, data)
+                    .then(function (res) {
+                        scope.rootScope.paypalPayed = true
+                        scope.success = 'OK';
+                        scope.error = null;
+                        scope.message = "OK";
+                        scope.rootScope.successMessage = {
+                            'header': scope.translation.translate('LCT.LCT2'),
+                            'description': 'Check the your Email: the activation link should already be there. If you do not appear in the inbox or spam folder, write to us in the chat'
+                        };
+                        scope.state.go('success', {notify: false}, {reload: true});
+                        location.reload();
+                        return;
+                    }).catch(function (data) {
+                        $uibModalInstance.dismiss('cancel');
+                        window.location.href = $config.fullUrl+'/app-customer-home/list-orders';
+                        // scope.state.go('list-orders', {}, {reload: true});
+                    });
+            }
+
+        }, '#paypal-button-container-tariff');
+    }
+  };
+});
+
+app.directive("ngTr", function($rootScope, $config, $compile, $window) {
+  return {
+    link: function (scope, elm, attrs, ctls) {
+        const labelCode = attrs.ngTr
+
+        var mapLabels = function () {
+            $(elm).html($config.translation[labelCode.split('.')[0]][labelCode.split('.')[1]]);
+        };
+        mapLabels();
+    }
+  };
+});
+
+app.directive('incomeel', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            elm.bind('keyup', function () {
+                if (Number($(elm).val().replace(' ', '')) > 50000) {
+                    $('.block_range_js').slider('value', 55000);
+                    $(elm).val('50 000+');
+                } else {
+                    if (Number($(elm).val().replace(' ', '')) == '') {
+                        $('.block_range_js').slider('value', 0);
+                    } else {
+                        $(elm).val(format_price($(elm).val().replace(/\D+/g, "")));
+                    }
+                    $('.block_range_js').slider('value', $(elm).val().replace(/\D+/g, ""));
+                }
+
+            });
+            elm.bind('focus', function () {
+                $(elm).val(format_price($(elm).val().replace(/\D+/g, "")));
+                $('.block_range_js').slider('value', $(elm).val().replace(/\D+/g, ""));
+            });
+            elm.bind('blur', function () {
+                if ($(elm).val()=='50 000+'){
+                    $('.block_range_js').slider('value', 55000);
+                } else {
+                    $(elm).val(format_price($(elm).val().replace(/\D+/g, "")));
+                    $('.block_range_js').slider('value', $(elm).val().replace(/\D+/g, ""));
+                }
+            });
+        }
+    }
+});
+
+app.directive('formatprice', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            elm.bind('keyup', function () {
+                $(elm).val(format_price($(elm).val().replace(/\D+/g, "")));
+            });
+        }
+    }
+});
+
+app.directive('masknumber', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            elm.bind('keyup', function () {
+                if (NUMBER_REGEXP.exec($(elm).val())) {
+                    if ($(elm).val() > Number(attrs.max)) {
+                        $(elm).val(attrs.max);
+                        $(elm).parents('.block_slider_count').find('.count_slider').slider("value", Number(attrs.max));
+                    } else if ($(elm).val() == '0') {
+                        $(elm).parents('.block_slider_count').find('.count_slider').slider("value", 1);
+                        $(elm).val('1');
+                    } else {
+                        $(elm).parents('.block_slider_count').find('.count_slider').slider("value", $(elm).val());
+                    }
+                } else {
+                    if ($(elm).val() != '') {
+                        $(elm).val('1');
+                        $(elm).parents('.block_slider_count').find('.count_slider').slider("value", 1);
+                    }
+                }
+                scope.apply;
+            });
+            elm.bind('focusout', function () {
+                if ($(elm).val() == '') {
+                    $(elm).val('1');
+                    $(elm).parents('.block_slider_count').find('.count_slider').slider("value", 1);
+                    scope.apply;
+                }
+            });
+        }
+    }
+});
+
+app.directive('masknumberincome', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            elm.bind('keyup', function () {
+                if ($(elm).hasClass('max_val')) {
+                    if (Number($(elm).val().replace(' ', '').replace('+', '')) > 50000) {
+                        scope.participantGroup.householdIncomeMax = '50 000+';
+                        $(elm).parents('.main_item_expand_block').find('.income').slider("values", 1, 55000);
+                        $(elm).val('50 000+');
+                    } else {
+                        if (Number($(elm).val().replace(' ', '')) == '') {
+                            $(elm).parents('.main_item_expand_block').find('.income').slider("values", 1, 0);
+                        } else {
+                            $(elm).val(format_price($(elm).val().replace(/\D+/g, "")).replace(" ", ""));
+                            scope.participantGroup.householdIncomeMax = format_price($(elm).val().replace(/\D+/g, "")).replace(" ", "");
+                            $(elm).parents('.main_item_expand_block').find('.income').slider("values", 1, $(elm).val().replace(/\D+/g, ""));
+                        }
+                        $(elm).parents('.main_item_expand_block').find('.income').slider("values", 1, $(elm).val().replace(/\D+/g, ""));
+                    }
+                }
+                if ($(elm).hasClass('min_val')) {
+                    $(elm).parents('.main_item_expand_block').find('.income').slider("values", 0, $(elm).val().replace(/\D+/g, ""));
+                }
+                scope.$apply();
+            });
+            elm.bind('focusout', function () {
+                if ($(elm).val() == '') {
+                    if ($(elm).hasClass('max_val')) {
+                        scope.participantGroup.householdIncomeMax = '50 000+';
+                        $(elm).parents('.main_item_expand_block').find('.income').slider("values", 1, 55000);
+                    } else {
+                        scope.participantGroup.householdIncomeMin = 0;
+                        $(elm).parents('.main_item_expand_block').find('.income').slider("values", 0, 0);
+                    }
+                }
+                if (scope.participantGroup.householdIncomeMax == scope.participantGroup.householdIncomeMin) {
+                    scope.participantGroup.householdIncomeMin == 50000 ?
+                        scope.participantGroup.householdIncomeMax = '50 000+' :
+                        scope.participantGroup.householdIncomeMax = scope.participantGroup.householdIncomeMin + 5000
+                    $(elm).parents('.main_item_expand_block').find('.income').slider('values', 1, Number(scope.participantGroup.householdIncomeMin + 5000));
+                }
+                if (scope.participantGroup.householdIncomeMax < scope.participantGroup.householdIncomeMin) {
+                    var min = scope.participantGroup.householdIncomeMax;
+                    var max = scope.participantGroup.householdIncomeMin;
+                    $(elm).parents('.main_item_expand_block').find('.income').slider('values', 0, Number(min));
+                    $(elm).parents('.main_item_expand_block').find('.income').slider('values', 1, Number(max));
+                    scope.participantGroup.householdIncomeMin = Number(min);
+                    scope.participantGroup.householdIncomeMax = Number(max);
+                }
+                scope.$apply();
+            });
+        }
+    }
+});
+
+app.directive('masknumberage', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            elm.bind('keyup', function () {
+                var flag = false;
+                if ($(elm).val() == '60+' || $(elm).val().split('+')[0] == '60') {
+                    flag = true;
+                    if ($(elm).val().split('+')[0] == '60') {
+                        $(elm).val('60+');
+                    }
+                }
+                if (NUMBER_TWO_CHAR.exec($(elm).val()) || flag) {
+                    if (($(elm).val() > 60)) {
+                        if ($(elm).hasClass('max_val')) {
+                            scope.participantGroup.maxAge = '60+';
+                            $(elm).parents('.main_item_expand_block').find('.age').slider('values', 1, 61)
+                        } else {
+                            scope.participantGroup.minAge = 18;
+                            $(elm).parents('.main_item_expand_block').find('.age').slider('values', 0, 18)
+                        }
+                    }
+                } else {
+                    if ($(elm).val() != '') {
+                        if ($(elm).hasClass('max_val')) {
+                            scope.participantGroup.maxAge = 19;
+                            $(elm).parents('.main_item_expand_block').find('.age').slider("values", 1, 19);
+                        } else {
+                            scope.participantGroup.minAge = 18;
+                            $(elm).parents('.main_item_expand_block').find('.age').slider("values", 0, 18);
+                        }
+                    }
+                }
+                scope.$apply();
+            });
+            elm.bind('focusout', function () {
+                if (($(elm).val() > 60) || ($(elm).val() < 18)) {
+                    if ($(elm).hasClass('max_val')) {
+                        scope.participantGroup.maxAge = '60+';
+                        $(elm).parents('.main_item_expand_block').find('.age').slider('values', 1, 61)
+                    } else {
+                        scope.participantGroup.minAge = 18;
+                        $(elm).parents('.main_item_expand_block').find('.age').slider('values', 0, 18)
+                    }
+                }
+                if ($(elm).val() == '') {
+                    if ($(elm).hasClass('max_val')) {
+                        scope.participantGroup.maxAge = 19;
+                        $(elm).parents('.main_item_expand_block').find('.age').slider("values", 1, 19);
+                    } else {
+                        scope.participantGroup.minAge = 18;
+                        $(elm).parents('.main_item_expand_block').find('.age').slider("values", 0, 18);
+                    }
+                }
+                if ($(elm).parents('.main_item_expand_block').find('.age').slider('values')[1] < $(elm).parents('.main_item_expand_block').find('.age').slider('values')[0]) {
+                    var min = $(elm).parents('.main_item_expand_block').find('.age').slider('values')[1];
+                    var max = $(elm).parents('.main_item_expand_block').find('.age').slider('values')[0];
+                    $(elm).parents('.main_item_expand_block').find('.age').slider('values', 0, Number(min));
+                    $(elm).parents('.main_item_expand_block').find('.age').slider('values', 1, Number(max));
+                    $(elm).parents('.main_item_expand_block').find('.max_val').val(max);
+                    $(elm).parents('.main_item_expand_block').find('.min_val').val(min);
+                }
+                scope.$apply();
+            });
+        }
+    }
+});
+
+app.directive('custominput', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            var elm_parents = $(elm).parents('.uxc_custom_input');
+            elm.bind('keyup', function () {
+                if ($(elm).val() != '') {
+                    $(elm_parents).addClass('filled');
+                }
+            });
+            elm.bind('focus', function () {
+                $(elm_parents).addClass('filled');
+            });
+            elm.bind('focusout', function () {
+                if ($(elm).val() != '') {
+                    $(elm_parents).addClass('filled');
+                } else {
+                    $(elm_parents).removeClass('filled');
+                }
+            });
+            elm.bind('blur', function () {
+                if ($(elm).val() != '') {
+                    $(elm_parents).addClass('filled');
+                } else {
+                    $(elm_parents).removeClass('filled');
+                }
+            });
+        }
+    }
+});
+
+app.directive('uxTestClick', function ($uibModal, $rootScope, $config, Principal, Translation, $http) {
+    return {
+        link: function (scope, element, attrs) {
+            scope.$watch(attrs.ngBind, function (newvalue) {
+
+                var showMessage = function (animation, size, templateUrl, string, title) {
+                    $uibModal.open({
+                        animation: animation,
+                        size: size,
+                        templateUrl: templateUrl,
+                        controller: function ($scope, $rootScope, $sce, $uibModalInstance) {
+                            $scope.textMSG = $sce.trustAsHtml(string);
+                            $scope.hideYES = true;
+                            $scope.textNO = Translation.translate('INT.INT3');
+                            if (title) {
+                                $scope.titleModal = Translation.translate('INT.INT9');
+                            }
+
+                            $scope.cancel = function () {
+                                $uibModalInstance.dismiss('cancel');
+                            };
+                        }
+                    });
+                };
+
+                var getTestPassStatsObject = function (account) {
+                    return TestPassStats = {
+                        orderId: localStorage.getItem('orderId'),
+                        screenName: 'START_PLUGIN',
+                        testerId: account.id
+                    };
+                };
+
+                var getAccountData = function () {
+                    Principal.identity().then(function (account) {
+                      $http({
+                        method: 'POST',
+                        url: '/api/stats/create',
+                        data: getTestPassStatsObject(account),
+                        async: false
+                      })
+                      .then(function (data) {
+                            chrome.runtime.sendMessage(Translation.getExtensionId(), {
+                              eventPage: "setBtn",
+                              orderId: localStorage.getItem('orderId'),
+                              account: account,
+                              statsId: data.data,
+                              xsrfToken: getCookie("XSRF-TOKEN"),
+                            }, function (obj) {});
+                          }
+                      ).catch(function (error) {
+                          console.log(error);
+                        });
+                    });
+                };
+
+                if (localStorage.getItem('sendOrder') == 'true') {
+                    getAccountData();
+
+                    localStorage.setItem('reload_page', false);
+                    localStorage.setItem('sendOrder', false);
+                }
+
+                const showMessageDownloadExtension = () => showMessage(
+                    true,
+                    "lg",
+                    "../../tmpl/tmpl_customer/modaltmp.html",
+                    `<ul>
+                    <li>${Translation.translate("INT.INT")}</li>
+                    <li>
+                        <a href="https://chrome.google.com/webstore/detail/uxcrowd/${Translation.getExtensionId()}" target="_blank">
+                            <img style="margin-right: 10px;" src="../assets/images/download-arr.png" />
+                            <span class="presentation-link">${Translation.translate("INT.INT1")}</span>
+                        </a> (${Translation.translate("INT.INT2")})
+                    </li>
+                    </ul>`
+                );
+
+                element.click(function (e) {
+                    e.preventDefault();
+
+                    try {
+                        chrome.runtime.sendMessage(Translation.getExtensionId(), {
+                            eventPage: "reload_page"
+                        }, function (obj) {
+                            var orderId = null;
+
+                            console.log('Get message from extension: ' + obj);
+
+                            if (!obj) {
+                                console.error('Cannot get an extension message. Please, enable your extension!');
+
+                                showMessageDownloadExtension();
+
+                                return;
+                            }
+
+                            if (e.target.href) {
+                                orderId = e.target.href.split('=')[1]
+                            } else {
+                                orderId = element.parent().attr('action').split('=')[1]
+                            }
+
+                            localStorage.setItem('orderId', orderId);
+                            localStorage.setItem('reload_page', obj.reload_page);
+
+                            if (uxc_chrome == true) {
+                                var error = false,
+                                    extensionInstalled = false,
+                                    extensionVersion;
+
+                                // Request extension manifest.json file and read data
+                                $.ajax({
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    async: false,
+                                    url: 'chrome-extension://' + Translation.getExtensionId() + '/manifest.json',
+                                    success: function (json) {
+                                        extensionVersion = json.version;
+                                        extensionInstalled = true;
+                                    },
+                                    error: function (json) {
+                                        error = true;
+                                        localStorage.setItem('reload_page', true);
+                                    }
+                                });
+
+                                if (extensionInstalled) {
+                                    e.preventDefault();
+
+                                var lastVersion;
+                                $.ajax({
+                                    type: 'GET',
+                                    async: false,
+                                    url: window.$config.fullUrl + "/api/v2/plugin/getLastVersion?pluginType=WEB&environmentType="+window.$config.environment,
+                                    success: function (json) {
+                                    lastVersion = json;
+                                    }
+                                });
+
+                                if (extensionVersion >= lastVersion) {
+                                        if (localStorage.getItem('reload_page') == 'true') {
+                                            localStorage.setItem('orderId', orderId);
+                                            localStorage.setItem('sendOrder', true);
+                                            location.reload(true);
+                                        } else {
+                                            getAccountData();
+                                        }
+
+                                        return;
+                                    } else { // Notice about old extension version. Please, update.
+                                        showMessage(true, 'lg', '../../tmpl/tmpl_customer/modaltmp.html',
+                                            '<ul>' +
+                                                '<li>' + Translation.translate('INT.INT5') + '</li>' +
+                                            '<li>' + Translation.translate(
+                                            'INT.INT6') + ' - ' + lastVersion + '</li>' +
+                                            '</ul>');
+                                        return;
+                                    }
+                                } else { // Extension disabled or not installed to Chrome. Show message and link to download extension.
+                                    e.preventDefault();
+
+                                    showMessageDownloadExtension();
+                                }
+                            } else { // When use another browser, not Chrome. Show message and link to download Chrome browser.
+                                e.preventDefault();
+
+                                showMessage(true, 'lg', '../../tmpl/tmpl_customer/modaltmpfull.html',
+                                    '<span class="text_error_modal">' +
+                                        Translation.translate('INT.INT7') +
+                                    '</span>' +
+                                    '<span class="text_error_modal">' +
+                                        Translation.translate('INT.INT8') +
+                                        ' <a target="_blank" href="https://www.google.com/chrome/browser/desktop/index.html">Chrome</a>' +
+                                    '</span>', true);
+                            }
+                        });
+                    } catch {
+                        showMessageDownloadExtension();
+                    }
+                });
+            });
+        }
+    };
+});
+
+app.directive('hyperCommentsWidget', function (Video, Principal) {
+    var params = {
+        widget: "Stream", widget_id: 86445, callback: function (event, init) {
+            event.on('streamMessage', function (packet) {
+                if (packet.is_resp) {
+                    Video.videoCreatedComment(packet);
+                }
+            });
+            // $('.blog-end-comments-count').text(event.config.comments_level);
+        }
+    };
+    return {
+        link: function (scope, element, attrs) {
+            Principal.identity().then(function (account) {
+                if (account.hyperCommentsAuth != null) {
+                    params.auth = account.hyperCommentsAuth;
+                }
+            }).finally(function finallyCallback() {
+                _hcwp = [];
+                _hcwp.push(params);
+                _hcwp.push({
+                    widget: "Bloggerstream",
+                    widget_id: 86445,
+                    selector: ".node_comment_count",
+                    label: "{%COUNT%}"
+                });
+                (function () {
+                    var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+                    var hcc = document.createElement("script");
+                    hcc.type = "text/javascript";
+                    hcc.async = true;
+                    hcc.src = ("https:" == document.location.protocol ? "https" : "http") + "://w.hypercomments.com/widget/hc/86445/" + lang + "/widget.js";
+                    var s = document.getElementsByTagName("script")[0];
+                    s.parentNode.insertBefore(hcc, s.nextSibling);
+                })();
+            });
+        }
+    };
+});
+
+app.directive('customtitle', function () {
+    return {
+        link: function (scope, elm, attrs, ctrl) {
+            elm.bind('click', function () {
+                $(elm).parents('.uxc_custom_input').find('input').focus();
+            });
+        }
+    }
+});
+
+app.directive('slider', function () {
+    return {
+        link: function (scope, elm, attrs, ctrl) {
+            var elValue = scope.order.theirTestersCount;
+            elm.slider({
+                range: "min",
+                max: 20,
+                min: 1,
+                step: 1,
+                value: elValue,
+                slide: function (event, ui) {
+                    scope.order.theirTestersCount = ui.value;
+                    scope.$apply();
+                }
+            })
+        }
+    }
+});
+
+app.directive('participantGroup', function () {
+    restrict: 'E';
+    return {
+        link: function (scope, elm, attrs, ctrl) {
+            var slider = $(elm.find('.count_slider')[0]);
+            var elValue = scope.participantGroup.count;
+            slider.slider({
+                range: "min",
+                max: 10,
+                min: 1,
+                step: 1,
+                value: elValue,
+                slide: function (event, ui) {
+                    scope.participantGroup.count = ui.value;
+                    scope.$apply();
+                }
+            });
+
+            var income = $(elm.find('.income')[0]);
+            var elValueMin =  scope.participantGroup.householdIncomeMin;
+            var elValueMax = scope.participantGroup.householdIncomeMax;
+            if (elValueMax == "50 000+" || elValueMax > 50000) {
+                elValueMax = 55000;
+                income.parents('.item_list_group').scope().participantGroup.householdIncomeMax = '50 000+';
+
+            }
+            income.slider({
+                range: true,
+                min: 0,
+                max: 55000,
+                step: 5000,
+                values: [elValueMin, elValueMax],
+                slide: function (event, ui) {
+                    if (ui.values[0] == ui.values[1]) {
+                        return false;
+                    }
+                    income.parents('.item_list_group').scope().participantGroup.householdIncomeMin = ui.values[0];
+                    if (ui.values[1] == 55000) {
+                        income.parents('.item_list_group').scope().participantGroup.householdIncomeMax = '50 000+';
+                    } else {
+                        income.parents('.item_list_group').scope().participantGroup.householdIncomeMax = ui.values[1];
+                    }
+                    scope.$apply();
+                }
+            });
+
+            var age = $(elm.find('.age')[0]);
+            var elValueMin = scope.participantGroup.minAge;
+            var elValueMax = scope.participantGroup.maxAge;
+           if (elValueMax == "60+" || elValueMax == 61) {
+               elValueMax = 61;
+                age.parents('.item_list_group').scope().participantGroup.maxAge = '60+';
+           }
+          age.slider({
+              range: true,
+              min: 18,
+              max: 61,
+              step: 1,
+              values: [elValueMin, elValueMax],
+              slide: function (event, ui) {
+                  if (ui.values[0] == ui.values[1]) {
+                      return false;
+                  }
+                  age.parents('.item_list_group').scope().participantGroup.minAge = ui.values[0];
+                  if (ui.values[1] == 61) {
+                      age.parents('.item_list_group').scope().participantGroup.maxAge = '60+';
+                  } else {
+                      age.parents('.item_list_group').scope().participantGroup.maxAge = ui.values[1];
+                  }
+                  scope.$apply();
+              }
+          });
+
+            var selectorEl = elm.find('.header_item_expand_block');
+            $(selectorEl).each(function () {
+                $(this).click(function () {
+                    if ($(this).parents('.item_example_string').hasClass('open')) {
+                        $('.item_example_string').removeClass('open');
+                    } else {
+                        $('.item_example_string').removeClass('open');
+                        $(this).parents('.item_example_string').addClass('open');
+                    }
+                })
+            });
+
+        }
+    }
+});
+
+app.directive('webflow', function () {
+    return {
+        link: function (scope, elm, attrs, ctrl) {
+            if (typeof Webflow !== 'undefined'){
+                Webflow.destroy();
+                Webflow.ready();
+            } else {
+                $.getScript( "assets/js/landing/webflow.js", function( data, textStatus, jqxhr ) {
+                  console.log( "Load was performed." );
+                });
+            }
+        }
+    }
+});
+
+app.directive('socialNetwork', function ($timeout) {
+    return {
+        link: function (scope, elm, attrs, ctrl) {
+            $timeout(function(){
+                uLogin.customInit($(elm).attr('id'))
+            });
+        }
+    }
+});
+
+app.directive('focusout', function () {
+    return {
+        link: function (scope, elm, attrs, ctrl) {
+            elm.bind('focusout', function () {
+                if ($(this).val().length === 0) {
+                    $('label[for="' + $(this).attr('id') + '"]').removeClass('label--up');
+                } else {
+                    $('label[for="' + $(this).attr('id') + '"]').addClass('label--up');
+                }
+            });
+        }
+    }
+});
+
+app.directive('sharing', function () {
+    return {
+        link: function (scope, elm, attrs, ctrl) {
+            Share = {
+                vkontakte: function (purl, ptitle, pimg, text) {
+                    url = 'http://vkontakte.ru/share.php?';
+                    url += 'url=' + encodeURIComponent(purl);
+                    url += '&title=' + encodeURIComponent(ptitle);
+                    url += '&description=' + encodeURIComponent(text);
+                    url += '&image=' + encodeURIComponent(pimg);
+                    url += '&noparse=true';
+                    Share.popup(url);
+                },
+                odnoklassniki: function (purl, text) {
+                    url = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+                    url += '&st.comments=' + encodeURIComponent(text);
+                    url += '&st._surl=' + encodeURIComponent(purl);
+                    Share.popup(url);
+                },
+                facebook: function (purl, ptitle, pimg, text) {
+                    url = 'http://www.facebook.com/sharer.php?s=100';
+                    url += '&p[title]=' + encodeURIComponent(ptitle);
+                    url += '&p[summary]=' + encodeURIComponent(text);
+                    url += '&p[url]=' + encodeURIComponent(purl);
+                    url += '&p[images][0]=' + encodeURIComponent(pimg);
+                    Share.popup(url);
+                },
+                twitter: function (purl, ptitle) {
+                    url = 'http://twitter.com/share?';
+                    url += 'text=' + encodeURIComponent(ptitle);
+                    url += '&url=' + encodeURIComponent(purl);
+                    url += '&counturl=' + encodeURIComponent(purl);
+                    Share.popup(url);
+                },
+                popup: function (url) {
+                    window.open(url, '', 'toolbar=0,status=0,width=626,height=436');
+                }
+            };
+
+            var pathPoster,
+                NEWSHERETITLE,
+                SHEREDESCRIPTION,
+                SHAREURL;
+            if (elm.hasClass('od_img')){
+                $(elm).click(function () {
+                    pathPoster = $(elm).parent().data('pathsharing');
+                    NEWSHERETITLE = $(elm).parent().data('titlesharing');
+                    SHEREDESCRIPTION = $(elm).parent().data('descriptionsharing');
+                    SHAREURL = $config.fullUrl + $(elm).parent().data('urlsharing');
+                    Share.odnoklassniki(SHAREURL, SHEREDESCRIPTION)
+                });
+            }
+            if (elm.hasClass('fb_img')){
+                $(elm).click(function () {
+                    pathPoster = $(elm).parent().data('pathsharing');
+                    NEWSHERETITLE = $(elm).parent().data('titlesharing');
+                    SHEREDESCRIPTION = $(elm).parent().data('descriptionsharing');
+                    SHAREURL = $config.fullUrl + $(elm).parent().data('urlsharing');
+                    Share.facebook(SHAREURL, NEWSHERETITLE, pathPoster, SHEREDESCRIPTION)
+                });
+            }
+            if (elm.hasClass('vk_img')){
+                $(elm).click(function () {
+                    pathPoster = $(elm).parent().data('pathsharing');
+                    NEWSHERETITLE = $(elm).parent().data('titlesharing');
+                    SHEREDESCRIPTION = $(elm).parent().data('descriptionsharing');
+                    SHAREURL = $config.fullUrl + $(elm).parent().data('urlsharing');
+                    Share.vkontakte(SHAREURL, NEWSHERETITLE, pathPoster, SHEREDESCRIPTION)
+                });
+            }
+            if (elm.hasClass('tw_img')){
+                $(elm).click(function () {
+                    pathPoster = $(elm).parent().data('pathsharing');
+                    NEWSHERETITLE = $(elm).parent().data('titlesharing');
+                    SHEREDESCRIPTION = $(elm).parent().data('descriptionsharing');
+                    SHAREURL = $config.fullUrl + $(elm).parent().data('urlsharing');
+                    Share.twitter(SHAREURL, NEWSHERETITLE);
+                });
+            }
+            if (elm.hasClass('copy_img')){
+                $(elm).on('click', function(e) {
+                    if (e.target !== this)
+                      return;
+                    if ($(elm).find('#block_copy_img').hasClass('open')) {
+                        $(elm).find('#block_copy_img').removeClass('open');
+                    } else {
+                        $(elm).find('#block_copy_img').addClass('open');
+                        //$(elm).unbind( "click" );
+                        $(elm).find(".btn_copy_full_href").click(function(){
+                            var $temp = $("<input>");
+                            $("body").append($temp);
+                            $temp.val($(elm).find("#insight-full-href").val()).select();
+                            document.execCommand("copy");
+                            $temp.remove();
+                            $(elm).find('#block_copy_img').removeClass('open');
+                        });
+                    }
+                });
+            }
+        }
+    }
+});
+
+app.directive('showTab', function () {
+    return {
+        link: function (scope, element, attrs) {
+            element.click(function (e) {
+                e.preventDefault();
+                jQuery(element).tab('show');
+            });
+        }
+    };
+});
+
+app.directive('popOver', function () {
+    return {
+        link: function (scope, element, attrs) {
+            $(element).popover();
+        }
+    };
+});
+
+app.directive('testerUploadVideo', function (Principal, Translation) {
+    var principal = null;
+    Principal.identity().then(function (account) {
+        principal = account;
+    });
+    return {
+        link: function (scope, element, attrs) {
+                scope.translation = Translation;
+                var getCSRF = function () {
+                    var name = 'XSRF-TOKEN=';
+                    var ca = document.cookie.split(';');
+                    for (var i = 0; i < ca.length; i++) {
+                        var c = ca[i];
+                        while (c.charAt(0) == ' ') c = c.substring(1);
+                        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+                    }
+                    return '';
+                };
+
+                 var $this = $(element);
+                 var $div =  $this.siblings();
+                 var $label = $this.closest('label');
+                 var $divProgress = $div.find('div');
+                 var $span = $div.find('span');
+
+                function handleFileSelect(evt) {
+                    $span.text(scope.translation.translate("INT.INT10"));
+                    $this.prop('disabled',true);
+                    $label.prop('disabled',true);
+                    $div.prop('disabled',true);
+
+                    var files = evt.target.files;
+                    f = files[0];
+                    if(f.size > 1000 * 1024 * 1024 * 2){// больше 2Gb
+                      alert(scope.translation.translate("INT.INT30"));
+                      $this.prop('disabled',false);
+                      $label.prop('disabled',false);
+                      $div.prop('disabled',false);
+                      $span.text(scope.translation.translate("INT.INT12"));
+                      return;
+                    }
+                    if (escape(f.name).split('.').pop()!='webm'){
+                        alert(scope.translation.translate("INT.INT11"));
+                        $this.prop('disabled',false);
+                        $label.prop('disabled',false);
+                        $div.prop('disabled',false);
+                        $span.text(scope.translation.translate("INT.INT12"));
+                        return;
+                    }
+
+                    var fileReader = new FileReader();
+                    fileReader.onloadend = function (e) {
+                        $span.text("0%");
+                        $divProgress.height(8);
+                        var arrayBuffer = e.target.result;
+                        var fileType = $('#file-type').val();
+                        blobUtil.arrayBufferToBlob(arrayBuffer, fileType).then(function (blob) {
+                            var formData = new FormData();
+                            formData.append('orderId', $this.attr( 'orderId' ));
+                            formData.append('file', blob);
+                            formData.append('name', 'blob.webm');
+                            var xhr = new XMLHttpRequest();
+                            xhr.upload.onprogress = function (event) {
+                                var percent = Math.floor(event.loaded / event.total * 100);
+                                if (percent>1){
+                                    percent = percent - 1 ;
+                                }
+                                $divProgress.width( percent+'%');
+                                $span.text( percent +'%');
+                            };
+                            xhr.open("POST", '/api/lk-video-upload-app', true);
+                            xhr.setRequestHeader('X-XSRF-TOKEN', getCSRF());
+                            xhr.onloadend = function() {
+                                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                                    $divProgress.width('100%');
+                                    $span.text('100%');
+                                    alert(scope.translation.translate("INT.INT13"));
+                                    location.reload();
+                                } else {
+                                    alert(scope.translation.translate("INT.INT14")+" "+xhr.status);
+                                    $divProgress.height(0);
+                                    $divProgress.width(0);
+                                    $this.prop('disabled',false);
+                                    $label.prop('disabled',false);
+                                    $div.prop('disabled',false);
+                                    $span.text(scope.translation.translate("INT.INT15"));
+                                    $this[0].value = ''
+                                }
+                            }
+                            xhr.send(formData);
+                        }).catch(console.log.bind(console));
+                    };
+                    fileReader.readAsArrayBuffer(f);
+                }
+                $this.change(handleFileSelect);
+        }
+    };
+});
+
+app.directive('adminUploadVideo', function (Principal, Translation) {
+    var principal = null;
+    Principal.identity().then(function (account) {
+        principal = account;
+    });
+    return {
+        link: function (scope, element) {
+            scope.translation = Translation;
+            var getCSRF = function () {
+                var name = 'XSRF-TOKEN=';
+                var ca = document.cookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') c = c.substring(1);
+                    if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+                }
+                return '';
+            };
+
+            var $this = $(element);
+            var $div =  $this.siblings();
+            var $label = $this.closest('label');
+            var $divProgress = $div.find('div');
+            var $span = $div.find('span');
+
+            function handleFileSelect(evt) {
+                $span.text(scope.translation.translate("INT.INT10"));
+                $this.prop('disabled',true);
+                $label.prop('disabled',true);
+                $div.prop('disabled',true);
+
+                var files = evt.target.files;
+                f = files[0];
+                if(f.size > 1000 * 1024 * 1024 * 2){// больше 2Gb
+                    alert(scope.translation.translate("INT.INT30"));
+                    $this.prop('disabled',false);
+                    $label.prop('disabled',false);
+                    $div.prop('disabled',false);
+                    $span.text(scope.translation.translate("INT.INT12"));
+                    return;
+                }
+                if (escape(f.name).split('.').pop()!='webm'){
+                    alert(scope.translation.translate("INT.INT11"));
+                    $this.prop('disabled',false);
+                    $label.prop('disabled',false);
+                    $div.prop('disabled',false);
+                    $span.text(scope.translation.translate("INT.INT12"));
+                    return;
+                }
+
+                var fileReader = new FileReader();
+                fileReader.onloadend = function (e) {
+                    $span.text("0%");
+                    $divProgress.height(8);
+                    var arrayBuffer = e.target.result;
+                    var fileType = $('#file-type').val();
+                    blobUtil.arrayBufferToBlob(arrayBuffer, fileType).then(function (blob) {
+                        var formData = new FormData();
+                        formData.append('orderId', $('#orderId').val());
+                        formData.append('testerEmail', $('#testerEmail').val());
+                        formData.append('file', blob);
+                        formData.append('name', 'blob.webm');
+                        var xhr = new XMLHttpRequest();
+                        xhr.upload.onprogress = function (event) {
+                            var percent = Math.floor(event.loaded / event.total * 100);
+                            if (percent>1){
+                                percent = percent - 1 ;
+                            }
+                            $divProgress.width( percent+'%');
+                            $span.text( percent +'%');
+                        };
+                        xhr.open("POST", '/api/v2/admin/lk-video-upload-app', true);
+                        xhr.setRequestHeader('X-XSRF-TOKEN', getCSRF());
+                        xhr.onloadend = function() {
+                            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                                $divProgress.width('100%');
+                                $span.text('100%');
+                                alert(scope.translation.translate("INT.INT13"));
+                                location.reload();
+                            } else {
+                                alert(scope.translation.translate("INT.INT14")+" "+xhr.status);
+                                $divProgress.height(0);
+                                $divProgress.width(0);
+                                $this.prop('disabled',false);
+                                $label.prop('disabled',false);
+                                $div.prop('disabled',false);
+                                $span.text(scope.translation.translate("INT.INT15"));
+                                $this[0].value = ''
+                            }
+                        }
+                        xhr.send(formData);
+                    }).catch(console.log.bind(console));
+                };
+                fileReader.readAsArrayBuffer(f);
+            }
+            $this.change(handleFileSelect);
+        }
+    };
+});
+
+app.directive('elevalidation', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            elm.bind('focusout', function () {
+                if (!$(elm).val()) {
+                    $(elm).removeClass('ng-valid');
+                    $(elm).removeClass('ng-valid-elevalidation');
+                    $(elm).addClass('ng-invalid');
+                    $(elm).addClass('ng-invalid-elevalidation');
+                } else {
+                    while (($(elm).val().charAt($(elm).val().length - 1) == ' ')) {
+                        $(elm).val($(elm).val().substring(0, $(elm).val().length - 1));
+                    }
+                }
+            });
+            ctrl.$parsers.unshift(function (viewValue) {
+                elm.bind('blur', function () {
+                    scope.$apply(function () {
+                        if (elm.context.tagName != 'SELECT') {
+                            ctrl.$setViewValue(elm.html());
+                        }
+                    });
+                });
+
+                // model -> view
+                ctrl.$render = function () {
+                    if (elm.context.tagName != 'SELECT') {
+                        elm.html(ctrl.$viewValue);
+                    }
+                };
+
+                // load init value from DOM
+                if (elm.context.tagName != 'SELECT') {
+                    ctrl.$setViewValue(elm.html());
+                }
+
+                var type_element = elm.context.attributes['data-type'].value;
+                switch (type_element) {
+                    case 'login':
+                        if (LOGIN_REGEXP.test(viewValue) && viewValue != '') {
+                            ctrl.$setValidity('elevalidation', true);
+                            if ($('.valid_element').hasClass('login')) {
+                                $('.valid_element.login').remove();
+                            }
+                            elm.context.value = viewValue;
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'name':
+                        if (NAME_REGEXP.test(viewValue)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            elm.context.value = viewValue;
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'surname':
+                        if (SURNAME_REGEXP.test(viewValue)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            elm.context.value = viewValue;
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'login_number':
+                        if ((LOGIN_NUMBER_REGEXP.test(viewValue) && viewValue != '') || (EMAIL_REGEXP.test(viewValue))) {
+                            ctrl.$setValidity('elevalidation', true);
+                            if ($('.valid_element').hasClass('login_number') || $('.valid_element').hasClass('login')) {
+                                $('.valid_element.login_number').remove();
+                                $('.valid_element.login').remove();
+                            }
+                            elm.context.value = viewValue;
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'site':
+                        if (SITE_REGEXP.test(viewValue) || FULL_URL_SITE_REGEXP.test(viewValue)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            if ($('.valid_element').hasClass('site')) {
+                                $('.valid_element.site').remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'site_ru':
+                        if (SITE_REGEXP_RU.test(viewValue) || FULL_URL_SITE_REGEXP_RU.test(viewValue) || FULL_URL_SITE_REGEXP_TEST.test(viewValue)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            if ($('.valid_element').hasClass('site')) {
+                                $('.valid_element.site').remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+
+                    case 'site_ru_enter':
+                        if (SITE_REGEXP_RU.test(viewValue) || FULL_URL_SITE_REGEXP_RU.test(viewValue)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            if ($('.valid_element').hasClass('site')) {
+                                $('.valid_element.site').remove();
+                            }
+                            $('.site_ru_enter').remove();
+                            $('.error_site_input').remove();
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+
+                    case 'phone':
+                        if ((viewValue != '' && viewValue.length == 18) || (elm.context.value.length == 18)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            if ($('.valid_element').hasClass('phone')) {
+                                $('.valid_element.phone').remove();
+                            }
+                            elm.context.value = viewValue;
+                            return true;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return true;
+                        }
+                        break;
+                    case 'loginCyrillic':
+                        if (NAME_CYRILLIC_REGEXP.test(viewValue)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            elm.context.value = viewValue;
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'password':
+                        viewValue = viewValue.replace(/\s/g, "");
+                        while (viewValue.charAt(viewValue.length - 1) == ' ') {
+                            viewValue = viewValue.substring(0, viewValue.length - 1);
+                        }
+                        $(elm).val(viewValue);
+                        $('.errors_block').empty();
+                        $('.block_show_error_password').find('.password_error_alert').remove();
+                        if (PASSWORD_REGEXP.test(viewValue) && (!ALL_RU_CHAR.test(viewValue))) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = $(elm).val();
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'email':
+                        if (EMAIL_REGEXP.test(viewValue)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            if ($('.valid_element').hasClass('email')) {
+                                $('.valid_element.email').remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'email_valid':
+                        viewValue = $(elm).val();
+                        if (EMAIL_REGEXP.test(viewValue)) {
+                            ctrl.$setValidity('elevalidation', true);
+                            //поле не реагировало на автозаполнение
+                            $(elm).removeClass('ng-invalid-elevalidation');
+                            if ($('.valid_element').hasClass('email')) {
+                                $('.valid_element.email').remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'select':
+                        if ($(elm).val() != '') {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'nonull':
+                        if (viewValue.length >= 2) {
+                            ctrl.$setValidity('elevalidation', true);
+                            if ($('.valid_element').hasClass('nonull')) {
+                                $('.valid_element.nonull').remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'string':
+                        while ((viewValue.charAt(viewValue.length - 1) == ' ')) {
+                            viewValue = viewValue.substring(0, viewValue.length - 1);
+                        }
+                        if (viewValue.split('').length > 1) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'cyrillic':
+                        if ((viewValue.split('').length > 1) && (CYRILLIC_REGEXP.test(viewValue))) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'cyrillic_duo':
+                        if ((viewValue.split('').length > 1) && ((CYRILLIC_REGEXP.test(viewValue)) || (CYRILLIC_DUO_REGEXP.test(viewValue)))) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'fio':
+                        if ((viewValue.split(' ').length > 1) && (FIO_REGEXP.test(viewValue))) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'col_people':
+                        if ((viewValue != 0) && (viewValue.split('').length >= 1) && (NUMBER_REGEXP.test(viewValue))) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'sum':
+                        if ((viewValue != 0) && (NUMBER_REGEXP.test(viewValue))) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'step':
+                        if (viewValue.split('').length > 1) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                    case 'radio':
+                        if (viewValue) {
+                            ctrl.$setValidity('elevalidation', true);
+                            var dataTitle = elm.context.attributes['data-type-title'].value;
+                            if ($('.valid_element').hasClass(dataTitle)) {
+                                $('.valid_element.' + dataTitle).remove();
+                            }
+                            return viewValue;
+                        } else {
+                            ctrl.$setValidity('elevalidation', false);
+                            return viewValue;
+                        }
+                        break;
+                  case 'birthday':
+                    if (BIRTHDAY_REGEXP.test(viewValue)) {
+                      ctrl.$setValidity('elevalidation', true);
+                      var dataTitle = elm.context.attributes['data-type-title'].value;
+                      if ($('.valid_element').hasClass(dataTitle)) {
+                        $('.valid_element.' + dataTitle).remove();
+                      }
+                      return viewValue;
+                    } else {
+                      ctrl.$setValidity('elevalidation', false);
+                      return viewValue;
+                    }
+                    break;
+                }
+            });
+        }
+    };
+});
+
+
+/**
+ * Filters
+ */
+
+app.filter('translate', function($rootScope, $config) {
+    return function(labelCode) {
+        return $config.translation[labelCode.split('.')[0]][labelCode.split('.')[1]];
+    }
+});
+
+app.filter('sort_step_participantGroup', function () {
+    return function (items) {
+        var filtered = [];
+        for (var i in items) {
+            if (items[i].participantGroups != null) {
+                filtered.push(items[i]);
+            }
+        }
+        return filtered;
+    };
+});
+
+app.filter('sort_step_no_participantGroup', function () {
+    return function (items) {
+        var filtered = [];
+        for (var i in items) {
+            if (items[i].participantGroups == null) {
+                filtered.push(items[i]);
+            }
+        }
+        return filtered;
+    };
+});
+
+app.filter('AllYear', function () {
+    return function (dateString) {
+        var day = parseInt(dateString.substring(0, 2));
+        var month = parseInt(dateString.substring(3, 5));
+        var year = parseInt(dateString.substring(6, 10));
+
+        var today = new Date();
+        var birthDate = new Date(year, month, day);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
+});
+
+app.filter('createDate', function () {
+    return function (dateString) {
+        if (date != null)
+            var date = dateString.substr(0, 10).replace(/-/g, '.');
+        return date;
+    }
+});
+
+app.filter('income', function () {
+    return function (dateString) {
+        if (dateString == 55000) {
+            dateString = '50 000+'
+        } else {
+            dateString = format_price(dateString);
+        }
+        return dateString;
+    }
+});
+
+app.filter('steps', function () {
+    return function (date) {
+        var stepDescription = '';
+        for (var i in date.steps) {
+            stepDescription += '<p>' + date.steps[i].stepDetails + '</p>';
+        }
+        return stepDescription;
+    }
+});
+
+app.filter('orderObjectBy', function () {
+    return function (input, attribute) {
+        if (!angular.isObject(input)) return input;
+
+        var array = [];
+        for (var objectKey in input) {
+            array.push(input[objectKey]);
+        }
+
+        array.sort(function (a, b) {
+            a = parseInt(a[attribute]);
+            b = parseInt(b[attribute]);
+            return a - b;
+        });
+        return array;
+    }
+});
+
+app.filter('secondsToMinutes', function () {
+    return function (input) {
+        d = Number(input);
+        var hours = Math.floor(d / 3600);
+        var minutes = Math.floor(d % 3600 / 60) + hours * 60;
+        var seconds = Math.floor(d % 3600 % 60);
+
+        return (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds  < 10 ? "0" + seconds : seconds);
+    }
+});

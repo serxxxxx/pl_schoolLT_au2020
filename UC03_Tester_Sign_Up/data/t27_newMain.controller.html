@@ -1,0 +1,79 @@
+define(['../../app'], function (app) {
+    app_cached_providers
+        .$controllerProvider
+        .register('homeNewMainController', function ($scope, $rootScope, $sce, $state, $stateParams, Principal, NewTesters,
+         $http, $window, Payments, Orders, $metrika, $config, $uibModal,Translation) {
+                $scope.animate = function () {
+                    $('html, body').animate({scrollTop: $('#block_main_video').offset().top}, 500);
+                };
+                $scope.obj = {site:null};
+                $scope.doOrder = function () {
+                    show_error_valid({'selected_container': '.head-input-wrapper'});
+                    if ($('.class_valid_tester').find('.ng-invalid-elevalidation').length <= 0) {
+                        $('.block_error').html('');
+                        $scope.doNotMatch = false;
+                        $scope.error = null;
+                        $scope.errorUserExists = null;
+                        $scope.errorEmailExists = null;
+                        var form = $scope['form'];
+                        var sendObjFree = {
+                            "site": $scope.order.site,
+                            "email": $scope.order.email
+                        };
+                        if ($config.isProd) {
+                            $metrika.fireEvent('PREBOOKING');
+                        }
+                        $http({
+                            method: 'POST',
+                            url: '/api/public/booking',
+                            data: sendObjFree
+                        }).then(function successCallback(data) {
+                            $scope.success = true;
+                            var header;
+                            var description;
+                            if (data.data=='FIRST_BOOKING'){
+                                header = 'Отличная работа! Тест готов к запуску';
+                                description = 'Активируй тест переходом по ссылке, которую мы отправили по адресу:<strong> ' +$scope.main_order.email+'<strong>';
+                            } else {
+                                header = 'ВЫ ТОЛЬКО ЧТО ЗАКАЗАЛИ БЕСПЛАТНЫЙ ТЕСТ!';
+                                description = 'Тест появился в личном кабинете, зарегистрированным на адрес <strong>' +$scope.main_order.email+'<strong>';
+                            }
+                            $rootScope.successMessage = {
+                                'header': header,
+                                    'description': description,
+                                'tmpl': '/tmpl/tmpl_home/success_free.html'
+                            };
+                            $state.go('success', {notify: false});
+                        }).catch(function (data) {
+                            $scope.email_not_valid = $scope.order.email;
+                            $scope.message = data.data;
+                            $scope.success = false;
+                            return;
+                        });
+                    } else {
+                        var error = "";
+                        $('.class_valid_tester').find('.ng-invalid-elevalidation:not("form")').each(function () {
+                            var type = $(this).data('type-title');
+                            error += "<p class='" + type + " valid_element' >" + $(this).data('text-error') + "</p>";
+                        }).removeClass('ng-pristine');
+                        $('.block_error').html(error);
+                        return false;
+                    }
+                };
+
+                if (localStorage.getItem('uxc_info_block') != 'close') {
+                    $('.top_modal').addClass('open');
+                    $('html, body').animate({ scrollTop: 0 }, 500);
+                    /*
+                     скрываем отображение плашки с учебником
+                     для возврата отображение запустить в консоле
+                     localStorage.setItem('uxc_info_block', 'open');
+                     */
+                    $('.main_page_close_btn').click(function () {
+                        localStorage.setItem('uxc_info_block', 'close');
+                        $('.top_modal').removeClass('open');
+                    });
+                }
+            }
+        )
+});
